@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VMSFlex Pay - Amy Bray</title>
+    <meta
+      name="description"
+      content="VMSFlex Pay: Smart payroll calculator that automatically processes timesheets from multiple VMS systems with intelligent format detection."
+    />
+    <link rel="stylesheet" href="assets/styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+      /* CSS Variables for theming */
+      :root {
+        --bg-primary: #fafbfc;
+        --bg-secondary: #f5f7fa;
+        --card-bg: rgba(255, 255, 255, 0.8);
+        --text-primary: #1a202c;
+        --text-secondary: #4a5568;
+        --border-color: rgba(226, 232, 240, 0.8);
+        --accent-color: #667eea;
+        --accent-secondary: #764ba2;
+        --accent-color-alpha: rgba(102, 126, 234, 0.15);
+        --success-bg: rgba(72, 187, 120, 0.1);
+        --success-color: #38a169;
+      }
+
+      [data-theme="dark"] {
+        --bg-primary: #0f1419;
+        --bg-secondary: #1a202c;
+        --card-bg: rgba(45, 55, 72, 0.8);
+        --text-primary: #f7fafc;
+        --text-secondary: #a0aec0;
+        --border-color: rgba(74, 85, 104, 0.8);
+        --success-bg: rgba(72, 187, 120, 0.15);
+        --success-color: #68d391;
+      }
+
+      /* Background system */
+      .bg-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+        z-index: -3;
+      }
+
+      .accent-blob {
+        position: fixed;
+        border-radius: 50%;
+        filter: blur(60px);
+        opacity: 0.6;
+        z-index: -2;
+        animation: float 6s ease-in-out infinite;
+      }
+
+      .blob-1 {
+        width: 400px;
+        height: 400px;
+        background: linear-gradient(45deg, var(--accent-color), var(--accent-secondary));
+        top: -100px;
+        right: -100px;
+        animation-delay: 0s;
+      }
+
+      .blob-2 {
+        width: 300px;
+        height: 300px;
+        background: linear-gradient(-45deg, var(--accent-secondary), var(--accent-color));
+        bottom: -50px;
+        left: -50px;
+        animation-delay: 3s;
+      }
+
+      @keyframes float {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        33% { transform: translateY(-20px) rotate(5deg); }
+        66% { transform: translateY(10px) rotate(-3deg); }
+      }
+
+      /* Header styles */
+      .site-header {
+        position: sticky;
+        top: 0;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--border-color);
+        z-index: 100;
+        padding: 1rem 0;
+      }
+
+      [data-theme="dark"] .site-header {
+        background: rgba(15, 20, 25, 0.95);
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+      }
+
+      .header-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .brand {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--text-primary);
+        text-decoration: none;
+      }
+
+      .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .nav-btn {
+        padding: 0.5rem 1rem;
+        color: var(--text-secondary);
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+      }
+
+      .nav-btn:hover, .nav-btn.active {
+        color: var(--text-primary);
+        background: var(--accent-color-alpha);
+      }
+
+      .theme-toggle {
+        background: none;
+        border: none;
+        font-size: 1.25rem;
+        padding: 0.5rem;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: background 0.2s ease;
+        margin-left: 0.5rem;
+      }
+
+      .theme-toggle:hover {
+        background: var(--accent-color-alpha);
+      }
+
+      /* Project hero */
+      .project-hero {
+        padding: 4rem 0 3rem 0;
+        background: linear-gradient(135deg, var(--accent-color-alpha) 0%, transparent 100%);
+        margin-bottom: 3rem;
+        text-align: center;
+      }
+
+      .hero-content {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .project-status-badge {
+        background: var(--success-bg);
+        color: var(--success-color);
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .hero-content h1 {
+        font-size: 3rem;
+        font-weight: 800;
+        color: var(--text-primary);
+        margin: 0 0 1rem 0;
+        line-height: 1.1;
+      }
+
+      .project-tagline {
+        font-size: 1.25rem;
+        color: var(--text-secondary);
+        margin-bottom: 2rem;
+        line-height: 1.6;
+      }
+
+      .project-meta {
+        display: flex;
+        gap: 2rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 2rem;
+      }
+
+      .meta-item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+      }
+
+      .meta-label {
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+      }
+
+      .meta-value {
+        font-size: 1rem;
+        color: var(--text-primary);
+        font-weight: 500;
+      }
+
+      .project-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+      }
+
+      .btn {
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.875rem;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, var(--accent-color), var(--accent-secondary));
+        color: white;
+        border: none;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px var(--accent-color-alpha);
+      }
+
+      .btn-secondary {
+        background: transparent;
+        color: var(--text-primary);
+        border: 1px solid var(--border-color);
+      }
+
+      .btn-secondary:hover {
+        background: var(--accent-color-alpha);
+        border-color: var(--accent-color);
+        color: var(--accent-color);
+      }
+
+      /* Back navigation */
+      .back-nav {
+        margin-bottom: 2rem;
+      }
+
+      .back-nav a {
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: color 0.2s ease;
+      }
+
+      .back-nav a:hover {
+        color: var(--accent-color);
+      }
+
+      /* Content sections */
+      .project-content {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 4rem;
+        margin-bottom: 4rem;
+      }
+
+      .content-section {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        backdrop-filter: blur(10px);
+      }
+
+      .content-section h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin: 0 0 1rem 0;
+      }
+
+      .content-section h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin: 2rem 0 1rem 0;
+      }
+
+      .content-section h3:first-child {
+        margin-top: 0;
+      }
+
+      .content-section p {
+        color: var(--text-secondary);
+        line-height: 1.6;
+        margin-bottom: 1rem;
+      }
+
+      .feature-list {
+        list-style: none;
+        padding: 0;
+        margin: 1rem 0;
+      }
+
+      .feature-list li {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+        padding: 1rem;
+        background: var(--bg-secondary);
+        border-radius: 8px;
+      }
+
+      .feature-icon {
+        width: 24px;
+        height: 24px;
+        background: linear-gradient(135deg, var(--accent-color), var(--accent-secondary));
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 0.75rem;
+        font-weight: bold;
+        flex-shrink: 0;
+        margin-top: 0.125rem;
+      }
+
+      .feature-content h4 {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin: 0 0 0.5rem 0;
+      }
+
+      .feature-content p {
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+        margin: 0;
+      }
+
+      .metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+        margin: 1.5rem 0;
+      }
+
+      .metric-card {
+        background: var(--bg-secondary);
+        padding: 1.5rem;
+        border-radius: 12px;
+        text-align: center;
+      }
+
+      .metric-value {
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--accent-color);
+        display: block;
+        margin-bottom: 0.5rem;
+      }
+
+      .metric-label {
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+        font-weight: 500;
+      }
+
+      .sidebar-section {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        backdrop-filter: blur(10px);
+      }
+
+      .sidebar-section h3 {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin: 0 0 1rem 0;
+      }
+
+      .link-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .link-list li {
+        margin-bottom: 0.75rem;
+      }
+
+      .link-list a {
+        color: var(--accent-color);
+        text-decoration: none;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .link-list a:hover {
+        text-decoration: underline;
+      }
+
+      .tech-stack {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin: 1rem 0;
+      }
+
+      .tech-tag {
+        background: var(--accent-color-alpha);
+        color: var(--accent-color);
+        padding: 0.5rem 1rem;
+        border-radius: 12px;
+        font-size: 0.875rem;
+        font-weight: 500;
+      }
+
+      /* Mobile responsiveness */
+      @media (max-width: 768px) {
+        .hero-content h1 {
+          font-size: 2.25rem;
+        }
+
+        .project-content {
+          grid-template-columns: 1fr;
+          gap: 2rem;
+        }
+
+        .project-actions {
+          flex-direction: column;
+        }
+
+        .metrics-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .nav-actions {
+          flex-wrap: wrap;
+          gap: 0.25rem;
+        }
+
+        .nav-btn {
+          padding: 0.375rem 0.75rem;
+          font-size: 0.875rem;
+        }
+
+        .container {
+          padding: 0 1rem;
+        }
+
+        .content-section, .sidebar-section {
+          padding: 1.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Professional background system -->
+    <div class="bg-canvas"></div>
+    <div class="accent-blob blob-1"></div>
+    <div class="accent-blob blob-2"></div>
+
+    <header class="site-header">
+      <div class="container">
+        <div class="header-content">
+          <a class="brand" href="index.html" aria-label="Amy Bray - Home">Amy Bray</a>
+          
+          <nav class="nav-actions">
+            <a class="nav-btn" href="index.html">Home</a>
+            <a class="nav-btn active" href="projects.html">Projects</a>
+            <a class="nav-btn" href="case-studies.html">Case Studies</a>
+            <a class="nav-btn" href="contact.html">Contact</a>
+            <button
+              id="theme-toggle"
+              class="theme-toggle"
+              aria-label="Toggle between light and dark themes"
+              title="Toggle theme"
+            >
+              🌙
+            </button>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="container">
+        <!-- Back Navigation -->
+        <div class="back-nav">
+          <a href="projects.html">
+            <span>←</span>
+            Back to Projects
+          </a>
+        </div>
+
+        <!-- Project Hero -->
+        <section class="project-hero">
+          <div class="hero-content">
+            <div class="project-status-badge">
+              <span>🟢</span>
+              Live Demo
+            </div>
+            <h1>VMSFlex Pay</h1>
+            <p class="project-tagline">
+              Smart payroll calculator that automatically processes timesheets from multiple VMS systems, eliminating 2-3 hours of manual work per pay period with intelligent format detection.
+            </p>
+            
+            <div class="project-meta">
+              <div class="meta-item">
+                <span class="meta-label">Role</span>
+                <span class="meta-value">Solo Developer & Designer</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Timeline</span>
+                <span class="meta-value">2 weeks (2025)</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Type</span>
+                <span class="meta-value">Web Application</span>
+              </div>
+            </div>
+
+            <div class="project-actions">
+              <a href="#" target="_blank" class="btn btn-primary">
+                Try Live Demo
+                <span>↗</span>
+              </a>
+              <a href="https://github.com/yourusername/vmsflex-pay" target="_blank" class="btn btn-secondary">
+                View on GitHub
+                <span>↗</span>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- Project Content -->
+        <div class="project-content">
+          <!-- Main Content -->
+          <div class="main-content">
+            <!-- Overview -->
+            <section class="content-section">
+              <h2>Project Overview</h2>
+              <p>
+                VMSFlex Pay was born from a real pain point I experienced in previous roles: spending hours each pay period manually processing timesheets from multiple Vendor Management Systems, each with completely different CSV formats, and calculating overtime by hand based on complex location-specific rules.
+              </p>
+              <p>
+                The solution uses intelligent format detection to automatically recognize various CSV structures, handle different date and time formats, and apply the correct overtime rules based on employee location (California daily OT, Federal weekly OT, etc.). What used to take 2-3 hours now takes minutes.
+              </p>
+
+              <div class="metrics-grid">
+                <div class="metric-card">
+                  <span class="metric-value">95%</span>
+                  <span class="metric-label">Time Savings</span>
+                </div>
+                <div class="metric-card">
+                  <span class="metric-value">100%</span>
+                  <span class="metric-label">Error Reduction</span>
+                </div>
+                <div class="metric-card">
+                  <span class="metric-value">Multi</span>
+                  <span class="metric-label">VMS Support</span>
+                </div>
+                <div class="metric-card">
+                  <span class="metric-value">3</span>
+                  <span class="metric-label">OT Rule Sets</span>
+                </div>
+              </div>
+            </section>
+
+            <!-- Key Features -->
+            <section class="content-section">
+              <h2>Key Features</h2>
+              
+              <ul class="feature-list">
+                <li>
+                  <div class="feature-icon">🤖</div>
+                  <div class="feature-content">
+                    <h4>Intelligent Format Detection</h4>
+                    <p>Automatically recognizes various column names, date formats, and hour formats. Handles both daily breakdown and weekly total formats seamlessly.</p>
+                  </div>
+                </li>
+                
+                <li>
+                  <div class="feature-icon">📊</div>
+                  <div class="feature-content">
+                    <h4>Multi-Format Processing</h4>
+                    <p>Can process multiple CSV files simultaneously, each with different formats. Intelligently merges data from various VMS sources.</p>
+                  </div>
+                </li>
+                
+                <li>
+                  <div class="feature-icon">📍</div>
+                  <div class="feature-content">
+                    <h4>Location-Based OT Rules</h4>
+                    <p>Pre-configured rules for Federal, California (daily OT/DT, 7th day), and New York. Automatically applies correct calculations based on employee location.</p>
+                  </div>
+                </li>
+                
+                <li>
+                  <div class="feature-icon">⚡</div>
+                  <div class="feature-content">
+                    <h4>Complete Workflow</h4>
+                    <p>Full 4-tab workflow from employee setup through import, calculation, and export. Generates payroll-ready CSV with detailed breakdowns.</p>
+                  </div>
+                </li>
+              </ul>
+            </section>
+
+            <!-- Technical Implementation -->
+            <section class="content-section">
+              <h2>Technical Implementation</h2>
+              
+              <h3>Technology Stack</h3>
+              <div class="tech-stack">
+                <span class="tech-tag">HTML5</span>
+                <span class="tech-tag">CSS3</span>
+                <span class="tech-tag">Vanilla JavaScript</span>
+                <span class="tech-tag">Client-side Processing</span>
+                <span class="tech-tag">Local Storage</span>
+              </div>
+
+              <h3>Smart Detection Engine</h3>
+              <p>
+                The core innovation is the SmartCSVParser class that uses pattern matching to flexibly identify columns regardless of naming conventions. It can detect:
+              </p>
+              <ul style="margin-left: 1rem; color: var(--text-secondary);">
+                <li>Employee ID variations (Employee ID, EmpID, Worker ID, Staff ID, etc.)</li>
+                <li>Multiple date formats (MM/DD/YYYY, YYYY-MM-DD, DD-MM-YYYY)</li>
+                <li>Different hour formats (8.5, 8:30, 8h 30m)</li>
+                <li>Pre-calculated vs. total hours format</li>
+              </ul>
+
+              <h3>Overtime Calculation Logic</h3>
+              <p>
+                The system routes calculations based on whether the VMS pre-calculated overtime or provided only total hours:
+              </p>
+              <ul style="margin-left: 1rem; color: var(--text-secondary);">
+                <li><strong>Pre-calculated format:</strong> Uses VMS-provided Regular/OT/DT breakdown</li>
+                <li><strong>Total hours format:</strong> Applies location-specific rules to calculate OT/DT</li>
+                <li><strong>California rules:</strong> Daily OT (>8hrs), Daily DT (>12hrs), Weekly OT (>40hrs), 7th day rules</li>
+                <li><strong>Federal/NY rules:</strong> Weekly OT threshold (>40hrs)</li>
+              </ul>
+            </section>
+
+            <!-- Problem & Solution -->
+            <section class="content-section">
+              <h2>The Problem It Solves</h2>
+              <p>
+                In previous roles, payroll administrators had to:
+              </p>
+              <ul style="margin-left: 1rem; color: var(--text-secondary); line-height: 1.6;">
+                <li>Manually pull hours from multiple VMS accounts</li>
+                <li>Deal with inconsistent CSV formats across different systems</li>
+                <li>Calculate overtime by hand or use error-prone Excel formulas</li>
+                <li>Apply different overtime rules based on employee location</li>
+                <li>Handle scenarios where some VMS exports show total hours only, while others pre-calculate regular/OT/DT breakdowns</li>
+              </ul>
+
+              <p style="margin-top: 1rem;">
+                This manual process was time-consuming (2-3 hours per pay period), error-prone, and didn't scale as the workforce grew.
+              </p>
+            </section>
+          </div>
+
+          <!-- Sidebar -->
+          <div class="sidebar">
+            <!-- Demo Links -->
+            <div class="sidebar-section">
+              <h3>Try It Out</h3>
+              <ul class="link-list">
+                <li><a href="#" target="_blank">Live Demo on Replit <span>↗</span></a></li>
+                <li><a href="https://github.com/yourusername/vmsflex-pay" target="_blank">View Source Code <span>↗</span></a></li>
+                <li><a href="#" target="_blank">Documentation <span>→</span></a></li>
+              </ul>
+            </div>
+
+            <!-- Technology Stack -->
+            <div class="sidebar-section">
+              <h3>Built With</h3>
+              <div class="tech-stack">
+                <span class="tech-tag">HTML</span>
+                <span class="tech-tag">CSS</span>
+                <span class="tech-tag">JavaScript</span>
+                <span class="tech-tag">No Dependencies</span>
+              </div>
+              <p style="margin-top: 1rem; font-size: 0.875rem; color: var(--text-secondary);">
+                Built with pure vanilla JavaScript - no frameworks or libraries required. Runs entirely in the browser with no backend needed.
+              </p>
+            </div>
+
+            <!-- Use Cases -->
+            <div class="sidebar-section">
+              <h3>Perfect For</h3>
+              <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.875rem; color: var(--text-secondary);">
+                <li style="margin-bottom: 0.5rem;">• Small-to-medium businesses</li>
+                <li style="margin-bottom: 0.5rem;">• Staffing agencies</li>
+                <li style="margin-bottom: 0.5rem;">• Multi-state HR departments</li>
+                <li style="margin-bottom: 0.5rem;">• Payroll processors</li>
+                <li style="margin-bottom: 0.5rem;">• Contract workforce management</li>
+              </ul>
+            </div>
+
+            <!-- Related Projects -->
+            <div class="sidebar-section">
+              <h3>Related Projects</h3>
+              <ul class="link-list">
+                <li><a href="project-accuai.html">AccuAI <span>→</span></a></li>
+                <li><a href="project-auniconnect.html">AuniConnect <span>→</span></a></li>
+                <li><a href="projects.html">All Projects <span>→</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Theme toggle functionality
+      const themeToggle = document.getElementById('theme-toggle');
+      const html = document.documentElement;
+
+      // Check for saved theme preference or default to light mode
+      const currentTheme = localStorage.getItem('theme') || 'light';
+      html.setAttribute('data-theme', currentTheme);
+      themeToggle.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+
+      themeToggle.addEventListener('click', () => {
+        const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        html.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+      });
+
+      // Smooth scrolling for internal links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

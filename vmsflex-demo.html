@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VMSFlex Pay - Smart Payroll Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            background: #f8f9fa;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            color: #495057;
+            transition: all 0.3s;
+        }
+
+        .tab:hover {
+            background: #e9ecef;
+        }
+
+        .tab.active {
+            background: white;
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 30px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section h2 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #4a5568;
+            font-weight: 600;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #718096;
+            margin-left: 10px;
+        }
+
+        .btn-success {
+            background: #48bb78;
+        }
+
+        .file-upload {
+            border: 3px dashed #cbd5e0;
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .file-upload:hover {
+            border-color: #667eea;
+            background: #f7fafc;
+        }
+
+        .file-upload input {
+            display: none;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: #f7fafc;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .alert-success {
+            background: #c6f6d5;
+            color: #22543d;
+            border-left: 4px solid #48bb78;
+        }
+
+        .alert-info {
+            background: #bee3f8;
+            color: #2c5282;
+            border-left: 4px solid #4299e1;
+        }
+
+        .alert-warning {
+            background: #feebc8;
+            color: #7c2d12;
+            border-left: 4px solid #f6ad55;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+
+        .stat-card p {
+            opacity: 0.9;
+        }
+
+        .rules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .employee-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .detection-info {
+            background: #f7fafc;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #4299e1;
+        }
+
+        .detection-info h4 {
+            margin-bottom: 10px;
+            color: #2c5282;
+        }
+
+        .detection-info ul {
+            margin-left: 20px;
+        }
+
+        .detection-info li {
+            margin: 5px 0;
+            color: #4a5568;
+        }
+
+        .format-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #667eea;
+            color: white;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⏱️ Smart Payroll Calculator</h1>
+            <p>Automate multi-VMS timesheet processing with intelligent format detection</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('setup')">📋 Setup</button>
+            <button class="tab" onclick="switchTab('import')">📤 Import Timesheets</button>
+            <button class="tab" onclick="switchTab('calculate')">🧮 Calculate</button>
+            <button class="tab" onclick="switchTab('results')">📊 Results</button>
+        </div>
+
+        <!-- Setup Tab -->
+        <div id="setup" class="tab-content active">
+            <div class="section">
+                <h2>Overtime Rules Configuration</h2>
+                <div class="alert alert-info">
+                    Configure location-specific overtime rules. The system comes pre-loaded with Federal, California, and New York rules.
+                </div>
+                <div class="rules-grid">
+                    <div class="card">
+                        <h3>Federal Standard</h3>
+                        <p><strong>Weekly OT:</strong> > 40 hours</p>
+                        <p><strong>Daily OT:</strong> None</p>
+                        <p><strong>Rate:</strong> 1.5x</p>
+                    </div>
+                    <div class="card">
+                        <h3>California</h3>
+                        <p><strong>Daily OT:</strong> > 8 hours</p>
+                        <p><strong>Daily DT:</strong> > 12 hours</p>
+                        <p><strong>Weekly OT:</strong> > 40 hours</p>
+                        <p><strong>7th Day Rule:</strong> Enabled</p>
+                    </div>
+                    <div class="card">
+                        <h3>New York</h3>
+                        <p><strong>Weekly OT:</strong> > 40 hours</p>
+                        <p><strong>Rate:</strong> 1.5x</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Add Employee</h2>
+                <div class="form-group">
+                    <label>Employee Name</label>
+                    <input type="text" id="empName" placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                    <label>Employee ID</label>
+                    <input type="text" id="empId" placeholder="EMP001">
+                </div>
+                <div class="form-group">
+                    <label>Pay Rate ($/hour)</label>
+                    <input type="number" id="empRate" placeholder="25.00" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label>Location</label>
+                    <select id="empLocation">
+                        <option value="federal">Federal Standard</option>
+                        <option value="california">California</option>
+                        <option value="newyork">New York</option>
+                    </select>
+                </div>
+                <button class="btn" onclick="addEmployee()">Add Employee</button>
+                <button class="btn btn-secondary" onclick="loadDemoData()">Load Demo Data</button>
+            </div>
+
+            <div class="section">
+                <h2>Employee List</h2>
+                <div class="employee-list">
+                    <table id="employeeTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>ID</th>
+                                <th>Pay Rate</th>
+                                <th>Location</th>
+                            </tr>
+                        </thead>
+                        <tbody id="employeeTableBody">
+                            <tr>
+                                <td colspan="4" style="text-align: center; color: #a0aec0;">No employees added yet</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Import Tab -->
+        <div id="import" class="tab-content">
+            <div class="section">
+                <h2>Import Timesheets <span class="format-badge">🤖 Smart Detection</span></h2>
+                <div class="alert alert-info">
+                    Upload CSV files from any VMS system. The smart parser automatically detects:
+                    <ul style="margin-top: 10px; margin-left: 20px;">
+                        <li>Column formats (flexible headers)</li>
+                        <li>Date formats (MM/DD/YYYY, YYYY-MM-DD, etc.)</li>
+                        <li>Daily breakdowns vs. weekly totals</li>
+                        <li>Different hour formats (8.5, 8:30, 8h 30m)</li>
+                    </ul>
+                </div>
+                
+                <div class="file-upload" onclick="document.getElementById('csvFile').click()">
+                    <input type="file" id="csvFile" accept=".csv" onchange="handleFileUpload(event)" multiple>
+                    <p style="font-size: 3em; margin-bottom: 10px;">📁</p>
+                    <p style="font-size: 1.2em; color: #4a5568;">Click to upload CSV file(s)</p>
+                    <p style="color: #a0aec0; margin-top: 10px;">Supports multiple VMS formats • Drag and drop multiple files</p>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <button class="btn btn-success" onclick="loadSampleTimesheet('daily')">Sample: Daily Total Hours</button>
+                    <button class="btn btn-success" onclick="loadSampleTimesheet('weekly')">Sample: Pre-Calculated OT</button>
+                    <button class="btn btn-success" onclick="loadSampleTimesheet('mixed')">Sample: Mixed Formats</button>
+                </div>
+            </div>
+
+            <div class="section" id="detectionInfo" style="display: none;">
+                <h2>Format Detection Results</h2>
+                <div class="detection-info" id="detectionDetails"></div>
+            </div>
+
+            <div class="section" id="importPreview" style="display: none;">
+                <h2>Import Preview</h2>
+                <p><strong>Records Found:</strong> <span id="recordCount">0</span></p>
+                <p><strong>Employees Detected:</strong> <span id="employeeCount">0</span></p>
+                <div style="max-height: 400px; overflow-y: auto;">
+                    <table id="importTable">
+                        <thead>
+                            <tr>
+                                <th>Employee ID</th>
+                                <th>Date</th>
+                                <th>Hours</th>
+                                <th>Source</th>
+                            </tr>
+                        </thead>
+                        <tbody id="importTableBody"></tbody>
+                    </table>
+                </div>
+                <button class="btn" onclick="confirmImport()" style="margin-top: 20px;">Confirm Import</button>
+            </div>
+        </div>
+
+        <!-- Calculate Tab -->
+        <div id="calculate" class="tab-content">
+            <div class="section">
+                <h2>Calculate Payroll</h2>
+                <div class="alert alert-info">
+                    Run payroll calculations based on imported timesheets and configured rules.
+                </div>
+
+                <div class="form-group">
+                    <label>Pay Period Start</label>
+                    <input type="date" id="periodStart">
+                </div>
+                <div class="form-group">
+                    <label>Pay Period End</label>
+                    <input type="date" id="periodEnd">
+                </div>
+
+                <button class="btn" onclick="calculatePayroll()">🧮 Calculate Payroll</button>
+            </div>
+
+            <div class="section" id="calculationStatus" style="display: none;">
+                <div class="alert alert-success">
+                    ✅ Payroll calculated successfully! View results in the Results tab.
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Tab -->
+        <div id="results" class="tab-content">
+            <div class="section">
+                <h2>Payroll Results</h2>
+                
+                <div class="stats" id="statsContainer">
+                    <div class="stat-card">
+                        <h3 id="totalEmployees">0</h3>
+                        <p>Employees Processed</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="totalRegular">$0</h3>
+                        <p>Regular Pay</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="totalOvertime">$0</h3>
+                        <p>Overtime Pay</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="totalPay">$0</h3>
+                        <p>Total Payroll</p>
+                    </div>
+                </div>
+
+                <div style="margin: 20px 0;">
+                    <button class="btn btn-success" onclick="exportResults()">📥 Export to CSV</button>
+                </div>
+
+                <div style="overflow-x: auto;">
+                    <table id="resultsTable">
+                        <thead>
+                            <tr>
+                                <th>Employee</th>
+                                <th>Regular Hours</th>
+                                <th>OT Hours</th>
+                                <th>DT Hours</th>
+                                <th>Regular Pay</th>
+                                <th>OT Pay</th>
+                                <th>DT Pay</th>
+                                <th>Total Pay</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultsTableBody">
+                            <tr>
+                                <td colspan="8" style="text-align: center; color: #a0aec0;">No calculations yet. Run payroll calculation first.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data storage
+        let employees = [];
+        let timeEntries = [];
+        let payrollResults = [];
+        let detectedFormat = null;
+
+        // Overtime rules
+        const overtimeRules = {
+            federal: {
+                name: 'Federal Standard',
+                weeklyOT: 40,
+                dailyOT: null,
+                dailyDT: null,
+                seventhDay: false
+            },
+            california: {
+                name: 'California',
+                weeklyOT: 40,
+                dailyOT: 8,
+                dailyDT: 12,
+                seventhDay: true
+            },
+            newyork: {
+                name: 'New York',
+                weeklyOT: 40,
+                dailyOT: null,
+                dailyDT: null,
+                seventhDay: false
+            }
+        };
+
+        // Smart format detection and parsing
+        class SmartCSVParser {
+            constructor() {
+                this.columnPatterns = {
+                    employeeId: ['employee id', 'emp id', 'empid', 'employee #', 'worker id', 'staff id', 'id'],
+                    employeeName: ['employee name', 'name', 'worker name', 'full name', 'staff name'],
+                    date: ['date', 'work date', 'shift date', 'day', 'workday'],
+                    hours: ['hours', 'hours worked', 'total hours', 'time', 'hrs', 'worked'],
+                    weekStart: ['week start', 'week starting', 'period start', 'start date'],
+                    weekEnd: ['week end', 'week ending', 'period end', 'end date'],
+                    regularHours: ['regular hours', 'regular', 'straight time'],
+                    overtimeHours: ['overtime', 'ot hours', 'ot', 'overtime hours'],
+                };
+            }
+
+            detectColumns(headers) {
+                const detected = {};
+                const normalizedHeaders = headers.map(h => h.toLowerCase().trim());
+
+                for (const [key, patterns] of Object.entries(this.columnPatterns)) {
+                    for (let i = 0; i < normalizedHeaders.length; i++) {
+                        if (patterns.some(pattern => normalizedHeaders[i].includes(pattern))) {
+                            detected[key] = i;
+                            break;
+                        }
+                    }
+                }
+
+                return detected;
+            }
+
+            parseDate(dateStr) {
+                dateStr = dateStr.trim();
+                
+                // Try various formats
+                const formats = [
+                    // MM/DD/YYYY or MM-DD-YYYY
+                    /^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/,
+                    // YYYY-MM-DD or YYYY/MM/DD
+                    /^(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})$/,
+                    // DD/MM/YYYY or DD-MM-YYYY
+                    /^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/,
+                ];
+
+                // Try ISO format first
+                let date = new Date(dateStr);
+                if (!isNaN(date.getTime())) {
+                    return date.toISOString().split('T')[0];
+                }
+
+                // Try MM/DD/YYYY
+                const match1 = dateStr.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+                if (match1) {
+                    const month = match1[1].padStart(2, '0');
+                    const day = match1[2].padStart(2, '0');
+                    return `${match1[3]}-${month}-${day}`;
+                }
+
+                // Try YYYY-MM-DD
+                const match2 = dateStr.match(/^(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})$/);
+                if (match2) {
+                    const month = match2[2].padStart(2, '0');
+                    const day = match2[3].padStart(2, '0');
+                    return `${match2[1]}-${month}-${day}`;
+                }
+
+                return dateStr;
+            }
+
+            parseHours(hoursStr) {
+                if (typeof hoursStr === 'number') return hoursStr;
+                
+                hoursStr = String(hoursStr).trim();
+                
+                // Handle decimal format (8.5)
+                if (/^\d+\.?\d*$/.test(hoursStr)) {
+                    return parseFloat(hoursStr);
+                }
+
+                // Handle time format (8:30)
+                const timeMatch = hoursStr.match(/^(\d+):(\d+)$/);
+                if (timeMatch) {
+                    return parseInt(timeMatch[1]) + parseInt(timeMatch[2]) / 60;
+                }
+
+                // Handle "8h 30m" format
+                const hhmMatch = hoursStr.match(/(\d+)h\s*(\d+)?m?/i);
+                if (hhmMatch) {
+                    const hours = parseInt(hhmMatch[1]);
+                    const minutes = hhmMatch[2] ? parseInt(hhmMatch[2]) : 0;
+                    return hours + minutes / 60;
+                }
+
+                return parseFloat(hoursStr) || 0;
+            }
+
+            detectFormatType(data, columns) {
+                // Check if it's a weekly summary format or daily breakdown
+                const hasDailyDate = columns.date !== undefined;
+                const hasWeekRange = columns.weekStart !== undefined || columns.weekEnd !== undefined;
+                const hasBreakout = columns.regularHours !== undefined && columns.overtimeHours !== undefined;
+                const hasTotalOnly = columns.hours !== undefined && !hasBreakout;
+
+                if (hasBreakout) {
+                    return 'pre_calculated'; // VMS already calculated OT/DT
+                }
+
+                if (hasWeekRange && hasTotalOnly) {
+                    return 'weekly_total';
+                }
+
+                if (hasDailyDate && hasTotalOnly) {
+                    // Check if same employee has multiple dates
+                    const employeeIds = data.map(row => row[columns.employeeId]);
+                    const uniqueEmployees = new Set(employeeIds);
+                    const hasMultipleDates = employeeIds.length > uniqueEmployees.size;
+                    
+                    return hasMultipleDates ? 'daily_breakdown' : 'mixed';
+                }
+
+                return 'daily_breakdown';
+            }
+
+            parse(csvText, fileName = 'unknown.csv') {
+                const lines = csvText.split('\n').filter(line => line.trim());
+                if (lines.length < 2) return { entries: [], format: null, errors: [] };
+
+                const headers = lines[0].split(',').map(h => h.trim());
+                const columns = this.detectColumns(headers);
+                const entries = [];
+                const errors = [];
+
+                // Detect format type
+                const tempData = lines.slice(1).map(line => line.split(',').map(cell => cell.trim()));
+                const formatType = this.detectFormatType(tempData, columns);
+
+                for (let i = 1; i < lines.length; i++) {
+                    const values = lines[i].split(',').map(cell => cell.trim());
+                    
+                    try {
+                        const empId = values[columns.employeeId];
+
+                        if (formatType === 'pre_calculated') {
+                            // VMS already broke out Regular, OT, and DT hours
+                            const regularHours = this.parseHours(values[columns.regularHours] || 0);
+                            const otHours = this.parseHours(values[columns.overtimeHours] || 0);
+                            const dtHours = this.parseHours(values[columns.doubleTimeHours] || 0);
+                            
+                            // Get date
+                            let date;
+                            if (columns.date !== undefined) {
+                                date = this.parseDate(values[columns.date]);
+                            } else if (columns.weekEnd !== undefined) {
+                                date = this.parseDate(values[columns.weekEnd]);
+                            } else if (columns.weekStart !== undefined) {
+                                date = this.parseDate(values[columns.weekStart]);
+                            }
+
+                            // Store with pre-calculated breakdown flag
+                            entries.push({
+                                employeeId: empId,
+                                date: date,
+                                hours: regularHours + otHours + dtHours,
+                                regularHours: regularHours,
+                                overtimeHours: otHours,
+                                doubleTimeHours: dtHours,
+                                preCalculated: true,
+                                source: fileName
+                            });
+
+                        } else if (formatType === 'weekly_total') {
+                            // Weekly total without breakdown - distribute across days
+                            const totalHours = this.parseHours(values[columns.hours] || 0);
+                            
+                            let startDate;
+                            if (columns.weekStart !== undefined) {
+                                startDate = this.parseDate(values[columns.weekStart]);
+                            } else if (columns.weekEnd !== undefined) {
+                                const endDate = new Date(this.parseDate(values[columns.weekEnd]));
+                                endDate.setDate(endDate.getDate() - 6);
+                                startDate = endDate.toISOString().split('T')[0];
+                            }
+
+                            // Distribute hours across 5 work days
+                            const dailyHours = totalHours / 5;
+                            for (let day = 0; day < 5; day++) {
+                                const date = new Date(startDate);
+                                date.setDate(date.getDate() + day);
+                                
+                                entries.push({
+                                    employeeId: empId,
+                                    date: date.toISOString().split('T')[0],
+                                    hours: parseFloat(dailyHours.toFixed(2)),
+                                    source: fileName
+                                });
+                            }
+
+                        } else {
+                            // Daily breakdown with total hours only
+                            const date = this.parseDate(values[columns.date]);
+                            const hours = this.parseHours(values[columns.hours]);
+
+                            if (empId && date && hours > 0) {
+                                entries.push({
+                                    employeeId: empId,
+                                    date: date,
+                                    hours: parseFloat(hours.toFixed(2)),
+                                    source: fileName
+                                });
+                            }
+                        }
+                    } catch (err) {
+                        errors.push(`Row ${i + 1}: ${err.message}`);
+                    }
+                }
+
+                return {
+                    entries,
+                    format: {
+                        type: formatType,
+                        columns: Object.keys(columns),
+                        detectedHeaders: headers.filter((_, i) => Object.values(columns).includes(i))
+                    },
+                    errors
+                };
+            }
+        }
+
+        const csvParser = new SmartCSVParser();
+
+        // Tab switching
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        // Add employee
+        function addEmployee() {
+            const name = document.getElementById('empName').value;
+            const id = document.getElementById('empId').value;
+            const rate = parseFloat(document.getElementById('empRate').value);
+            const location = document.getElementById('empLocation').value;
+
+            if (!name || !id || !rate) {
+                alert('Please fill all fields');
+                return;
+            }
+
+            employees.push({ name, id, rate, location });
+            updateEmployeeTable();
+            
+            // Clear form
+            document.getElementById('empName').value = '';
+            document.getElementById('empId').value = '';
+            document.getElementById('empRate').value = '';
+        }
+
+        // Update employee table
+        function updateEmployeeTable() {
+            const tbody = document.getElementById('employeeTableBody');
+            
+            if (employees.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #a0aec0;">No employees added yet</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = employees.map(emp => `
+                <tr>
+                    <td>${emp.name}</td>
+                    <td>${emp.id}</td>
+                    <td>$${emp.rate.toFixed(2)}</td>
+                    <td>${overtimeRules[emp.location].name}</td>
+                </tr>
+            `).join('');
+        }
+
+        // Load demo data
+        function loadDemoData() {
+            employees = [
+                { name: 'Alice Johnson', id: 'EMP001', rate: 25.00, location: 'california' },
+                { name: 'Bob Smith', id: 'EMP002', rate: 30.00, location: 'federal' },
+                { name: 'Carol Martinez', id: 'EMP003', rate: 28.50, location: 'newyork' }
+            ];
+            updateEmployeeTable();
+            alert('Demo employees loaded!');
+        }
+
+        // Load sample timesheet
+        function loadSampleTimesheet(format) {
+            const today = new Date();
+            let csvText = '';
+
+            if (format === 'daily') {
+                // Daily breakdown format - total hours only
+                csvText = 'Employee ID,Employee Name,Work Date,Hours Worked\n';
+                for (let day = 0; day < 14; day++) {
+                    const date = new Date(today);
+                    date.setDate(date.getDate() - day);
+                    const dateStr = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
+
+                    employees.forEach(emp => {
+                        const hours = 7 + Math.random() * 5;
+                        csvText += `${emp.id},${emp.name},${dateStr},${hours.toFixed(2)}\n`;
+                    });
+                }
+            } else if (format === 'weekly') {
+                // Pre-calculated format - VMS already broke out Reg/OT/DT
+                csvText = 'EmpID,Worker Name,Week Ending,Regular Hours,OT Hours,DT Hours\n';
+                employees.forEach(emp => {
+                    const weekEnd = new Date(today);
+                    weekEnd.setDate(weekEnd.getDate() - weekEnd.getDay()); // Last Sunday
+                    
+                    const regularHours = 40;
+                    const otHours = Math.random() * 8;
+                    const dtHours = Math.random() * 2;
+                    
+                    csvText += `${emp.id},${emp.name},${weekEnd.toLocaleDateString()},${regularHours.toFixed(2)},${otHours.toFixed(2)},${dtHours.toFixed(2)}\n`;
+                });
+            } else {
+                // Mixed format - some daily, some with time formats
+                csvText = 'Staff ID,Date,Time\n';
+                for (let day = 0; day < 10; day++) {
+                    const date = new Date(today);
+                    date.setDate(date.getDate() - day);
+                    const dateStr = date.toISOString().split('T')[0];
+
+                    employees.forEach((emp, idx) => {
+                        let timeValue;
+                        if (idx % 3 === 0) {
+                            // Decimal format
+                            timeValue = (8 + Math.random() * 4).toFixed(2);
+                        } else if (idx % 3 === 1) {
+                            // HH:MM format
+                            const hours = 8 + Math.floor(Math.random() * 4);
+                            const minutes = Math.floor(Math.random() * 60);
+                            timeValue = `${hours}:${minutes.toString().padStart(2, '0')}`;
+                        } else {
+                            // "8h 30m" format
+                            const hours = 8 + Math.floor(Math.random() * 4);
+                            const minutes = Math.floor(Math.random() * 60);
+                            timeValue = `${hours}h ${minutes}m`;
+                        }
+                        csvText += `${emp.id},${dateStr},${timeValue}\n`;
+                    });
+                }
+            }
+
+            const result = csvParser.parse(csvText, `sample_${format}.csv`);
+            displayParseResults(result);
+        }
+                // Weekly summary format
+                csvText = 'EmpID,Worker Name,Week Start,Week End,Regular Hours,OT Hours\n';
+                employees.forEach(emp => {
+                    const weekStart = new Date(today);
+                    weekStart.setDate(weekStart.getDate() - 14);
+                    const weekEnd = new Date(weekStart);
+                    weekEnd.setDate(weekEnd.getDate() + 6);
+                    
+                    const regularHours = 40;
+                    const otHours = Math.random() * 8;
+                    
+                    csvText += `${emp.id},${emp.name},${weekStart.toLocaleDateString()},${weekEnd.toLocaleDateString()},${regularHours.toFixed(2)},${otHours.toFixed(2)}\n`;
+                });
+            } else {
+                // Mixed format - some daily, some with time formats
+                csvText = 'Staff ID,Date,Time\n';
+                for (let day = 0; day < 10; day++) {
+                    const date = new Date(today);
+                    date.setDate(date.getDate() - day);
+                    const dateStr = date.toISOString().split('T')[0];
+
+                    employees.forEach((emp, idx) => {
+                        let timeValue;
+                        if (idx % 3 === 0) {
+                            // Decimal format
+                            timeValue = (8 + Math.random() * 4).toFixed(2);
+                        } else if (idx % 3 === 1) {
+                            // HH:MM format
+                            const hours = 8 + Math.floor(Math.random() * 4);
+                            const minutes = Math.floor(Math.random() * 60);
+                            timeValue = `${hours}:${minutes.toString().padStart(2, '0')}`;
+                        } else {
+                            // "8h 30m" format
+                            const hours = 8 + Math.floor(Math.random() * 4);
+                            const minutes = Math.floor(Math.random() * 60);
+                            timeValue = `${hours}h ${minutes}m`;
+                        }
+                        csvText += `${emp.id},${dateStr},${timeValue}\n`;
+                    });
+                }
+            }
+
+            const result = csvParser.parse(csvText, `sample_${format}.csv`);
+            displayParseResults(result);
+        }
+
+        // Handle file upload
+        function handleFileUpload(event) {
+            const files = event.target.files;
+            if (!files || files.length === 0) return;
+
+            let allEntries = [];
+            let filesProcessed = 0;
+            let allFormats = [];
+
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const text = e.target.result;
+                    const result = csvParser.parse(text, file.name);
+                    
+                    allEntries = allEntries.concat(result.entries);
+                    allFormats.push({
+                        fileName: file.name,
+                        format: result.format,
+                        errors: result.errors
+                    });
+
+                    filesProcessed++;
+
+                    if (filesProcessed === files.length) {
+                        // All files processed
+                        displayParseResults({
+                            entries: allEntries,
+                            formats: allFormats,
+                            errors: allFormats.flatMap(f => f.errors)
+                        });
+                    }
+                };
+                reader.readAsText(file);
+            });
+        }
+
+        // Display parse results
+        function displayParseResults(result) {
+            timeEntries = result.entries || [];
+            
+            // Show detection info
+            document.getElementById('detectionInfo').style.display = 'block';
+            const detectionDiv = document.getElementById('detectionDetails');
+            
+            let detectionHTML = '<h4>✅ Smart Detection Complete</h4><ul>';
+
+            if (result.formats) {
+                // Multiple files
+                result.formats.forEach(f => {
+                    detectionHTML += `<li><strong>${f.fileName}:</strong> ${f.format.type.replace('_', ' ')} format detected</li>`;
+                    detectionHTML += `<li style="margin-left: 20px;">Columns found: ${f.format.detectedHeaders.join(', ')}</li>`;
+                });
+            } else if (result.format) {
+                // Single file
+                detectionHTML += `<li><strong>Format Type:</strong> ${result.format.type.replace('_', ' ')}</li>`;
+                detectionHTML += `<li><strong>Columns Detected:</strong> ${result.format.detectedHeaders.join(', ')}</li>`;
+            }
+
+            detectionHTML += `<li><strong>Total Records:</strong> ${timeEntries.length} time entries parsed</li>`;
+            
+            if (result.errors && result.errors.length > 0) {
+                detectionHTML += `<li style="color: #d97706;"><strong>Warnings:</strong> ${result.errors.length} rows skipped</li>`;
+            }
+
+            detectionHTML += '</ul>';
+            detectionDiv.innerHTML = detectionHTML;
+
+            // Show preview
+            displayImportPreview(timeEntries);
+            alert(`Successfully parsed ${timeEntries.length} time entries!`);
+        }
+
+        // Display import preview
+        function displayImportPreview(entries) {
+            document.getElementById('importPreview').style.display = 'block';
+            document.getElementById('recordCount').textContent = entries.length;
+            
+            const uniqueEmployees = new Set(entries.map(e => e.employeeId));
+            document.getElementById('employeeCount').textContent = uniqueEmployees.size;
+
+            const tbody = document.getElementById('importTableBody');
+            tbody.innerHTML = entries.slice(0, 50).map(entry => `
+                <tr>
+                    <td>${entry.employeeId}</td>
+                    <td>${entry.date}</td>
+                    <td>${entry.hours.toFixed(2)}</td>
+                    <td><span style="font-size: 11px; color: #718096;">${entry.source}</span></td>
+                </tr>
+            `).join('');
+
+            if (entries.length > 50) {
+                tbody.innerHTML += `<tr><td colspan="4" style="text-align: center; color: #a0aec0;">... and ${entries.length - 50} more records</td></tr>`;
+            }
+        }
+
+        // Confirm import
+        function confirmImport() {
+            alert(`Imported ${timeEntries.length} time entries successfully!`);
+            switchTab('calculate');
+            document.querySelectorAll('.tab')[2].classList.add('active');
+        }
+
+        // Calculate payroll
+        function calculatePayroll() {
+            if (employees.length === 0) {
+                alert('Please add employees first');
+                return;
+            }
+
+            if (timeEntries.length === 0) {
+                alert('Please import timesheets first');
+                return;
+            }
+
+            payrollResults = [];
+
+            employees.forEach(employee => {
+                const empEntries = timeEntries.filter(e => e.employeeId === employee.id);
+                
+                if (empEntries.length === 0) {
+                    console.warn(`No time entries found for ${employee.name} (${employee.id})`);
+                    return;
+                }
+
+                const rules = overtimeRules[employee.location];
+                const result = calculateEmployeePayroll(employee, empEntries, rules);
+                payrollResults.push(result);
+            });
+
+            if (payrollResults.length === 0) {
+                alert('No matching employees found in timesheet data. Please check employee IDs match between setup and imported data.');
+                return;
+            }
+
+            displayResults();
+            document.getElementById('calculationStatus').style.display = 'block';
+            
+            setTimeout(() => {
+                switchTab('results');
+                document.querySelectorAll('.tab')[3].classList.add('active');
+            }, 1000);
+        }
+
+        // Calculate employee payroll
+        function calculateEmployeePayroll(employee, entries, rules) {
+            // Check if any entries are pre-calculated
+            const hasPreCalculated = entries.some(e => e.preCalculated);
+
+            if (hasPreCalculated) {
+                // VMS already calculated OT - just sum it up
+                let totalRegular = 0;
+                let totalOT = 0;
+                let totalDT = 0;
+
+                entries.forEach(entry => {
+                    totalRegular += entry.regularHours || 0;
+                    totalOT += entry.overtimeHours || 0;
+                    totalDT += entry.doubleTimeHours || 0;
+                });
+
+                const regularPay = totalRegular * employee.rate;
+                const otPay = totalOT * employee.rate * 1.5;
+                const dtPay = totalDT * employee.rate * 2;
+                const totalPay = regularPay + otPay + dtPay;
+
+                return {
+                    employee: employee.name,
+                    employeeId: employee.id,
+                    regularHours: totalRegular,
+                    overtimeHours: totalOT,
+                    doubleTimeHours: totalDT,
+                    regularPay,
+                    overtimePay: otPay,
+                    doubleTimePay: dtPay,
+                    totalPay,
+                    note: 'Pre-calculated by VMS'
+                };
+            } else {
+                // Calculate OT ourselves based on location rules
+                const weeks = groupByWeek(entries);
+                
+                let totalRegular = 0;
+                let totalOT = 0;
+                let totalDT = 0;
+
+                weeks.forEach(week => {
+                    const weekResult = calculateWeek(week, rules);
+                    totalRegular += weekResult.regular;
+                    totalOT += weekResult.overtime;
+                    totalDT += weekResult.doubleTime;
+                });
+
+                const regularPay = totalRegular * employee.rate;
+                const otPay = totalOT * employee.rate * 1.5;
+                const dtPay = totalDT * employee.rate * 2;
+                const totalPay = regularPay + otPay + dtPay;
+
+                return {
+                    employee: employee.name,
+                    employeeId: employee.id,
+                    regularHours: totalRegular,
+                    overtimeHours: totalOT,
+                    doubleTimeHours: totalDT,
+                    regularPay,
+                    overtimePay: otPay,
+                    doubleTimePay: dtPay,
+                    totalPay,
+                    note: 'Calculated based on location rules'
+                };
+            }
+        }
+
+        // Group entries by week
+        function groupByWeek(entries) {
+            const sorted = entries.sort((a, b) => new Date(a.date) - new Date(b.date));
+            const weeks = [];
+            let currentWeek = [];
+
+            sorted.forEach(entry => {
+                const date = new Date(entry.date);
+                const dayOfWeek = date.getDay();
+
+                if (dayOfWeek === 0 && currentWeek.length > 0) {
+                    weeks.push(currentWeek);
+                    currentWeek = [];
+                }
+                currentWeek.push(entry);
+            });
+
+            if (currentWeek.length > 0) {
+                weeks.push(currentWeek);
+            }
+
+            return weeks;
+        }
+
+        // Calculate week
+        function calculateWeek(weekEntries, rules) {
+            let regularHours = 0;
+            let overtimeHours = 0;
+            let doubleTimeHours = 0;
+
+            weekEntries.forEach(day => {
+                const hours = day.hours;
+
+                if (rules.dailyOT && hours > rules.dailyOT) {
+                    if (rules.dailyDT && hours > rules.dailyDT) {
+                        regularHours += rules.dailyOT;
+                        overtimeHours += rules.dailyDT - rules.dailyOT;
+                        doubleTimeHours += hours - rules.dailyDT;
+                    } else {
+                        regularHours += rules.dailyOT;
+                        overtimeHours += hours - rules.dailyOT;
+                    }
+                } else {
+                    regularHours += hours;
+                }
+            });
+
+            const totalWeekHours = weekEntries.reduce((sum, day) => sum + day.hours, 0);
+            
+            if (totalWeekHours > rules.weeklyOT) {
+                const weeklyOT = totalWeekHours - rules.weeklyOT;
+                const additionalOT = Math.max(0, weeklyOT - overtimeHours);
+                overtimeHours += additionalOT;
+                regularHours -= additionalOT;
+            }
+
+            return {
+                regular: Math.max(0, regularHours),
+                overtime: overtimeHours,
+                doubleTime: doubleTimeHours
+            };
+        }
+
+        // Display results
+        function displayResults() {
+            const tbody = document.getElementById('resultsTableBody');
+            
+            tbody.innerHTML = payrollResults.map(result => `
+                <tr>
+                    <td>${result.employee}</td>
+                    <td>${result.regularHours.toFixed(2)}</td>
+                    <td>${result.overtimeHours.toFixed(2)}</td>
+                    <td>${result.doubleTimeHours.toFixed(2)}</td>
+                    <td>${result.regularPay.toFixed(2)}</td>
+                    <td>${result.overtimePay.toFixed(2)}</td>
+                    <td>${result.doubleTimePay.toFixed(2)}</td>
+                    <td><strong>${result.totalPay.toFixed(2)}</strong></td>
+                </tr>
+            `).join('');
+
+            document.getElementById('totalEmployees').textContent = payrollResults.length;
+            
+            const totalRegularPay = payrollResults.reduce((sum, r) => sum + r.regularPay, 0);
+            const totalOTPay = payrollResults.reduce((sum, r) => sum + r.overtimePay + r.doubleTimePay, 0);
+            const grandTotal = payrollResults.reduce((sum, r) => sum + r.totalPay, 0);
+
+            document.getElementById('totalRegular').textContent = `${totalRegularPay.toFixed(2)}`;
+            document.getElementById('totalOvertime').textContent = `${totalOTPay.toFixed(2)}`;
+            document.getElementById('totalPay').textContent = `${grandTotal.toFixed(2)}`;
+        }
+
+        // Export results
+        function exportResults() {
+            if (payrollResults.length === 0) {
+                alert('No results to export');
+                return;
+            }
+
+            let csv = 'Employee,Employee ID,Regular Hours,OT Hours,DT Hours,Regular Pay,OT Pay,DT Pay,Total Pay\n';
+            
+            payrollResults.forEach(result => {
+                csv += `${result.employee},${result.employeeId},${result.regularHours.toFixed(2)},${result.overtimeHours.toFixed(2)},${result.doubleTimeHours.toFixed(2)},${result.regularPay.toFixed(2)},${result.overtimePay.toFixed(2)},${result.doubleTimePay.toFixed(2)},${result.totalPay.toFixed(2)}\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'payroll_results.csv';
+            a.click();
+        }
+
+        // Set default dates
+        window.onload = function() {
+            const today = new Date();
+            const twoWeeksAgo = new Date(today);
+            twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+
+            document.getElementById('periodStart').valueAsDate = twoWeeksAgo;
+            document.getElementById('periodEnd').valueAsDate = today;
+        };
+    </script>
+</body>
+</html>
