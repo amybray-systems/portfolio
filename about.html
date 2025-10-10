@@ -146,6 +146,11 @@
             position: relative;
             z-index: 2;
         }
+		
+			/* Add this rule right after */
+		.hero + .section {
+			padding-top: 24px;
+		}
 
         /* Background System */
         body {
@@ -694,10 +699,11 @@
             </div>
         </section>
 
-        <!-- About Content -->
+        <!-- All Content in ONE section wrapper - NO huge gaps -->
         <section class="section">
             <div class="container">
-                <div class="about-grid">
+                <!-- About Content -->
+                <div class="about-grid" style="margin-bottom: 60px;">
                     <div class="about-text">
                         <h2 style="color: var(--text-primary); margin-bottom: 24px;">My Story</h2>
                         <p>My journey into HR technology started with a simple observation: most workplace systems feel like they were designed for robots, not humans. After years of watching talented people struggle with clunky interfaces and inefficient processes, I decided to do something about it.</p>
@@ -743,115 +749,109 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
 
-        <!-- Experience Timeline -->
-        <section class="section">
-            <div class="container">
-                <div class="section-header">
-                    <h2>Professional Journey</h2>
-                    <p class="section-subtitle">Key experiences that shaped my approach to HR technology</p>
+                <!-- Experience Timeline -->
+                <div style="margin-bottom: 60px;">
+                    <div class="section-header">
+                        <h2>Professional Journey</h2>
+                        <p class="section-subtitle">Key experiences that shaped my approach to HR technology</p>
+                    </div>
+
+                    <div class="experience-timeline">
+                        <div class="experience-item">
+                            <div class="experience-meta">
+                                <span class="experience-title">HR Technology Specialist</span>
+                                <span class="experience-date">2023 - Present</span>
+                            </div>
+                            <div class="experience-company">Independent Consultant</div>
+                            <p>Developing custom HR technology solutions including AI-powered assistants, data integration platforms, and process automation tools. Focus on privacy-first design and user-centered implementations.</p>
+                        </div>
+
+                        <div class="experience-item">
+                            <div class="experience-meta">
+                                <span class="experience-title">People Operations Lead</span>
+                                <span class="experience-date">2021 - 2023</span>
+                            </div>
+                            <div class="experience-company">Global Technology Company</div>
+                            <p>Led HRIS implementation and global payroll migration projects. Designed employee engagement platforms and automated compliance processes across multiple countries and currencies.</p>
+                        </div>
+
+                        <div class="experience-item">
+                            <div class="experience-meta">
+                                <span class="experience-title">HR Systems Analyst</span>
+                                <span class="experience-date">2019 - 2021</span>
+                            </div>
+                            <div class="experience-company">Mid-Size Healthcare Organization</div>
+                            <p>Specialized in ATS/HRIS integrations and data analysis. Developed automated workflows that reduced manual processing time by 70% and improved data accuracy across systems.</p>
+                        </div>
+
+                        <div class="experience-item">
+                            <div class="experience-meta">
+                                <span class="experience-title">People Ops Coordinator</span>
+                                <span class="experience-date">2017 - 2019</span>
+                            </div>
+                            <div class="experience-company">Growing Startup</div>
+                            <p>Built HR processes from the ground up as the company scaled from 50 to 300 employees. Implemented first HRIS system and created onboarding automation that became the foundation for future growth.</p>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="experience-timeline">
-                    <div class="experience-item">
-                        <div class="experience-meta">
-                            <span class="experience-title">HR Technology Specialist</span>
-                            <span class="experience-date">2023 - Present</span>
-                        </div>
-                        <div class="experience-company">Independent Consultant</div>
-                        <p>Developing custom HR technology solutions including AI-powered assistants, data integration platforms, and process automation tools. Focus on privacy-first design and user-centered implementations.</p>
+                <!-- Philosophy / Principles -->
+                <div style="margin-bottom: 60px;">
+                    <div class="section-header">
+                        <h2>My Approach</h2>
+                        <p class="section-subtitle">The principles that guide every project I work on</p>
                     </div>
 
-                    <div class="experience-item">
-                        <div class="experience-meta">
-                            <span class="experience-title">People Operations Lead</span>
-                            <span class="experience-date">2021 - 2023</span>
+                    <div class="principles-grid">
+                        <div class="principle">
+                            <h4>
+                                <span>🎯</span>
+                                User-Centered Design
+                            </h4>
+                            <p>Every solution starts with understanding the real people who will use it. I spend time with users to understand their pain points, workflows, and goals before writing a single line of code.</p>
                         </div>
-                        <div class="experience-company">Global Technology Company</div>
-                        <p>Led HRIS implementation and global payroll migration projects. Designed employee engagement platforms and automated compliance processes across multiple countries and currencies.</p>
-                    </div>
 
-                    <div class="experience-item">
-                        <div class="experience-meta">
-                            <span class="experience-title">HR Systems Analyst</span>
-                            <span class="experience-date">2019 - 2021</span>
+                        <div class="principle">
+                            <h4>
+                                <span>🔒</span>
+                                Privacy by Design
+                            </h4>
+                            <p>With sensitive HR data, privacy isn't an afterthought – it's built into every system from day one. I implement robust security measures while keeping user experience seamless.</p>
                         </div>
-                        <div class="experience-company">Mid-Size Healthcare Organization</div>
-                        <p>Specialized in ATS/HRIS integrations and data analysis. Developed automated workflows that reduced manual processing time by 70% and improved data accuracy across systems.</p>
-                    </div>
 
-                    <div class="experience-item">
-                        <div class="experience-meta">
-                            <span class="experience-title">People Ops Coordinator</span>
-                            <span class="experience-date">2017 - 2019</span>
+                        <div class="principle">
+                            <h4>
+                                <span>⚡</span>
+                                Performance First
+                            </h4>
+                            <p>People's time is valuable. I build systems that are fast, reliable, and scale efficiently. No one should wait for technology – technology should adapt to people's pace.</p>
                         </div>
-                        <div class="experience-company">Growing Startup</div>
-                        <p>Built HR processes from the ground up as the company scaled from 50 to 300 employees. Implemented first HRIS system and created onboarding automation that became the foundation for future growth.</p>
+
+                        <div class="principle">
+                            <h4>
+                                <span>🔄</span>
+                                Continuous Improvement
+                            </h4>
+                            <p>The best systems evolve with their users. I build in feedback loops and analytics to continuously optimize performance and user satisfaction over time.</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
 
-        <!-- Philosophy / Principles -->
-        <section class="section">
-            <div class="container">
-                <div class="section-header">
-                    <h2>My Approach</h2>
-                    <p class="section-subtitle">The principles that guide every project I work on</p>
-                </div>
-
-                <div class="principles-grid">
-                    <div class="principle">
-                        <h4>
-                            <span>🎯</span>
-                            User-Centered Design
-                        </h4>
-                        <p>Every solution starts with understanding the real people who will use it. I spend time with users to understand their pain points, workflows, and goals before writing a single line of code.</p>
-                    </div>
-
-                    <div class="principle">
-                        <h4>
-                            <span>🔒</span>
-                            Privacy by Design
-                        </h4>
-                        <p>With sensitive HR data, privacy isn't an afterthought – it's built into every system from day one. I implement robust security measures while keeping user experience seamless.</p>
-                    </div>
-
-                    <div class="principle">
-                        <h4>
-                            <span>⚡</span>
-                            Performance First
-                        </h4>
-                        <p>People's time is valuable. I build systems that are fast, reliable, and scale efficiently. No one should wait for technology – technology should adapt to people's pace.</p>
-                    </div>
-
-                    <div class="principle">
-                        <h4>
-                            <span>🔄</span>
-                            Continuous Improvement
-                        </h4>
-                        <p>The best systems evolve with their users. I build in feedback loops and analytics to continuously optimize performance and user satisfaction over time.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- CTA Section -->
-        <section class="section" style="background: var(--surface); border-radius: var(--radius-large); margin: 40px 0;">
-            <div class="container">
-                <div style="text-align: center; max-width: 600px; margin: 0 auto;">
-                    <h2 style="margin-bottom: 16px; color: var(--text-primary);">Ready to work together?</h2>
-                    <p style="margin-bottom: 32px; font-size: 1.1rem;">I'm always interested in challenging projects that make a real difference for people. Let's discuss how we can solve your HR technology challenges.</p>
-                    <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
-                        <a href="contact.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 16px 32px; background: var(--accent-gradient); color: var(--text-inverse); border-radius: 12px; font-weight: 600; font-size: 1.1rem; text-decoration: none; transition: all 0.3s ease; box-shadow: var(--shadow-medium);">
-                            <span>Get In Touch</span>
-                            <span>→</span>
-                        </a>
-                        <a href="projects.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 16px 32px; background: var(--surface); color: var(--text-primary); border: 1px solid var(--border); border-radius: 12px; font-weight: 600; font-size: 1.1rem; text-decoration: none; transition: all 0.3s ease;">
-                            <span>View My Work</span>
-                        </a>
+                <!-- CTA Section -->
+                <div style="background: var(--surface); border-radius: var(--radius-large); padding: 80px 24px;">
+                    <div style="text-align: center; max-width: 600px; margin: 0 auto;">
+                        <h2 style="margin-bottom: 16px; color: var(--text-primary);">Ready to work together?</h2>
+                        <p style="margin-bottom: 32px; font-size: 1.1rem;">I'm always interested in challenging projects that make a real difference for people. Let's discuss how we can solve your HR technology challenges.</p>
+                        <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                            <a href="contact.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 16px 32px; background: var(--accent-gradient); color: var(--text-inverse); border-radius: 12px; font-weight: 600; font-size: 1.1rem; text-decoration: none; transition: all 0.3s ease; box-shadow: var(--shadow-medium);">
+                                <span>Get In Touch</span>
+                                <span>→</span>
+                            </a>
+                            <a href="projects.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 16px 32px; background: var(--surface); color: var(--text-primary); border: 1px solid var(--border); border-radius: 12px; font-weight: 600; font-size: 1.1rem; text-decoration: none; transition: all 0.3s ease;">
+                                <span>View My Work</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
