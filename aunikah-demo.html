@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aunikah - AI Employee Engagement Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .chat-container {
+            width: 100%;
+            max-width: 800px;
+            height: 600px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .bot-avatar {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .header-info {
+            flex: 1;
+        }
+
+        .header-info h1 {
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+
+        .header-info p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .mode-selector {
+            display: flex;
+            gap: 10px;
+        }
+
+        .mode-btn {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            color: white;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s;
+        }
+
+        .mode-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .mode-btn.active {
+            background: white;
+            color: #667eea;
+            border-color: white;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+
+        .message {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .message.bot .message-avatar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .message.user .message-avatar {
+            background: #6c757d;
+        }
+
+        .message-content {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            line-height: 1.5;
+        }
+
+        .message.bot .message-content {
+            background: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .message.user .message-content {
+            background: #667eea;
+            color: white;
+        }
+
+        .suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .suggestion-btn {
+            padding: 8px 15px;
+            background: #e9ecef;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .suggestion-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .chat-input-container {
+            padding: 20px;
+            background: white;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .chat-input-wrapper {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 25px;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .chat-input:focus {
+            border-color: #667eea;
+        }
+
+        .send-btn {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+
+        .send-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .demo-notice {
+            text-align: center;
+            padding: 15px;
+            background: #fff3cd;
+            color: #856404;
+            font-size: 14px;
+        }
+
+        .typing-indicator {
+            display: none;
+            padding: 15px;
+            background: white;
+            border-radius: 12px;
+            width: fit-content;
+        }
+
+        .typing-indicator.active {
+            display: block;
+        }
+
+        .typing-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #667eea;
+            margin: 0 3px;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-10px); }
+        }
+
+        .match-confidence {
+            font-size: 12px;
+            opacity: 0.7;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        .demo-footer {
+            text-align: center;
+            padding: 10px 20px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 13px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        @media (max-width: 768px) {
+            .chat-container {
+                height: 100vh;
+                border-radius: 0;
+            }
+
+            .message-content {
+                max-width: 85%;
+            }
+
+            .mode-selector {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .mode-btn {
+                font-size: 11px;
+                padding: 6px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="demo-notice">
+            🎯 Demo Mode - Switch between Employee & Manager modes to see different capabilities
+        </div>
+
+        <div class="chat-header">
+            <div class="bot-avatar">A</div>
+            <div class="header-info">
+                <h1>Aunikah</h1>
+                <p id="modeDescription">Your AI Employee Engagement Assistant</p>
+            </div>
+            <div class="mode-selector">
+                <button class="mode-btn active" onclick="switchMode('employee')">👤 Employee</button>
+                <button class="mode-btn" onclick="switchMode('manager')">👔 Manager</button>
+            </div>
+        </div>
+
+        <div class="chat-messages" id="chatMessages"></div>
+
+        <div class="chat-input-container">
+            <div class="chat-input-wrapper">
+                <input 
+                    type="text" 
+                    id="chatInput" 
+                    class="chat-input" 
+                    placeholder="Ask me anything..."
+                    onkeypress="handleKeyPress(event)"
+                >
+                <button class="send-btn" onclick="handleSend()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="demo-footer">
+        © <span id="year"></span> Amy Bray. All rights reserved.
+    </div>
+
+    <script>
+        // Set copyright year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        let currentMode = 'employee';
+
+        // Employee Mode FAQs - Contract-specific, PTO, Benefits
+        const employeeFAQs = {
+            "contract": {
+                keywords: ["contract", "employment type", "full time", "part time", "contractor", "w2", "1099"],
+                answer: "Your employment contract details are specific to your role. Full-time W2 employees receive comprehensive benefits including health insurance, 401k matching, and PTO. Part-time employees (20+ hours) receive prorated benefits. Independent contractors (1099) are responsible for their own benefits. Check your offer letter or contact HR for your specific contract terms!"
+            },
+            "pto": {
+                keywords: ["pto", "paid time off", "vacation", "time off", "leave"],
+                answer: "PTO policies vary by employment type:\n\n• Full-time: 15 days/year vacation + 10 sick days\n• Part-time (20-39 hrs/week): Prorated at 0.5x\n• Contractors: Unpaid time off as specified in contract\n\nFull-time employees accrue 1.25 days per month. Request time off through the portal at least 2 weeks in advance!"
+            },
+            "benefits enrollment": {
+                keywords: ["benefits", "enroll", "insurance", "health", "medical", "dental", "vision", "401k"],
+                answer: "Benefits eligibility depends on your employment status:\n\n• Full-time W2: Medical, dental, vision, 401k (4% match), life insurance\n• Part-time (30+ hrs): Medical and dental (employee pays more premium)\n• Part-time (<30 hrs): Limited to 401k only\n• Contractors: No company benefits\n\nEnroll within 30 days of hire or during annual open enrollment (November)!"
+            },
+            "sick leave": {
+                keywords: ["sick", "ill", "doctor", "medical leave", "sick day"],
+                answer: "Sick leave policy by employment type:\n\n• Full-time: 10 paid sick days/year (don't roll over)\n• Part-time: 1 hour per 30 hours worked (state minimum)\n• Contractors: Unpaid\n\nNo doctor's note needed for 1-2 days. Use sick time for personal illness, medical appointments, or caring for sick family members."
+            },
+            "holidays": {
+                keywords: ["holiday", "company holiday", "paid holiday", "days off"],
+                answer: "We observe 10 paid holidays (full-time W2 only):\n\n• New Year's Day\n• MLK Day\n• Presidents Day\n• Memorial Day\n• Independence Day\n• Labor Day\n• Thanksgiving (2 days)\n• Christmas Eve & Day\n\nPart-time and contractors: holidays are unpaid unless working that day."
+            },
+            "payroll": {
+                keywords: ["pay", "paycheck", "payday", "salary", "wage", "direct deposit", "get paid", "paid"],
+                answer: "How you get paid depends on your assignment/employment type:\n\n• W2 Contingent Workers: Pay schedule is set by your employer of record (typically bi-weekly)\n• 1099 Contractors: Paid bi-weekly, two weeks in arrears after invoice submission\n• Corporate Employees: Paid every Friday\n\nDirect deposit is required for all payment types. Set up through the HR portal and view your pay stubs anytime in your employee dashboard!"
+            },
+            "timesheet tracking": {
+                keywords: ["track time", "time tracking", "where do i track", "log hours", "enter time", "timesheet system"],
+                answer: "Time tracking depends on your employment type:\n\n• W2 Contingent Workers: Use the system designated by your employer of record (check your onboarding docs)\n• 1099 Contractors: Submit timesheets through the contractor portal or as specified in your Statement of Work\n• Corporate Employees: Use the internal time management system (accessible via employee portal)\n\nMake sure to submit timesheets by end of day Friday for the current week!"
+            },
+            "edit timesheet": {
+                keywords: ["edit timesheet", "change timesheet", "modify timesheet", "update timesheet", "fix timesheet", "correct hours"],
+                answer: "Editing your timesheet depends on your employment type:\n\n• W2 Contingent Workers: Contact your employer of record's payroll team - you may have limited edit windows\n• 1099 Contractors: Resubmit a corrected timesheet through the contractor portal before approval deadline\n• Corporate Employees: Edit directly in the time management system before the weekly cutoff (Friday 5pm)\n\nAlways note what changed in the comments field. Once approved by your manager, you may need HR assistance for corrections!"
+            },
+            "remote work": {
+                keywords: ["remote", "work from home", "wfh", "hybrid", "office"],
+                answer: "Remote work eligibility:\n\n• Full-time: Hybrid 2-3 days WFH (manager discretion)\n• Part-time: Generally in-office, case-by-case basis\n• Contractors: As specified in Statement of Work\n\nAll remote workers must maintain professional setup and be available during core hours (10am-3pm ET). Get approval from your manager for your schedule!"
+            },
+            "onboarding": {
+                keywords: ["onboard", "new hire", "start", "first day", "orientation"],
+                answer: "Welcome aboard! Your onboarding varies by role:\n\n• Full-time: 2-week structured program with training\n• Part-time: 1-week condensed onboarding\n• Contractors: Project-specific orientation\n\nYou'll receive equipment, system access, and meet your team. Check your email for your personalized onboarding schedule!"
+            }
+        };
+
+        // Manager Mode FAQs - Productivity, Coaching, Team Management
+        const managerFAQs = {
+            "productivity": {
+                keywords: ["productive", "productivity", "efficient", "optimize", "time management"],
+                answer: "🎯 Productivity Tip: Try timeblocking your calendar! Reserve:\n\n• 9-11am: Deep work (no meetings)\n• 11am-12pm: Team check-ins\n• 1-3pm: Meetings & collaboration\n• 3-4pm: Admin & planning\n• 4-5pm: Open for urgent items\n\nThis structure helps your team know when you're available while protecting your focus time. Share your calendar rhythm with your team so they can optimize their schedules too!"
+            },
+            "team engagement": {
+                keywords: ["engage", "engagement", "morale", "motivation", "team building"],
+                answer: "💡 Team Engagement Strategy:\n\n1. Weekly 1-on-1s (15-30 min each team member)\n2. Monthly team celebrations (wins, milestones, birthdays)\n3. Quarterly team offsites or fun activities\n4. Daily standups for connection (not just status updates)\n5. Recognition system - celebrate publicly, coach privately\n\nPro tip: Survey your team quarterly on what THEY value. Engagement looks different for everyone!"
+            },
+            "one on one": {
+                keywords: ["1 on 1", "one on one", "1:1", "check in", "meeting"],
+                answer: "📋 Effective 1-on-1 Framework:\n\n**THEIR Agenda (80%):**\n• What's going well?\n• What obstacles can I remove?\n• Career development discussion\n• Feedback for me\n\n**YOUR Agenda (20%):**\n• Project alignment check\n• Constructive feedback\n• Company updates\n\nSchedule weekly (30 min) or bi-weekly (60 min). Never cancel unless emergency. Document action items!"
+            },
+            "delegation": {
+                keywords: ["delegate", "delegation", "distribute", "assign", "workload"],
+                answer: "🎓 Smart Delegation Guide:\n\n**What to delegate:**\n• Tasks that develop team skills\n• Work others can do 70%+ as well\n• Recurring operational tasks\n\n**What NOT to delegate:**\n• Performance reviews\n• Sensitive HR matters\n• Strategic planning\n\nWhen delegating: Clarify outcomes (not methods), provide context, set check-ins, and trust your team!"
+            },
+            "feedback": {
+                keywords: ["feedback", "performance", "review", "criticism", "praise"],
+                answer: "💬 Feedback Best Practices:\n\n**SBI Model:**\n• Situation: When/where it happened\n• Behavior: What they did (observable)\n• Impact: The effect it had\n\n**Example:** 'In yesterday's client meeting (S), when you presented the data without context (B), the client seemed confused and we lost credibility (I).'\n\nGive feedback within 24-48 hours. Balance 3:1 positive to constructive. Make it a dialogue, not a monologue!"
+            },
+            "conflict resolution": {
+                keywords: ["conflict", "disagreement", "tension", "argument", "mediate"],
+                answer: "🤝 Conflict Resolution Steps:\n\n1. **Meet individually first** - Understand each perspective\n2. **Joint meeting** - Facilitate, don't solve\n3. **Focus on interests, not positions** - What does each person need?\n4. **Find common ground** - Shared goals\n5. **Co-create solution** - They own it, you support\n\nRemember: Healthy conflict drives innovation. Your job is to keep it constructive, not eliminate it!"
+            },
+            "difficult conversations": {
+                keywords: ["difficult conversation", "tough talk", "hard feedback", "uncomfortable"],
+                answer: "🗣️ Difficult Conversation Framework:\n\n**Prepare:**\n• Know your goal (performance improvement? clarification?)\n• Anticipate reactions\n• Plan your opening statement\n\n**During:**\n• Private setting, adequate time\n• Start with facts, not judgment\n• Listen more than talk (60/40 rule)\n• Discuss impact and path forward\n\n**After:**\n• Document conversation\n• Follow up in writing\n• Schedule check-in\n\nAvoid 'compliment sandwiches' - be direct but kind!"
+            },
+            "hiring": {
+                keywords: ["hire", "hiring", "recruit", "interview", "candidate"],
+                answer: "🎯 Strategic Hiring Tips:\n\n**Define the role:**\n• Skills required (must-have vs nice-to-have)\n• Team culture fit\n• Growth potential\n\n**Interview process:**\n• Behavioral questions (past behavior predicts future)\n• Skills assessment\n• Multiple interviewers (reduce bias)\n\n**Red flags:**\n• Speaking negatively about past employers\n• Vague answers\n• Not asking questions\n\nHire for attitude, train for skill. Cultural add > cultural fit!"
+            },
+            "retention": {
+                keywords: ["retain", "retention", "keep talent", "turnover", "quit", "leave"],
+                answer: "🌟 Talent Retention Strategies:\n\n**Top reasons people leave:**\n1. Poor management (that's fixable!)\n2. Lack of growth opportunities\n3. Not feeling valued\n4. Burnout\n5. Compensation\n\n**Your action plan:**\n• Career pathing conversations (quarterly)\n• Celebrate wins publicly\n• Flexibility in how/when work gets done\n• Advocate for your team's compensation\n• Check in on workload regularly\n\nPeople don't leave companies, they leave managers. Be the manager you'd want!"
+            },
+            "organization": {
+                keywords: ["organize", "organization", "structure", "workflow", "process"],
+                answer: "📊 Team Organization Best Practices:\n\n**Project Management:**\n• Use a shared tool (Asana, Monday, Trello)\n• Weekly priority alignment\n• Clear ownership (RACI matrix)\n\n**Communication:**\n• Slack/Teams for quick questions\n• Email for documentation\n• Meetings for decisions\n\n**Documentation:**\n• Project briefs, SOPs, meeting notes\n• Centralized wiki or shared drive\n\nRule of thumb: If you're explaining it twice, document it once!"
+            }
+        };
+
+        function switchMode(mode) {
+            currentMode = mode;
+            const chatMessages = document.getElementById('chatMessages');
+            const modeDescription = document.getElementById('modeDescription');
+            
+            // Update active button
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Clear chat
+            chatMessages.innerHTML = '';
+            
+            // Update description and welcome message
+            if (mode === 'employee') {
+                modeDescription.textContent = 'Employee Mode - HR & Benefits Assistant';
+                addWelcomeMessage(
+                    "Hi! 👤 I'm in Employee Mode. I can help you with questions about your contract, PTO, benefits, sick leave, and workplace policies. What would you like to know?",
+                    [
+                        "What's my PTO policy?",
+                        "How do benefits work?",
+                        "When do I get paid?",
+                        "Can I work remotely?"
+                    ]
+                );
+            } else {
+                modeDescription.textContent = 'Manager Mode - Leadership & Team Support';
+                addWelcomeMessage(
+                    "Hi! 👔 I'm in Manager Mode. I can help with productivity strategies, team engagement, difficult conversations, delegation, and leadership coaching. How can I support you today?",
+                    [
+                        "Team engagement tips?",
+                        "How to give feedback?",
+                        "Delegation strategies?",
+                        "Conflict resolution help?"
+                    ]
+                );
+            }
+        }
+
+        function addWelcomeMessage(text, suggestions) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message bot';
+            messageDiv.innerHTML = `
+                <div class="message-avatar">A</div>
+                <div class="message-content">
+                    <div>${text}</div>
+                    <div class="suggestions">
+                        ${suggestions.map(s => `<button class="suggestion-btn" onclick="sendMessage('${s}')">${s}</button>`).join('')}
+                    </div>
+                </div>
+            `;
+            chatMessages.appendChild(messageDiv);
+        }
+
+        // Fuzzy matching using Levenshtein distance
+        function levenshteinDistance(str1, str2) {
+            const m = str1.length;
+            const n = str2.length;
+            const dp = Array(m + 1).fill(null).map(() => Array(n + 1).fill(0));
+
+            for (let i = 0; i <= m; i++) dp[i][0] = i;
+            for (let j = 0; j <= n; j++) dp[0][j] = j;
+
+            for (let i = 1; i <= m; i++) {
+                for (let j = 1; j <= n; j++) {
+                    if (str1[i - 1] === str2[j - 1]) {
+                        dp[i][j] = dp[i - 1][j - 1];
+                    } else {
+                        dp[i][j] = Math.min(
+                            dp[i - 1][j - 1] + 1,
+                            dp[i][j - 1] + 1,
+                            dp[i - 1][j] + 1
+                        );
+                    }
+                }
+            }
+            return dp[m][n];
+        }
+
+        function calculateSimilarity(str1, str2) {
+            const distance = levenshteinDistance(str1.toLowerCase(), str2.toLowerCase());
+            const maxLength = Math.max(str1.length, str2.length);
+            return maxLength === 0 ? 1 : 1 - (distance / maxLength);
+        }
+
+        function findBestMatch(message) {
+            const faqs = currentMode === 'employee' ? employeeFAQs : managerFAQs;
+            let bestMatch = null;
+            let bestScore = 0;
+            let matchedKeyword = '';
+
+            const lowerMessage = message.toLowerCase();
+
+            for (const [key, faq] of Object.entries(faqs)) {
+                for (const keyword of faq.keywords) {
+                    if (lowerMessage.includes(keyword)) {
+                        const score = 0.95;
+                        if (score > bestScore) {
+                            bestScore = score;
+                            bestMatch = faq.answer;
+                            matchedKeyword = keyword;
+                        }
+                    }
+                    
+                    const messageWords = lowerMessage.split(/\s+/);
+                    for (const word of messageWords) {
+                        if (word.length > 3) {
+                            const similarity = calculateSimilarity(word, keyword);
+                            if (similarity > 0.75 && similarity > bestScore * 0.8) {
+                                bestScore = similarity * 0.9;
+                                bestMatch = faq.answer;
+                                matchedKeyword = keyword;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return { answer: bestMatch, confidence: bestScore, keyword: matchedKeyword };
+        }
+
+        const chatMessages = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+
+        // Initialize with employee mode welcome
+        addWelcomeMessage(
+            "Hi! 👤 I'm in Employee Mode. I can help you with questions about your contract, PTO, benefits, sick leave, and workplace policies. What would you like to know?",
+            [
+                "What's my PTO policy?",
+                "How do benefits work?",
+                "When do I get paid?",
+                "Can I work remotely?"
+            ]
+        );
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                handleSend();
+            }
+        }
+
+        function handleSend() {
+            const message = chatInput.value.trim();
+            if (message) {
+                sendMessage(message);
+                chatInput.value = '';
+            }
+        }
+
+        function sendMessage(message) {
+            addMessage(message, 'user');
+
+            const typingIndicator = document.createElement('div');
+            typingIndicator.className = 'message bot';
+            typingIndicator.innerHTML = `
+                <div class="message-avatar">A</div>
+                <div class="typing-indicator active">
+                    <span class="typing-dot"></span>
+                    <span class="typing-dot"></span>
+                    <span class="typing-dot"></span>
+                </div>
+            `;
+            chatMessages.appendChild(typingIndicator);
+            scrollToBottom();
+
+            setTimeout(() => {
+                typingIndicator.remove();
+                const result = getResponse(message);
+                addMessage(result.text, 'bot', result.confidence);
+            }, 1000 + Math.random() * 1000);
+        }
+
+        function addMessage(text, sender, confidence = null) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar';
+            avatar.textContent = sender === 'bot' ? 'A' : 'You';
+            
+            const content = document.createElement('div');
+            content.className = 'message-content';
+            
+            const textNode = document.createElement('div');
+            textNode.textContent = text;
+            content.appendChild(textNode);
+            
+            if (confidence !== null && confidence > 0) {
+                const confidenceNode = document.createElement('div');
+                confidenceNode.className = 'match-confidence';
+                const percentage = Math.round(confidence * 100);
+                confidenceNode.textContent = `Match confidence: ${percentage}%`;
+                content.appendChild(confidenceNode);
+            }
+            
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(content);
+            chatMessages.appendChild(messageDiv);
+            
+            scrollToBottom();
+        }
+
+        function getResponse(message) {
+            const lowerMessage = message.toLowerCase();
+            
+            if (lowerMessage.match(/\b(hi|hello|hey|good morning|good afternoon)\b/)) {
+                return {
+                    text: currentMode === 'employee' 
+                        ? "Hello! 😊 I'm here to help with your HR and benefits questions. What would you like to know?"
+                        : "Hello! 😊 I'm here to support your leadership journey. What challenge are you facing today?",
+                    confidence: null
+                };
+            }
+
+            if (lowerMessage.match(/\b(thank|thanks|thx)\b/)) {
+                return {
+                    text: "You're welcome! Feel free to ask if you have any other questions. I'm here to help! 🌟",
+                    confidence: null
+                };
+            }
+
+            const match = findBestMatch(message);
+            
+            if (match.answer && match.confidence > 0.6) {
+                return {
+                    text: match.answer,
+                    confidence: match.confidence
+                };
+            } else if (match.answer && match.confidence > 0.4) {
+                return {
+                    text: `I found a potentially relevant answer, but I'm not 100% certain. Did you mean something about "${match.keyword}"?\n\n${match.answer}`,
+                    confidence: match.confidence
+                };
+            }
+
+            const modeTopics = currentMode === 'employee'
+                ? "contract details, PTO policies, benefits enrollment, sick leave, company holidays, payroll, remote work, and onboarding"
+                : "productivity tips, team engagement, 1-on-1s, delegation, feedback, conflict resolution, difficult conversations, hiring, retention, and organization";
+
+            return {
+                text: `I'm not finding a great match in my ${currentMode} database for that question. I can help with topics like:\n\n${modeTopics}\n\nTry rephrasing your question or ask about one of these topics!`,
+                confidence: null
+            };
+        }
+
+        function scrollToBottom() {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+    </script>
+</body>
+</html>
