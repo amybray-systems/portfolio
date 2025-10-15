@@ -1,0 +1,1890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VMSFlex Pay - Multi-VMS Payroll Calculator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.min.js"></script>
+    <script>
+        // Configure PDF.js worker
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.worker.min.js';
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        header p { opacity: 0.9; font-size: 1.1em; }
+        .demo-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+        .tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+            overflow-x: auto;
+        }
+        .tab {
+            flex: 1;
+            min-width: 120px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            background: #f8f9fa;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            color: #495057;
+            transition: all 0.3s;
+        }
+        .tab:hover { background: #e9ecef; }
+        .tab.active {
+            background: white;
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+        }
+        .tab-content { display: none; padding: 30px; }
+        .tab-content.active { display: block; }
+        .section { margin-bottom: 30px; }
+        .section h2 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .form-group { margin-bottom: 20px; }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #4a5568;
+            font-weight: 600;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .btn {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .btn-secondary { background: #718096; margin-left: 10px; }
+        .btn-success { background: #48bb78; margin-left: 10px; }
+        .btn-warning { background: #f6ad55; margin-left: 10px; }
+        .btn-sm { padding: 8px 16px; font-size: 14px; }
+        .file-upload {
+            border: 3px dashed #cbd5e0;
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .file-upload:hover {
+            border-color: #667eea;
+            background: #f7fafc;
+        }
+        .file-upload.dragover {
+            border-color: #48bb78;
+            background: #c6f6d5;
+        }
+        .file-upload.processing {
+            border-color: #667eea;
+            background: #e6f2ff;
+        }
+        .file-upload.processing::after {
+            content: '⏳ Processing...';
+            display: block;
+            margin-top: 10px;
+            color: #667eea;
+            font-weight: 600;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        tr:hover { background: #f7fafc; }
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .alert-info {
+            background: #bee3f8;
+            color: #2c5282;
+            border-left: 4px solid #4299e1;
+        }
+        .alert-success {
+            background: #c6f6d5;
+            color: #22543d;
+            border-left: 4px solid #48bb78;
+        }
+        .alert-warning {
+            background: #feebc8;
+            color: #7c2d12;
+            border-left: 4px solid #f6ad55;
+        }
+        .alert-danger {
+            background: #fed7d7;
+            color: #742a2a;
+            border-left: 4px solid #f56565;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .stat-card h3 { font-size: 2em; margin-bottom: 5px; }
+        .stat-card p { opacity: 0.9; font-size: 0.9em; }
+        .stat-card.warning { background: linear-gradient(135deg, #f6ad55 0%, #ed8936 100%); }
+        .stat-card.success { background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); }
+        
+        .mapper-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        .mapper-column {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+        }
+        .mapper-column h3 {
+            margin-bottom: 15px;
+            color: #2d3748;
+        }
+        .csv-column, .target-field {
+            background: white;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            border: 2px solid #e2e8f0;
+            cursor: move;
+            transition: all 0.2s;
+        }
+        .csv-column:hover {
+            border-color: #667eea;
+            transform: translateX(5px);
+        }
+        .target-field {
+            min-height: 50px;
+            border-style: dashed;
+            cursor: default;
+        }
+        .target-field.mapped {
+            border-style: solid;
+            border-color: #48bb78;
+            background: #f0fff4;
+        }
+        .target-field.dragover {
+            border-color: #667eea;
+            background: #e6f2ff;
+        }
+        .field-label {
+            font-weight: 600;
+            color: #4a5568;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .mapped-value {
+            color: #48bb78;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+        
+        .exception-item {
+            background: white;
+            padding: 15px;
+            border-left: 4px solid #f6ad55;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+        .exception-item.critical {
+            border-left-color: #f56565;
+        }
+        .exception-item h4 {
+            color: #2d3748;
+            margin-bottom: 5px;
+        }
+        .exception-item p {
+            color: #718096;
+            font-size: 0.9em;
+        }
+        
+        .obbba-highlight {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 2px solid #f59e0b;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .obbba-highlight h3 {
+            color: #92400e;
+            margin-bottom: 10px;
+        }
+        .obbba-badge {
+            background: #f59e0b;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .mapper-container {
+                grid-template-columns: 1fr;
+            }
+            .tabs {
+                flex-wrap: wrap;
+            }
+            .tab {
+                flex: 1 1 50%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>VMSFlex Pay</h1>
+            <p>Multi-VMS Payroll Calculator with 50-State Compliance & OBBBA Tax Tracking</p>
+            <div class="demo-badge">✨ Enhanced Demo - Now with PDF Support!</div>
+        </header>
+
+        <div class="tabs">
+            <button class="tab active" data-tab="setup">Setup</button>
+            <button class="tab" data-tab="mapper">Format Mapper</button>
+            <button class="tab" data-tab="import">Import</button>
+            <button class="tab" data-tab="calculate">Calculate</button>
+            <button class="tab" data-tab="results">Results</button>
+            <button class="tab" data-tab="exceptions">Exceptions</button>
+        </div>
+
+        <!-- SETUP TAB -->
+        <div id="setup" class="tab-content active">
+            <div class="section">
+                <h2>Overtime Rules Engine</h2>
+                <div class="alert alert-info">
+                    <strong>📊 All 50 States Supported:</strong> This system includes overtime rules for all U.S. states, including special provisions for daily OT (CA, AK, CO, NV) and unique thresholds (KS 46hrs, MN 48hrs).
+                </div>
+                <div class="obbba-highlight">
+                    <h3>🇺🇸 OBBBA Compliance (2025)<span class="obbba-badge">NEW</span></h3>
+                    <p><strong>One Big Beautiful Bill Act:</strong> New federal law allows workers to deduct FLSA-mandated overtime premium from their taxable income at year-end. This tool tracks which overtime qualifies:</p>
+                    <ul style="margin: 10px 0 10px 20px; line-height: 1.8;">
+                        <li><strong>FLSA-Qualifying OT:</strong> Hours worked over 40/week (federal threshold) - Premium is tax deductible up to $12,500/$25,000</li>
+                        <li><strong>Non-Qualifying OT:</strong> State daily OT that doesn't exceed 40 hrs/week (e.g., CA employee works 10hrs Mon, 6hrs Tue-Thu = 34hrs total) - NOT tax deductible</li>
+                    </ul>
+                    <p style="margin-top: 10px; font-size: 0.9em; color: #92400e;"><strong>Important:</strong> Overtime is still subject to normal withholding during payroll. The deduction is claimed on the employee's tax return. Employers must report the qualified premium separately on W-2 Box 14. PTO/Sick time is excluded from OT calculations but included in gross pay.</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Employee Management</h2>
+                <div class="form-group">
+                    <label>Employee Name</label>
+                    <input type="text" id="empName" placeholder="Alice Johnson">
+                </div>
+                <div class="form-group">
+                    <label>Employee ID</label>
+                    <input type="text" id="empId" placeholder="EMP001">
+                </div>
+                <div class="form-group">
+                    <label>Pay Rate ($/hour)</label>
+                    <input type="number" id="empRate" placeholder="25.00" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label>Work State</label>
+                    <select id="empState">
+                        <option value="">Select State...</option>
+                        <option value="AL">Alabama</option>
+                        <option value="AK">Alaska (8hr daily OT)</option>
+                        <option value="AZ">Arizona</option>
+                        <option value="AR">Arkansas</option>
+                        <option value="CA">California (8hr daily, 12hr double)</option>
+                        <option value="CO">Colorado (12hr daily OT)</option>
+                        <option value="CT">Connecticut</option>
+                        <option value="DE">Delaware</option>
+                        <option value="DC">District of Columbia</option>
+                        <option value="FL">Florida</option>
+                        <option value="GA">Georgia</option>
+                        <option value="HI">Hawaii</option>
+                        <option value="ID">Idaho</option>
+                        <option value="IL">Illinois</option>
+                        <option value="IN">Indiana</option>
+                        <option value="IA">Iowa</option>
+                        <option value="KS">Kansas (46hr weekly OT)</option>
+                        <option value="KY">Kentucky</option>
+                        <option value="LA">Louisiana</option>
+                        <option value="ME">Maine</option>
+                        <option value="MD">Maryland</option>
+                        <option value="MA">Massachusetts</option>
+                        <option value="MI">Michigan</option>
+                        <option value="MN">Minnesota (48hr weekly OT)</option>
+                        <option value="MS">Mississippi</option>
+                        <option value="MO">Missouri</option>
+                        <option value="MT">Montana</option>
+                        <option value="NE">Nebraska</option>
+                        <option value="NV">Nevada (8hr daily OT)</option>
+                        <option value="NH">New Hampshire</option>
+                        <option value="NJ">New Jersey</option>
+                        <option value="NM">New Mexico</option>
+                        <option value="NY">New York</option>
+                        <option value="NC">North Carolina</option>
+                        <option value="ND">North Dakota</option>
+                        <option value="OH">Ohio</option>
+                        <option value="OK">Oklahoma</option>
+                        <option value="OR">Oregon</option>
+                        <option value="PA">Pennsylvania</option>
+                        <option value="RI">Rhode Island</option>
+                        <option value="SC">South Carolina</option>
+                        <option value="SD">South Dakota</option>
+                        <option value="TN">Tennessee</option>
+                        <option value="TX">Texas</option>
+                        <option value="UT">Utah</option>
+                        <option value="VT">Vermont</option>
+                        <option value="VA">Virginia</option>
+                        <option value="WA">Washington</option>
+                        <option value="WV">West Virginia</option>
+                        <option value="WI">Wisconsin</option>
+                        <option value="WY">Wyoming</option>
+                    </select>
+                </div>
+                <button class="btn" id="addEmpBtn">Add Employee</button>
+                <button class="btn btn-secondary" id="loadDemoBtn">Load Demo Employees</button>
+                <button class="btn btn-warning" id="clearDataBtn">Clear All Data</button>
+            </div>
+
+            <div class="section">
+                <h2>Employee List</h2>
+                <div id="employeeStats" class="stats" style="margin-bottom: 20px;"></div>
+                <table id="employeeTable">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>ID</th>
+                            <th>Pay Rate</th>
+                            <th>State</th>
+                            <th>Daily OT Rule</th>
+                            <th>Weekly OT Rule</th>
+                        </tr>
+                    </thead>
+                    <tbody id="employeeTableBody">
+                        <tr>
+                            <td colspan="6" style="text-align: center; color: #a0aec0;">No employees added</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- FORMAT MAPPER TAB -->
+        <div id="mapper" class="tab-content">
+            <div class="section">
+                <h2>VMS Format Mapper</h2>
+                <div class="alert alert-info">
+                    <strong>🔧 Smart Column Mapping:</strong> Upload a CSV or PDF to see its columns, then drag them to the appropriate fields. The system can match employees by either ID or Name (handles "First Last", "Last, First", or partial matches). Save templates for different VMS systems (Fieldglass, Beeline, etc.)
+                </div>
+                
+                <div class="form-group">
+                    <label>Template Name</label>
+                    <input type="text" id="templateName" placeholder="e.g., Fieldglass Format, Beeline Mon-Sun">
+                </div>
+                
+                <div class="file-upload" id="mapperFileUpload">
+                    <input type="file" id="mapperCsvFile" accept=".csv,.pdf" style="display: none;">
+                    <p style="font-size: 3em;">📁</p>
+                    <p style="font-size: 1.2em; color: #4a5568;">Upload CSV or PDF to map columns</p>
+                </div>
+
+                <div id="mapperInterface" style="display: none;">
+                    <div class="mapper-container">
+                        <div class="mapper-column">
+                            <h3>CSV Columns Detected</h3>
+                            <p style="font-size: 0.9em; color: #718096; margin-bottom: 15px;">Drag columns to fields on the right →</p>
+                            <div id="csvColumnsList"></div>
+                        </div>
+                        
+                        <div class="mapper-column">
+                            <h3>Target Fields</h3>
+                            <p style="font-size: 0.9em; color: #718096; margin-bottom: 15px;">Drop CSV columns here</p>
+                            <div id="targetFieldsList"></div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 20px;">
+                        <button class="btn" id="saveTemplateBtn">Save Template</button>
+                        <button class="btn btn-secondary" id="applyMappingBtn">Apply & Continue to Import</button>
+                    </div>
+                </div>
+
+                <div id="savedTemplates" style="margin-top: 30px;">
+                    <h3>Saved Templates</h3>
+                    <div id="templatesList"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- IMPORT TAB -->
+        <div id="import" class="tab-content">
+            <div class="section">
+                <h2>Import Timesheets</h2>
+                <div class="alert alert-info">
+                    <strong>Accepted Formats:</strong>
+                    <ul style="margin-top: 10px; margin-left: 20px;">
+                        <li><strong>CSV Files:</strong> Employee ID (or Name), Date, Hours columns required</li>
+                        <li><strong>PDF Files:</strong> Automatically extracts text and attempts to parse timesheet data</li>
+                        <li><strong>Name formats:</strong> Handles "First Last", "Last, First", or partial name matches</li>
+                        <li><strong>Optional columns:</strong> PTO Hours, Sick Hours (excluded from OT calculations)</li>
+                    </ul>
+                    <div style="background: #bee3f8; border-left: 4px solid #4299e1; padding: 10px; margin-top: 15px; border-radius: 4px;">
+                        <strong style="color: #2c5282;">💡 Smart Name Matching:</strong>
+                        <p style="color: #2c5282; margin: 5px 0 0 0;">System automatically handles "Alice Johnson", "Johnson, Alice", "ALICE JOHNSON", and partial matches. No need to standardize formats across VMS systems!</p>
+                    </div>
+                    <div style="background: #feebc8; border-left: 4px solid #f6ad55; padding: 10px; margin-top: 15px; border-radius: 4px;">
+                        <strong style="color: #7c2d12;">⚠ California Compliance:</strong>
+                        <p style="color: #7c2d12; margin: 5px 0 0 0;">CA employees MUST have daily hour breakdowns. PTO/Sick hours should be separate columns.</p>
+                    </div>
+                </div>
+                
+                <div class="file-upload" id="fileUploadArea">
+                    <input type="file" id="csvFile" accept=".csv,.pdf" style="display: none;">
+                    <p style="font-size: 3em;">📁</p>
+                    <p style="font-size: 1.2em; color: #4a5568;">Upload Timesheet CSV or PDF</p>
+                    <p style="font-size: 0.9em; color: #718096; margin-top: 5px;">Supports: Daily totals, Pre-calculated OT, PDF text extraction</p>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <button class="btn btn-success" id="sampleBtn">Generate Sample Data</button>
+                    <button class="btn btn-secondary" id="loadTemplateImportBtn">Load Saved Template</button>
+                </div>
+            </div>
+
+            <div id="importPreview" style="display: none;">
+                <h2>Import Preview</h2>
+                <div class="stats">
+                    <div class="stat-card">
+                        <h3 id="recordCount">0</h3>
+                        <p>Time Records</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="employeeCount">0</h3>
+                        <p>Employees</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="formatType">Unknown</h3>
+                        <p>Format Detected</p>
+                    </div>
+                    <div class="stat-card success" id="complianceCard">
+                        <h3>✓</h3>
+                        <p>Compliance Check</p>
+                    </div>
+                </div>
+                
+                <div style="max-height: 400px; overflow-y: auto; margin: 20px 0;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Employee (Matched)</th>
+                                <th>Date</th>
+                                <th>Hours</th>
+                                <th>Type</th>
+                            </tr>
+                        </thead>
+                        <tbody id="previewTableBody"></tbody>
+                    </table>
+                </div>
+                <button class="btn" id="confirmImportBtn">Confirm Import & Continue</button>
+            </div>
+        </div>
+
+        <!-- CALCULATE TAB -->
+        <div id="calculate" class="tab-content">
+            <div class="section">
+                <h2>Calculate Payroll</h2>
+                <div class="alert alert-info">
+                    Calculates <strong>Total Gross Pay</strong> with separate tracking of FLSA-qualifying overtime for OBBBA tax reporting.
+                </div>
+                <div class="form-group">
+                    <label>Pay Period Start</label>
+                    <input type="date" id="periodStart">
+                </div>
+                <div class="form-group">
+                    <label>Pay Period End</label>
+                    <input type="date" id="periodEnd">
+                </div>
+                <button class="btn" id="calcBtn">Calculate Payroll</button>
+            </div>
+            <div id="calculationStatus" style="display: none;"></div>
+        </div>
+
+        <!-- RESULTS TAB -->
+        <div id="results" class="tab-content">
+            <div class="section">
+                <h2>Payroll Results</h2>
+                <div class="stats" id="resultStats"></div>
+
+                <div class="obbba-highlight" id="obbbaSummary" style="display: none;">
+                    <h3>🇺🇸 OBBBA Tax Summary (2025)</h3>
+                    <p><strong>Total FLSA-Qualifying Premium Pay:</strong> <span id="totalFlsaOT">$0.00</span></p>
+                    <p style="font-size: 0.9em; margin-top: 10px; line-height: 1.6;">
+                        <strong>What this represents:</strong> The 0.5x premium portion of overtime hours worked beyond 40/week (FLSA threshold). This overtime was subject to normal tax withholding during payroll.<br>
+                        <strong>W-2 Reporting:</strong> Report this amount separately in Box 14 as "FLSA OT Premium" so employees can claim the deduction on their tax return.<br>
+                        <strong>Employee Tax Benefit:</strong> Workers can deduct this from taxable income (up to $12,500 individual / $25,000 joint filing) when filing their Form 1040.<br>
+                        <strong>Note:</strong> This is a year-end tax deduction, not a payroll withholding exemption. Employees who want less tax withheld during the year must file a new W-4.
+                    </p>
+                </div>
+
+                <div style="margin: 20px 0;">
+                    <button class="btn btn-success" id="exportBtn">Export Summary CSV</button>
+                    <button class="btn btn-success" id="exportDetailBtn">Export Detailed CSV</button>
+                    <button class="btn btn-warning" id="exportObbbaBtn">Export OBBBA Report</button>
+                </div>
+
+                <table id="resultsTable">
+                    <thead>
+                        <tr>
+                            <th>Employee</th>
+                            <th>Regular Hrs</th>
+                            <th>OT/DT Hrs</th>
+                            <th>FLSA Hrs<span class="obbba-badge">OBBBA</span></th>
+                            <th>PTO/Sick Hrs</th>
+                            <th>Regular Pay</th>
+                            <th>OT/DT Pay</th>
+                            <th>PTO/Sick Pay</th>
+                            <th>Total Gross</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultsTableBody">
+                        <tr>
+                            <td colspan="10" style="text-align: center; color: #a0aec0;">No calculations yet</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div id="dailyBreakdown" style="display: none; margin-top: 30px; padding: 20px; background: #f7fafc; border-radius: 8px;">
+                    <h3 id="breakdownTitle">Daily Breakdown</h3>
+                    <table id="breakdownTable">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Day</th>
+                                <th>Worked</th>
+                                <th>PTO/Sick</th>
+                                <th>Regular</th>
+                                <th>OT</th>
+                                <th>DT</th>
+                                <th>Daily Pay</th>
+                            </tr>
+                        </thead>
+                        <tbody id="breakdownTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- EXCEPTIONS TAB -->
+        <div id="exceptions" class="tab-content">
+            <div class="section">
+                <h2>Exception & Compliance Report</h2>
+                <div class="alert alert-info">
+                    <strong>🔍 Automated Exception Detection:</strong> This report flags potential issues requiring review before finalizing payroll.
+                </div>
+                <div id="exceptionsList">
+                    <p style="text-align: center; color: #a0aec0; padding: 40px;">Run calculations to generate exception report</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Application state
+        let employees = [];
+        let timeEntries = [];
+        let payrollResults = [];
+        let exceptions = [];
+        let columnMapping = {};
+        let savedTemplates = [];
+
+        // State overtime rules database
+        const stateRules = {
+            AL: { name: 'Alabama', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            AK: { name: 'Alaska', weeklyOT: 40, dailyOT: 8, dailyDT: null },
+            AZ: { name: 'Arizona', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            AR: { name: 'Arkansas', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            CA: { name: 'California', weeklyOT: 40, dailyOT: 8, dailyDT: 12, seventhDay: true },
+            CO: { name: 'Colorado', weeklyOT: 40, dailyOT: 12, dailyDT: null },
+            CT: { name: 'Connecticut', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            DE: { name: 'Delaware', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            DC: { name: 'D.C.', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            FL: { name: 'Florida', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            GA: { name: 'Georgia', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            HI: { name: 'Hawaii', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            ID: { name: 'Idaho', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            IL: { name: 'Illinois', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            IN: { name: 'Indiana', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            IA: { name: 'Iowa', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            KS: { name: 'Kansas', weeklyOT: 46, dailyOT: null, dailyDT: null },
+            KY: { name: 'Kentucky', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            LA: { name: 'Louisiana', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            ME: { name: 'Maine', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            MD: { name: 'Maryland', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            MA: { name: 'Massachusetts', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            MI: { name: 'Michigan', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            MN: { name: 'Minnesota', weeklyOT: 48, dailyOT: null, dailyDT: null },
+            MS: { name: 'Mississippi', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            MO: { name: 'Missouri', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            MT: { name: 'Montana', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            NE: { name: 'Nebraska', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            NV: { name: 'Nevada', weeklyOT: 40, dailyOT: 8, dailyDT: null },
+            NH: { name: 'New Hampshire', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            NJ: { name: 'New Jersey', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            NM: { name: 'New Mexico', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            NY: { name: 'New York', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            NC: { name: 'North Carolina', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            ND: { name: 'North Dakota', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            OH: { name: 'Ohio', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            OK: { name: 'Oklahoma', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            OR: { name: 'Oregon', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            PA: { name: 'Pennsylvania', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            RI: { name: 'Rhode Island', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            SC: { name: 'South Carolina', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            SD: { name: 'South Dakota', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            TN: { name: 'Tennessee', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            TX: { name: 'Texas', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            UT: { name: 'Utah', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            VT: { name: 'Vermont', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            VA: { name: 'Virginia', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            WA: { name: 'Washington', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            WV: { name: 'West Virginia', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            WI: { name: 'Wisconsin', weeklyOT: 40, dailyOT: null, dailyDT: null },
+            WY: { name: 'Wyoming', weeklyOT: 40, dailyOT: null, dailyDT: null }
+        };
+
+        // Initialize
+        loadFromStorage();
+        updateEmployeeTable();
+        renderTemplatesList();
+
+        // Smart name matching function
+        function matchEmployeeByName(csvName, employeeList) {
+            const cleanName = csvName.trim().toLowerCase();
+            
+            // Strategy 1: Exact match (case-insensitive)
+            let match = employeeList.find(e => e.name.toLowerCase() === cleanName);
+            if (match) return match;
+            
+            // Strategy 2: Reverse name format (Last, First → First Last or vice versa)
+            if (csvName.includes(',')) {
+                // CSV has "Last, First" format
+                const parts = csvName.split(',').map(p => p.trim());
+                if (parts.length === 2) {
+                    const reversedName = `${parts[1]} ${parts[0]}`.toLowerCase();
+                    match = employeeList.find(e => e.name.toLowerCase() === reversedName);
+                    if (match) return match;
+                }
+            } else {
+                // CSV has "First Last" format, try matching against "Last, First"
+                const parts = csvName.split(' ');
+                if (parts.length >= 2) {
+                    const lastName = parts[parts.length - 1];
+                    const firstName = parts.slice(0, -1).join(' ');
+                    const reversedName = `${lastName}, ${firstName}`.toLowerCase();
+                    match = employeeList.find(e => e.name.toLowerCase() === reversedName);
+                    if (match) return match;
+                }
+            }
+            
+            // Strategy 3: Partial match (both first and last name appear in employee name)
+            const nameParts = cleanName.replace(',', ' ').split(/\s+/).filter(p => p.length > 0);
+            if (nameParts.length >= 2) {
+                match = employeeList.find(e => {
+                    const empNameLower = e.name.toLowerCase();
+                    return nameParts.every(part => empNameLower.includes(part));
+                });
+                if (match) return match;
+            }
+            
+            // Strategy 4: Fuzzy match (last name only)
+            if (nameParts.length >= 2) {
+                const lastName = nameParts[nameParts.length - 1];
+                match = employeeList.find(e => {
+                    const empParts = e.name.toLowerCase().split(/\s+/);
+                    const empLastName = empParts[empParts.length - 1];
+                    return empLastName === lastName;
+                });
+                if (match) {
+                    console.warn(`Fuzzy match: "${csvName}" → "${match.name}" (matched on last name only)`);
+                    return match;
+                }
+            }
+            
+            return null;
+        }
+
+        // Tab switching
+        document.querySelector('.tabs').addEventListener('click', function(e) {
+            if (e.target.classList.contains('tab')) {
+                const tabName = e.target.getAttribute('data-tab');
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                e.target.classList.add('active');
+                document.getElementById(tabName).classList.add('active');
+            }
+        });
+
+        // Add employee
+        document.getElementById('addEmpBtn').addEventListener('click', function() {
+            const name = document.getElementById('empName').value;
+            const id = document.getElementById('empId').value;
+            const rate = parseFloat(document.getElementById('empRate').value);
+            const state = document.getElementById('empState').value;
+
+            if (!name || !id || !rate || !state) {
+                alert('Please fill all fields');
+                return;
+            }
+
+            employees.push({ name, id, rate, state });
+            updateEmployeeTable();
+            saveToStorage();
+            
+            document.getElementById('empName').value = '';
+            document.getElementById('empId').value = '';
+            document.getElementById('empRate').value = '';
+        });
+
+        // Load demo data
+        document.getElementById('loadDemoBtn').addEventListener('click', function() {
+            employees = [
+                { name: 'Alice Johnson', id: 'EMP001', rate: 25.00, state: 'CA' },
+                { name: 'Bob Smith', id: 'EMP002', rate: 30.00, state: 'TX' },
+                { name: 'Carol Martinez', id: 'EMP003', rate: 28.50, state: 'CO' },
+                { name: 'David Lee', id: 'EMP004', rate: 32.00, state: 'NY' },
+                { name: 'Emma Wilson', id: 'EMP005', rate: 27.00, state: 'NV' }
+            ];
+            updateEmployeeTable();
+            saveToStorage();
+            alert('Demo employees loaded!');
+        });
+
+        // Clear all data
+        document.getElementById('clearDataBtn').addEventListener('click', function() {
+            if (confirm('Clear all data including employees, timesheets, and calculations?')) {
+                employees = [];
+                timeEntries = [];
+                payrollResults = [];
+                exceptions = [];
+                updateEmployeeTable();
+                saveToStorage();
+                alert('All data cleared!');
+            }
+        });
+
+        function updateEmployeeTable() {
+            const tbody = document.getElementById('employeeTableBody');
+            const statsDiv = document.getElementById('employeeStats');
+            
+            if (employees.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #a0aec0;">No employees added</td></tr>';
+                statsDiv.innerHTML = '';
+                return;
+            }
+
+            const stateCount = new Set(employees.map(e => e.state)).size;
+            const dailyOTStates = employees.filter(e => stateRules[e.state]?.dailyOT).length;
+            
+            statsDiv.innerHTML = `
+                <div class="stat-card">
+                    <h3>${employees.length}</h3>
+                    <p>Total Employees</p>
+                </div>
+                <div class="stat-card">
+                    <h3>${stateCount}</h3>
+                    <p>States</p>
+                </div>
+                <div class="stat-card warning">
+                    <h3>${dailyOTStates}</h3>
+                    <p>Daily OT States</p>
+                </div>
+            `;
+
+            tbody.innerHTML = employees.map(emp => {
+                const rules = stateRules[emp.state];
+                return `
+                    <tr>
+                        <td>${emp.name}</td>
+                        <td>${emp.id}</td>
+                        <td>$${emp.rate.toFixed(2)}</td>
+                        <td>${rules.name}</td>
+                        <td>${rules.dailyOT ? `>${rules.dailyOT}hrs @ 1.5x${rules.dailyDT ? `, >${rules.dailyDT}hrs @ 2x` : ''}` : 'None'}</td>
+                        <td>>${rules.weeklyOT}hrs @ 1.5x</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Format Mapper functionality
+        document.getElementById('mapperFileUpload').addEventListener('click', () => {
+            document.getElementById('mapperCsvFile').click();
+        });
+
+        document.getElementById('mapperCsvFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const fileName = file.name.toLowerCase();
+            
+            if (fileName.endsWith('.pdf')) {
+                const reader = new FileReader();
+                reader.onload = async function(event) {
+                    try {
+                        const loadingTask = pdfjsLib.getDocument({ data: event.target.result });
+                        const pdf = await loadingTask.promise;
+                        
+                        let fullText = '';
+                        const page = await pdf.getPage(1);
+                        const textContent = await page.getTextContent();
+                        const pageText = textContent.items.map(item => item.str).join(' ');
+                        fullText = pageText;
+                        
+                        const lines = fullText.split('\n').filter(l => l.trim());
+                        if (lines.length > 0) {
+                            const headers = lines[0].split(/\s{2,}|\t/);
+                            displayColumnMapper(headers);
+                        } else {
+                            alert('Could not detect columns in PDF');
+                        }
+                    } catch (error) {
+                        alert('Error reading PDF: ' + error.message);
+                    }
+                };
+                reader.readAsArrayBuffer(file);
+            } else {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const lines = event.target.result.split('\n');
+                    if (lines.length < 1) return;
+
+                    const headers = lines[0].split(',').map(h => h.trim());
+                    displayColumnMapper(headers);
+                };
+                reader.readAsText(file);
+            }
+        });
+
+        function displayColumnMapper(headers) {
+            document.getElementById('mapperInterface').style.display = 'block';
+            
+            const csvList = document.getElementById('csvColumnsList');
+            csvList.innerHTML = headers.map(h => `
+                <div class="csv-column" draggable="true" data-column="${h}">
+                    ${h}
+                </div>
+            `).join('');
+
+            const targetList = document.getElementById('targetFieldsList');
+            const fields = ['Employee ID', 'Employee Name', 'Date', 'Hours', 'Regular Hours', 'Overtime Hours', 'Double Time Hours', 'PTO Hours', 'Sick Hours'];
+            targetList.innerHTML = fields.map(f => `
+                <div class="target-field" data-field="${f}">
+                    <div class="field-label">${f}</div>
+                    <div class="mapped-value" style="display: none;"></div>
+                </div>
+            `).join('');
+
+            const csvColumns = csvList.querySelectorAll('.csv-column');
+            csvColumns.forEach(col => {
+                col.addEventListener('dragstart', function(e) {
+                    e.dataTransfer.setData('text/plain', this.dataset.column);
+                });
+            });
+
+            const targetFields = targetList.querySelectorAll('.target-field');
+            targetFields.forEach(field => {
+                field.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    this.classList.add('dragover');
+                });
+
+                field.addEventListener('dragleave', function() {
+                    this.classList.remove('dragover');
+                });
+
+                field.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    this.classList.remove('dragover');
+                    
+                    const columnName = e.dataTransfer.getData('text/plain');
+                    const fieldName = this.dataset.field;
+                    
+                    columnMapping[fieldName] = columnName;
+                    
+                    this.classList.add('mapped');
+                    const valueDiv = this.querySelector('.mapped-value');
+                    valueDiv.textContent = `← ${columnName}`;
+                    valueDiv.style.display = 'block';
+                });
+            });
+        }
+
+        document.getElementById('saveTemplateBtn').addEventListener('click', function() {
+            const name = document.getElementById('templateName').value;
+            if (!name) {
+                alert('Please enter a template name');
+                return;
+            }
+
+            savedTemplates.push({
+                name,
+                mapping: {...columnMapping}
+            });
+            
+            saveToStorage();
+            renderTemplatesList();
+            alert(`Template "${name}" saved!`);
+        });
+
+        function renderTemplatesList() {
+            const list = document.getElementById('templatesList');
+            if (savedTemplates.length === 0) {
+                list.innerHTML = '<p style="color: #a0aec0;">No saved templates</p>';
+                return;
+            }
+
+            list.innerHTML = savedTemplates.map((t, i) => `
+                <div class="card">
+                    <strong>${t.name}</strong>
+                    <button class="btn btn-sm" onclick="loadTemplate(${i})">Load</button>
+                </div>
+            `).join('');
+        }
+
+        window.loadTemplate = function(index) {
+            columnMapping = {...savedTemplates[index].mapping};
+            alert('Template loaded! Upload a CSV in the Import tab to apply it.');
+        };
+
+        // Sample data generation
+        document.getElementById('sampleBtn').addEventListener('click', function() {
+            if (employees.length === 0) {
+                alert('Please add employees first');
+                return;
+            }
+            
+            try {
+                const today = new Date();
+                timeEntries = [];
+                
+                for (let day = 0; day < 14; day++) {
+                    const date = new Date(today);
+                    date.setDate(date.getDate() - day);
+                    
+                    employees.forEach(emp => {
+                        const rand = Math.random();
+                        let hours, ptoHours = 0, sickHours = 0;
+                        
+                        if (rand < 0.1) {
+                            ptoHours = 8;
+                            hours = 0;
+                        } else if (rand < 0.15) {
+                            sickHours = 8;
+                            hours = 0;
+                        } else {
+                            hours = 7 + Math.random() * 5;
+                        }
+                        
+                        timeEntries.push({
+                            employeeId: emp.id,
+                            date: date.toISOString().split('T')[0],
+                            hours: parseFloat(hours.toFixed(2)),
+                            ptoHours: ptoHours,
+                            sickHours: sickHours,
+                            preCalculated: false
+                        });
+                    });
+                }
+                
+                displayImportPreview();
+                saveToStorage();
+                alert(`Generated ${timeEntries.length} sample time entries including PTO/Sick days!`);
+            } catch (error) {
+                console.error('Sample data generation error:', error);
+                alert('Error generating sample data: ' + error.message);
+            }
+        });
+
+        // File upload
+        document.getElementById('fileUploadArea').addEventListener('click', () => {
+            document.getElementById('csvFile').click();
+        });
+
+        document.getElementById('csvFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const fileName = file.name.toLowerCase();
+            
+            if (fileName.endsWith('.pdf')) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    parsePDF(event.target.result, file.name);
+                };
+                reader.readAsArrayBuffer(file);
+            } else if (fileName.endsWith('.csv')) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    parseCSV(event.target.result);
+                };
+                reader.readAsText(file);
+            } else {
+                alert('Please upload a CSV or PDF file');
+            }
+        });
+
+        async function parsePDF(arrayBuffer, fileName) {
+            const uploadArea = document.getElementById('fileUploadArea');
+            uploadArea.classList.add('processing');
+            
+            try {
+                const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
+                const pdf = await loadingTask.promise;
+                
+                let fullText = '';
+                
+                for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                    const page = await pdf.getPage(pageNum);
+                    const textContent = await page.getTextContent();
+                    const pageText = textContent.items.map(item => item.str).join(' ');
+                    fullText += pageText + '\n';
+                }
+                
+                uploadArea.classList.remove('processing');
+                parsePDFText(fullText, fileName);
+                
+            } catch (error) {
+                uploadArea.classList.remove('processing');
+                console.error('PDF parsing error:', error);
+                alert('Error reading PDF: ' + error.message + '\n\nThe PDF may be scanned (image-based) or have an unsupported format. Please try a text-based PDF or convert to CSV.');
+            }
+        }
+
+        function parsePDFText(text, fileName) {
+            try {
+                const lines = text.split('\n')
+                    .map(line => line.trim())
+                    .filter(line => line.length > 0);
+                
+                if (lines.length < 2) {
+                    alert('PDF appears to be empty or contains no readable text');
+                    return;
+                }
+                
+                const dataLines = [];
+                let headerLine = null;
+                
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i];
+                    
+                    if (!headerLine && (
+                        line.toLowerCase().includes('employee') ||
+                        line.toLowerCase().includes('date') ||
+                        line.toLowerCase().includes('hours')
+                    )) {
+                        headerLine = line;
+                        continue;
+                    }
+                    
+                    const datePattern = /\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4}/;
+                    const hasDate = datePattern.test(line);
+                    const hasNumbers = /\d+\.?\d*/.test(line);
+                    
+                    if (hasDate || hasNumbers) {
+                        dataLines.push(line);
+                    }
+                }
+                
+                if (dataLines.length === 0) {
+                    alert('Could not detect timesheet data in PDF.\n\nPlease ensure the PDF contains:\n- Employee names or IDs\n- Dates\n- Hours worked\n\nOr try converting the PDF to CSV format.');
+                    return;
+                }
+                
+                let csvText = headerLine ? headerLine + '\n' : 'Employee,Date,Hours\n';
+                csvText += dataLines.join('\n');
+                
+                alert(`Extracted ${dataLines.length} lines from PDF.\n\nAttempting to parse as timesheet data...\n\nNote: PDF parsing is best-effort. For complex layouts, convert to CSV first.`);
+                parseCSV(csvText);
+                
+            } catch (error) {
+                console.error('PDF text parsing error:', error);
+                alert('Error parsing PDF content: ' + error.message + '\n\nThe PDF layout may be too complex. Try converting to CSV format.');
+            }
+        }
+
+        function parseCSV(csvText) {
+            const lines = csvText.split('\n').filter(line => line.trim());
+            if (lines.length < 2) {
+                alert('CSV file appears to be empty');
+                return;
+            }
+
+            const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+            const colMap = {};
+            
+            headers.forEach((h, i) => {
+                if (h.includes('employee') && h.includes('id') || h === 'empid' || h === 'id' || h === 'employee id') {
+                    colMap.employeeId = i;
+                } else if ((h.includes('employee') && h.includes('name')) || h === 'name' || h === 'employee name' || h.includes('worker')) {
+                    if (colMap.employeeId === undefined) colMap.employeeName = i;
+                }
+                
+                if (h.includes('date') || h.includes('day')) colMap.date = i;
+                if (h.includes('regular') && h.includes('hour')) colMap.regularHours = i;
+                if ((h.includes('overtime') || h.includes('ot')) && h.includes('hour') && !h.includes('double')) colMap.overtimeHours = i;
+                if ((h.includes('double') || h.includes('dt')) && h.includes('hour')) colMap.doubleTimeHours = i;
+                if (h.includes('pto') && h.includes('hour')) colMap.ptoHours = i;
+                if (h.includes('sick') && h.includes('hour')) colMap.sickHours = i;
+                if (h.includes('hour') && !colMap.regularHours && !colMap.overtimeHours && !colMap.ptoHours && !colMap.sickHours) colMap.hours = i;
+            });
+
+            if ((colMap.employeeId === undefined && colMap.employeeName === undefined) || colMap.date === undefined) {
+                alert('CSV must have Employee ID (or Name) and Date columns');
+                return;
+            }
+
+            const usingName = colMap.employeeId === undefined && colMap.employeeName !== undefined;
+            const hasPreCalculated = colMap.regularHours !== undefined && colMap.overtimeHours !== undefined;
+            
+            timeEntries = [];
+            let errorCount = 0;
+            let unmatchedEmployees = new Set();
+
+            for (let i = 1; i < lines.length; i++) {
+                const values = lines[i].split(',').map(v => v.trim());
+                
+                try {
+                    let empId, empName, matchedEmployee;
+                    
+                    if (usingName) {
+                        empName = values[colMap.employeeName];
+                        if (!empName) continue;
+                        
+                        matchedEmployee = matchEmployeeByName(empName, employees);
+                        
+                        if (matchedEmployee) {
+                            empId = matchedEmployee.id;
+                        } else {
+                            unmatchedEmployees.add(empName);
+                            continue;
+                        }
+                    } else {
+                        empId = values[colMap.employeeId];
+                        if (!empId) continue;
+                        
+                        matchedEmployee = employees.find(e => e.id === empId);
+                        if (!matchedEmployee) {
+                            unmatchedEmployees.add(empId);
+                        }
+                    }
+                    
+                    const dateStr = values[colMap.date];
+                    if (!dateStr) continue;
+
+                    let date = dateStr;
+                    const dateMatch = dateStr.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+                    if (dateMatch) {
+                        const month = dateMatch[1].padStart(2, '0');
+                        const day = dateMatch[2].padStart(2, '0');
+                        date = `${dateMatch[3]}-${month}-${day}`;
+                    }
+
+                    const ptoHours = parseFloat(values[colMap.ptoHours] || 0);
+                    const sickHours = parseFloat(values[colMap.sickHours] || 0);
+
+                    if (hasPreCalculated) {
+                        const regHours = parseFloat(values[colMap.regularHours] || 0);
+                        const otHours = parseFloat(values[colMap.overtimeHours] || 0);
+                        const dtHours = parseFloat(values[colMap.doubleTimeHours] || 0);
+
+                        timeEntries.push({
+                            employeeId: empId,
+                            date: date,
+                            hours: regHours + otHours + dtHours,
+                            regularHours: regHours,
+                            overtimeHours: otHours,
+                            doubleTimeHours: dtHours,
+                            ptoHours: ptoHours,
+                            sickHours: sickHours,
+                            preCalculated: true
+                        });
+                    } else {
+                        const hours = parseFloat(values[colMap.hours] || 0);
+                        
+                        if (hours > 0 || ptoHours > 0 || sickHours > 0) {
+                            timeEntries.push({
+                                employeeId: empId,
+                                date: date,
+                                hours: hours,
+                                ptoHours: ptoHours,
+                                sickHours: sickHours,
+                                preCalculated: false
+                            });
+                        }
+                    }
+                } catch (err) {
+                    errorCount++;
+                }
+            }
+
+            if (timeEntries.length === 0) {
+                alert('No valid time entries found in CSV');
+                return;
+            }
+
+            let matchInfo = usingName ? 
+                `✓ Matched time entries by Employee Name\n` : 
+                `✓ Matched time entries by Employee ID\n`;
+            
+            if (unmatchedEmployees.size > 0) {
+                matchInfo += `\n⚠ Warning: ${unmatchedEmployees.size} unmatched employee(s):\n`;
+                matchInfo += Array.from(unmatchedEmployees).slice(0, 5).join(', ');
+                if (unmatchedEmployees.size > 5) {
+                    matchInfo += `, and ${unmatchedEmployees.size - 5} more...`;
+                }
+                matchInfo += `\n\nThese entries were skipped. Add these employees in the Setup tab.`;
+            }
+
+            validateCompliance();
+            displayImportPreview();
+            saveToStorage();
+            
+            setTimeout(() => {
+                alert(`Successfully imported ${timeEntries.length} time entries!\n\n${matchInfo}`);
+            }, 100);
+        }
+
+        function validateCompliance() {
+            const dailyOTStates = ['CA', 'AK', 'CO', 'NV'];
+            const errors = [];
+
+            employees.forEach(emp => {
+                if (dailyOTStates.includes(emp.state)) {
+                    const empEntries = timeEntries.filter(e => e.employeeId === emp.id);
+                    const dates = empEntries.map(e => e.date);
+                    const uniqueDates = new Set(dates);
+                    
+                    if (dates.length !== uniqueDates.size) {
+                        errors.push(`${emp.name} (${emp.state}): Duplicate dates detected - requires daily breakdown`);
+                    }
+                }
+            });
+
+            if (errors.length > 0) {
+                alert('⚠️ COMPLIANCE ERRORS:\n\n' + errors.join('\n'));
+                timeEntries = [];
+                return false;
+            }
+            return true;
+        }
+
+        function displayImportPreview() {
+            document.getElementById('importPreview').style.display = 'block';
+            document.getElementById('recordCount').textContent = timeEntries.length;
+            
+            const uniqueEmployees = new Set(timeEntries.map(e => e.employeeId));
+            document.getElementById('employeeCount').textContent = uniqueEmployees.size;
+            
+            const hasPreCalc = timeEntries.some(e => e.preCalculated);
+            document.getElementById('formatType').textContent = hasPreCalc ? 'Pre-Calc' : 'Daily';
+            
+            const previewBody = document.getElementById('previewTableBody');
+            previewBody.innerHTML = timeEntries.slice(0, 50).map(entry => {
+                const emp = employees.find(e => e.id === entry.employeeId);
+                const displayName = emp ? `${emp.name} (${entry.employeeId})` : entry.employeeId;
+                
+                return `
+                <tr>
+                    <td>${displayName}</td>
+                    <td>${entry.date}</td>
+                    <td>${entry.hours.toFixed(2)}${entry.ptoHours > 0 ? ` + ${entry.ptoHours}PTO` : ''}${entry.sickHours > 0 ? ` + ${entry.sickHours}Sick` : ''}</td>
+                    <td><span style="font-size: 11px; padding: 2px 8px; border-radius: 12px; background: ${entry.preCalculated ? '#c6f6d5' : '#bee3f8'}; color: ${entry.preCalculated ? '#22543d' : '#2c5282'};">${entry.preCalculated ? 'Pre-Calc' : 'Daily'}</span></td>
+                </tr>
+            `;
+            }).join('');
+            
+            if (timeEntries.length > 50) {
+                previewBody.innerHTML += `<tr><td colspan="4" style="text-align: center; color: #a0aec0;">... and ${timeEntries.length - 50} more records</td></tr>`;
+            }
+        }
+
+        document.getElementById('confirmImportBtn').addEventListener('click', function() {
+            document.querySelector('.tab[data-tab="calculate"]').click();
+        });
+
+        // Calculate payroll
+        document.getElementById('calcBtn').addEventListener('click', function() {
+            if (employees.length === 0) {
+                alert('Please add employees first');
+                return;
+            }
+            if (timeEntries.length === 0) {
+                alert('Please import timesheets first');
+                return;
+            }
+
+            try {
+                payrollResults = [];
+                exceptions = [];
+
+                employees.forEach(employee => {
+                    const empEntries = timeEntries.filter(e => e.employeeId === employee.id);
+                    if (empEntries.length === 0) return;
+
+                    const rules = stateRules[employee.state];
+                    const result = calculateEmployeePayroll(employee, empEntries, rules);
+                    payrollResults.push(result);
+                });
+
+                displayResults();
+                generateExceptions();
+                saveToStorage();
+                
+                document.getElementById('calculationStatus').innerHTML = `
+                    <div class="alert alert-success">
+                        ✓ Payroll calculated for ${payrollResults.length} employees!
+                    </div>
+                `;
+                document.getElementById('calculationStatus').style.display = 'block';
+                
+                setTimeout(() => document.querySelector('.tab[data-tab="results"]').click(), 1000);
+            } catch (error) {
+                console.error('Calculation error:', error);
+                document.getElementById('calculationStatus').innerHTML = `
+                    <div class="alert alert-danger">
+                        ❌ Calculation error: ${error.message}
+                    </div>
+                `;
+                document.getElementById('calculationStatus').style.display = 'block';
+                alert('Calculation error: ' + error.message + '\n\nCheck browser console for details.');
+            }
+        });
+
+        function calculateEmployeePayroll(employee, entries, rules) {
+            try {
+                const sortedEntries = entries.sort((a, b) => new Date(a.date) - new Date(b.date));
+                
+                let regularHours = 0;
+                let overtimeHours = 0;
+                let doubleTimeHours = 0;
+                let totalPTOHours = 0;
+                let totalSickHours = 0;
+                
+                let dailyBreakdown = [];
+                let consecutiveWorkDays = 0;
+                let lastDate = null;
+                
+                sortedEntries.forEach(day => {
+                    const currentDate = new Date(day.date);
+                    
+                    if (lastDate) {
+                        const dayDiff = (currentDate - lastDate) / (1000 * 60 * 60 * 24);
+                        consecutiveWorkDays = dayDiff === 1 ? consecutiveWorkDays + 1 : 1;
+                    } else {
+                        consecutiveWorkDays = 1;
+                    }
+                    lastDate = currentDate;
+
+                    const workedHours = day.hours;
+                    const ptoHours = day.ptoHours || 0;
+                    const sickHours = day.sickHours || 0;
+                    
+                    totalPTOHours += ptoHours;
+                    totalSickHours += sickHours;
+                    
+                    let dailyReg = 0;
+                    let dailyOT = 0;
+                    let dailyDT = 0;
+
+                    if (day.preCalculated) {
+                        dailyReg = day.regularHours || 0;
+                        dailyOT = day.overtimeHours || 0;
+                        dailyDT = day.doubleTimeHours || 0;
+                    } else if (rules.dailyOT && workedHours > 0) {
+                        if (rules.seventhDay && consecutiveWorkDays >= 7) {
+                            if (workedHours <= 8) {
+                                dailyOT = workedHours;
+                            } else {
+                                dailyOT = 8;
+                                dailyDT = workedHours - 8;
+                            }
+                        } else {
+                            if (workedHours <= rules.dailyOT) {
+                                dailyReg = workedHours;
+                            } else if (rules.dailyDT && workedHours > rules.dailyDT) {
+                                dailyReg = rules.dailyOT;
+                                dailyOT = rules.dailyDT - rules.dailyOT;
+                                dailyDT = workedHours - rules.dailyDT;
+                            } else {
+                                dailyReg = rules.dailyOT;
+                                dailyOT = workedHours - rules.dailyOT;
+                            }
+                        }
+                    } else {
+                        dailyReg = workedHours;
+                    }
+
+                    regularHours += dailyReg;
+                    overtimeHours += dailyOT;
+                    doubleTimeHours += dailyDT;
+
+                    dailyBreakdown.push({
+                        date: day.date,
+                        workedHours: workedHours,
+                        ptoHours: ptoHours,
+                        sickHours: sickHours,
+                        regular: dailyReg,
+                        overtime: dailyOT,
+                        doubleTime: dailyDT,
+                        consecutiveDays: consecutiveWorkDays
+                    });
+                });
+
+                const totalWorkedHours = sortedEntries.reduce((sum, e) => sum + e.hours, 0);
+                let flsaQualifyingHours = 0;
+                
+                if (totalWorkedHours > rules.weeklyOT) {
+                    flsaQualifyingHours = totalWorkedHours - rules.weeklyOT;
+                    
+                    const currentOTHours = overtimeHours + doubleTimeHours;
+                    
+                    if (flsaQualifyingHours > currentOTHours) {
+                        const additionalOT = flsaQualifyingHours - currentOTHours;
+                        overtimeHours += additionalOT;
+                        regularHours = Math.max(0, regularHours - additionalOT);
+                    }
+                }
+
+                const regularPay = regularHours * employee.rate;
+                const overtimePay = overtimeHours * employee.rate * 1.5;
+                const doubleTimePay = doubleTimeHours * employee.rate * 2;
+                const ptoPay = totalPTOHours * employee.rate;
+                const sickPay = totalSickHours * employee.rate;
+                const flsaQualifyingPay = flsaQualifyingHours * employee.rate * 0.5;
+
+                return {
+                    employee: employee.name,
+                    employeeId: employee.id,
+                    state: employee.state,
+                    rate: employee.rate,
+                    regularHours: Math.max(0, regularHours),
+                    overtimeHours,
+                    doubleTimeHours,
+                    flsaQualifyingHours,
+                    ptoHours: totalPTOHours,
+                    sickHours: totalSickHours,
+                    regularPay,
+                    overtimePay,
+                    doubleTimePay,
+                    flsaQualifyingPay,
+                    ptoPay,
+                    sickPay,
+                    totalPay: regularPay + overtimePay + doubleTimePay + ptoPay + sickPay,
+                    dailyBreakdown
+                };
+            } catch (error) {
+                console.error(`Error calculating payroll for ${employee.name}:`, error);
+                throw new Error(`Failed to calculate payroll for ${employee.name}: ${error.message}`);
+            }
+        }
+
+        function displayResults() {
+            const tbody = document.getElementById('resultsTableBody');
+            tbody.innerHTML = payrollResults.map(result => {
+                const regularHours = result.regularHours || 0;
+                const overtimeHours = result.overtimeHours || 0;
+                const doubleTimeHours = result.doubleTimeHours || 0;
+                const flsaQualifyingHours = result.flsaQualifyingHours || 0;
+                const ptoHours = result.ptoHours || 0;
+                const sickHours = result.sickHours || 0;
+                const regularPay = result.regularPay || 0;
+                const overtimePay = result.overtimePay || 0;
+                const doubleTimePay = result.doubleTimePay || 0;
+                const ptoPay = result.ptoPay || 0;
+                const sickPay = result.sickPay || 0;
+                const totalPay = result.totalPay || 0;
+                
+                return `
+                <tr>
+                    <td>${result.employee}</td>
+                    <td>${regularHours.toFixed(2)}</td>
+                    <td>${(overtimeHours + doubleTimeHours).toFixed(2)}</td>
+                    <td><strong>${flsaQualifyingHours.toFixed(2)}</strong></td>
+                    <td>${(ptoHours + sickHours).toFixed(2)}</td>
+                    <td>$${regularPay.toFixed(2)}</td>
+                    <td>$${(overtimePay + doubleTimePay).toFixed(2)}</td>
+                    <td>$${(ptoPay + sickPay).toFixed(2)}</td>
+                    <td><strong>$${totalPay.toFixed(2)}</strong></td>
+                    <td><button class="btn btn-sm" onclick="showDailyBreakdown('${result.employeeId}')">View Days</button></td>
+                </tr>
+            `;
+            }).join('');
+
+            const statsDiv = document.getElementById('resultStats');
+            const totalEmployees = payrollResults.length;
+            const totalReg = payrollResults.reduce((sum, r) => sum + (r.regularPay || 0), 0);
+            const totalOT = payrollResults.reduce((sum, r) => sum + (r.overtimePay || 0) + (r.doubleTimePay || 0), 0);
+            const totalPTO = payrollResults.reduce((sum, r) => sum + (r.ptoPay || 0) + (r.sickPay || 0), 0);
+            const totalFlsaPay = payrollResults.reduce((sum, r) => sum + (r.flsaQualifyingPay || 0), 0);
+            const grandTotal = payrollResults.reduce((sum, r) => sum + (r.totalPay || 0), 0);
+
+            statsDiv.innerHTML = `
+                <div class="stat-card">
+                    <h3>${totalEmployees}</h3>
+                    <p>Employees</p>
+                </div>
+                <div class="stat-card">
+                    <h3>$${totalReg.toFixed(2)}</h3>
+                    <p>Regular Pay</p>
+                </div>
+                <div class="stat-card">
+                    <h3>$${totalOT.toFixed(2)}</h3>
+                    <p>OT/DT Pay</p>
+                </div>
+                <div class="stat-card">
+                    <h3>$${totalPTO.toFixed(2)}</h3>
+                    <p>PTO/Sick Pay</p>
+                </div>
+                <div class="stat-card warning">
+                    <h3>$${totalFlsaPay.toFixed(2)}</h3>
+                    <p>FLSA Premium (OBBBA)</p>
+                </div>
+                <div class="stat-card success">
+                    <h3>$${grandTotal.toFixed(2)}</h3>
+                    <p>Total Gross Pay</p>
+                </div>
+            `;
+
+            document.getElementById('totalFlsaOT').textContent = `$${totalFlsaPay.toFixed(2)}`;
+            document.getElementById('obbbaSummary').style.display = 'block';
+        }
+
+        window.showDailyBreakdown = function(employeeId) {
+            const result = payrollResults.find(r => r.employeeId === employeeId);
+            if (!result) return;
+
+            document.getElementById('breakdownTitle').textContent = `Daily Breakdown: ${result.employee} (${stateRules[result.state].name})`;
+            
+            const tbody = document.getElementById('breakdownTableBody');
+            tbody.innerHTML = result.dailyBreakdown.map(day => {
+                const date = new Date(day.date);
+                const dayOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][date.getDay()];
+                
+                const regular = day.regular || 0;
+                const overtime = day.overtime || 0;
+                const doubleTime = day.doubleTime || 0;
+                const workedHours = day.workedHours || 0;
+                const ptoHours = day.ptoHours || 0;
+                const sickHours = day.sickHours || 0;
+                
+                const dailyPay = (regular * result.rate) + (overtime * result.rate * 1.5) + (doubleTime * result.rate * 2) + ((ptoHours + sickHours) * result.rate);
+                
+                let note = '';
+                if (day.consecutiveDays >= 7 && workedHours > 0) note = ` <span style="color: #d97706; font-size: 11px;">(7th day)</span>`;
+                
+                const ptoSickDisplay = ptoHours > 0 ? `${ptoHours.toFixed(1)}PTO` : (sickHours > 0 ? `${sickHours.toFixed(1)}Sick` : '-');
+                
+                return `
+                    <tr>
+                        <td>${day.date}</td>
+                        <td>${dayOfWeek}${note}</td>
+                        <td>${workedHours.toFixed(2)}</td>
+                        <td>${ptoSickDisplay}</td>
+                        <td>${regular.toFixed(2)}</td>
+                        <td>${overtime.toFixed(2)}</td>
+                        <td>${doubleTime.toFixed(2)}</td>
+                        <td>$${dailyPay.toFixed(2)}</td>
+                    </tr>
+                `;
+            }).join('');
+
+            document.getElementById('dailyBreakdown').style.display = 'block';
+            document.getElementById('dailyBreakdown').scrollIntoView({ behavior: 'smooth' });
+        };
+
+        function generateExceptions() {
+            exceptions = [];
+
+            try {
+                payrollResults.forEach(result => {
+                    const empEntries = timeEntries.filter(e => e.employeeId === result.employeeId);
+                    
+                    empEntries.forEach(entry => {
+                        if (entry.hours > 12) {
+                            exceptions.push({
+                                type: 'critical',
+                                employee: result.employee,
+                                message: `Worked ${entry.hours.toFixed(2)} hours on ${entry.date}`,
+                                detail: 'Exceeds 12-hour threshold - verify accuracy'
+                            });
+                        }
+                    });
+
+                    const sorted = empEntries.sort((a, b) => new Date(a.date) - new Date(b.date));
+                    let consecutive = 1;
+                    for (let i = 1; i < sorted.length; i++) {
+                        const diff = (new Date(sorted[i].date) - new Date(sorted[i-1].date)) / (1000 * 60 * 60 * 24);
+                        consecutive = diff === 1 ? consecutive + 1 : 1;
+                        
+                        if (consecutive >= 7) {
+                            exceptions.push({
+                                type: 'warning',
+                                employee: result.employee,
+                                message: `${consecutive} consecutive work days ending ${sorted[i].date}`,
+                                detail: 'Review for compliance with rest day requirements'
+                            });
+                            break;
+                        }
+                    }
+
+                    const totalWorkedHours = result.regularHours + result.overtimeHours + result.doubleTimeHours;
+                    if (totalWorkedHours > 0) {
+                        const otPercentage = (result.overtimeHours + result.doubleTimeHours) / totalWorkedHours * 100;
+                        if (otPercentage > 30) {
+                            exceptions.push({
+                                type: 'warning',
+                                employee: result.employee,
+                                message: `${otPercentage.toFixed(1)}% of hours are overtime`,
+                                detail: 'High OT ratio - consider workload distribution'
+                            });
+                        }
+                    }
+                });
+
+                displayExceptions();
+            } catch (error) {
+                console.error('Exception generation error:', error);
+            }
+        }
+
+        function displayExceptions() {
+            const list = document.getElementById('exceptionsList');
+            
+            if (exceptions.length === 0) {
+                list.innerHTML = `
+                    <div class="alert alert-success">
+                        ✓ No exceptions detected - all timesheet data appears normal
+                    </div>
+                `;
+                return;
+            }
+
+            list.innerHTML = `
+                <div class="alert alert-warning">
+                    <strong>⚠️ ${exceptions.length} Exception(s) Detected</strong> - Review before finalizing payroll
+                </div>
+                ${exceptions.map(ex => `
+                    <div class="exception-item ${ex.type}">
+                        <h4>${ex.employee}</h4>
+                        <p><strong>${ex.message}</strong></p>
+                        <p>${ex.detail}</p>
+                    </div>
+                `).join('')}
+            `;
+        }
+
+        // Export functions
+        document.getElementById('exportBtn').addEventListener('click', function() {
+            if (payrollResults.length === 0) {
+                alert('No results to export');
+                return;
+            }
+            
+            let csv = 'Employee,State,Regular Hours,OT Hours,DT Hours,PTO Hours,Sick Hours,Regular Pay,OT/DT Pay,PTO/Sick Pay,Total Gross Pay,FLSA Qualifying Hours,FLSA Premium Pay\n';
+            payrollResults.forEach(r => {
+                csv += `${r.employee},${r.state},${r.regularHours.toFixed(2)},${r.overtimeHours.toFixed(2)},${r.doubleTimeHours.toFixed(2)},${r.ptoHours.toFixed(2)},${r.sickHours.toFixed(2)},${r.regularPay.toFixed(2)},${(r.overtimePay + r.doubleTimePay).toFixed(2)},${(r.ptoPay + r.sickPay).toFixed(2)},${r.totalPay.toFixed(2)},${r.flsaQualifyingHours.toFixed(2)},${r.flsaQualifyingPay.toFixed(2)}\n`;
+            });
+
+            downloadCSV(csv, 'payroll_summary.csv');
+        });
+
+        document.getElementById('exportDetailBtn').addEventListener('click', function() {
+            if (payrollResults.length === 0) {
+                alert('No results to export');
+                return;
+            }
+            
+            let csv = 'Employee,Employee ID,State,Date,Day,Worked Hours,PTO Hours,Sick Hours,Regular,OT,DT,Daily Pay\n';
+            
+            payrollResults.forEach(result => {
+                result.dailyBreakdown.forEach(day => {
+                    const date = new Date(day.date);
+                    const dayOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][date.getDay()];
+                    const dailyPay = (day.regular * result.rate) + (day.overtime * result.rate * 1.5) + (day.doubleTime * result.rate * 2) + ((day.ptoHours + day.sickHours) * result.rate);
+                    
+                    csv += `${result.employee},${result.employeeId},${result.state},${day.date},${dayOfWeek},${day.workedHours.toFixed(2)},${day.ptoHours.toFixed(2)},${day.sickHours.toFixed(2)},${day.regular.toFixed(2)},${day.overtime.toFixed(2)},${day.doubleTime.toFixed(2)},${dailyPay.toFixed(2)}\n`;
+                });
+                
+                const totalWorked = result.dailyBreakdown.reduce((s,d) => s + d.workedHours, 0);
+                csv += `${result.employee} TOTAL,${result.employeeId},${result.state},SUMMARY,ALL,${totalWorked.toFixed(2)},${result.ptoHours.toFixed(2)},${result.sickHours.toFixed(2)},${result.regularHours.toFixed(2)},${result.overtimeHours.toFixed(2)},${result.doubleTimeHours.toFixed(2)},${result.totalPay.toFixed(2)}\n`;
+                csv += '\n';
+            });
+
+            downloadCSV(csv, 'payroll_detailed.csv');
+        });
+
+        document.getElementById('exportObbbaBtn').addEventListener('click', function() {
+            if (payrollResults.length === 0) {
+                alert('No results to export');
+                return;
+            }
+            
+            let csv = 'Employee,Employee ID,State,Total Worked Hours,Hours Over 40 (FLSA),FLSA Premium Pay (0.5x),Qualified for OBBBA\n';
+            payrollResults.forEach(r => {
+                const totalWorked = r.regularHours + r.overtimeHours + r.doubleTimeHours;
+                csv += `${r.employee},${r.employeeId},${r.state},${totalWorked.toFixed(2)},${r.flsaQualifyingHours.toFixed(2)},${r.flsaQualifyingPay.toFixed(2)},${r.flsaQualifyingHours > 0 ? 'Yes' : 'No'}\n`;
+            });
+
+            csv += '\n\nOBBBA TAX SUMMARY (2025)\n';
+            const totalFlsaPremium = payrollResults.reduce((sum, r) => sum + r.flsaQualifyingPay, 0);
+            csv += 'Total FLSA Premium Pay (All Employees),$' + totalFlsaPremium.toFixed(2) + '\n';
+            csv += '\nW-2 REPORTING INSTRUCTIONS:\n';
+            csv += 'Report this premium amount in W-2 Box 14 as "FLSA OT Premium" or similar designation.\n';
+            csv += '\nEMPLOYEE TAX BENEFIT:\n';
+            csv += 'Employees can deduct this amount on their Form 1040 tax return (up to $12,500 individual / $25,000 joint filing).\n';
+            csv += '\nIMPORTANT NOTES:\n';
+            csv += '1. This overtime was subject to normal tax withholding during payroll.\n';
+            csv += '2. The deduction is claimed at year-end on the employee tax return, not during payroll.\n';
+            csv += '3. Only overtime hours that exceed 40 hours/week (FLSA threshold) qualify.\n';
+            csv += '4. State-mandated daily overtime that does not exceed 40 hours/week does NOT qualify.\n';
+            csv += '5. Employees who want less tax withheld during the year must submit a new Form W-4 to their employer.\n';
+
+            downloadCSV(csv, 'OBBBA_tax_report.csv');
+        });
+
+        function downloadCSV(csv, filename) {
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function saveToStorage() {
+            try {
+                localStorage.setItem('vmsflex_employees', JSON.stringify(employees));
+                localStorage.setItem('vmsflex_timeEntries', JSON.stringify(timeEntries));
+                localStorage.setItem('vmsflex_results', JSON.stringify(payrollResults));
+                localStorage.setItem('vmsflex_templates', JSON.stringify(savedTemplates));
+            } catch (e) {
+                console.error('Storage error:', e);
+            }
+        }
+
+        function loadFromStorage() {
+            try {
+                const storedEmployees = localStorage.getItem('vmsflex_employees');
+                const storedEntries = localStorage.getItem('vmsflex_timeEntries');
+                const storedResults = localStorage.getItem('vmsflex_results');
+                const storedTemplates = localStorage.getItem('vmsflex_templates');
+                
+                if (storedEmployees) employees = JSON.parse(storedEmployees);
+                if (storedEntries) timeEntries = JSON.parse(storedEntries);
+                if (storedResults) payrollResults = JSON.parse(storedResults);
+                if (storedTemplates) savedTemplates = JSON.parse(storedTemplates);
+            } catch (e) {
+                console.error('Storage error:', e);
+            }
+        }
+
+        const today = new Date();
+        const twoWeeksAgo = new Date(today);
+        twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+        document.getElementById('periodStart').valueAsDate = twoWeeksAgo;
+        document.getElementById('periodEnd').valueAsDate = today;
+    </script>
+</body>
+</html>
