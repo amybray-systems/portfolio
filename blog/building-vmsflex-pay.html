@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building VMSFlex Pay - Amy Bray</title>
+    <style>
+        :root {
+            --bg-primary: #f7fafc;
+            --bg-secondary: #ffffff;
+            --bg-accent: #edf2f7;
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --text-muted: #718096;
+            --border-color: #e2e8f0;
+            --code-bg: #f7fafc;
+            --gradient-1: #667eea;
+            --gradient-2: #764ba2;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1a202c;
+            --bg-secondary: #2d3748;
+            --bg-accent: #374151;
+            --text-primary: #f7fafc;
+            --text-secondary: #e2e8f0;
+            --text-muted: #a0aec0;
+            --border-color: #4a5568;
+            --code-bg: #2d3748;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-primary);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: background-color 0.3s ease;
+        }
+
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: var(--gradient-1);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--gradient-1);
+            transform: rotate(20deg);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: var(--bg-secondary);
+            transition: background-color 0.3s ease;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            transition: color 0.3s ease;
+        }
+
+        h2, h3, h4 {
+            color: var(--text-primary);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+        }
+
+        .meta {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+            transition: color 0.3s ease;
+        }
+
+        .info-box {
+            background: var(--bg-accent);
+            border-left: 4px solid var(--gradient-1);
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .info-box p {
+            margin: 0;
+            color: var(--text-secondary);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2));
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .feature-card {
+            background: var(--bg-accent);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+        }
+
+        .feature-card h4 {
+            margin-top: 0;
+            color: var(--gradient-1);
+            font-size: 1rem;
+        }
+
+        .feature-card p {
+            font-size: 0.85rem;
+            margin: 0;
+            color: var(--text-muted);
+        }
+
+        pre {
+            background: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        code {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            transition: color 0.3s ease;
+        }
+
+        ul, ol {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2));
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 2rem auto;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+            .stats-grid, .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="https://amybray-systems.github.io/portfolio/" class="back-link">← Back to Portfolio</a>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                <span id="themeIcon">🌙</span>
+            </button>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1>Building VMSFlex Pay: Automating Multi-State Payroll for Contingent Workforce</h1>
+        
+        <div class="meta">
+            By Amy Bray • October 17, 2026 • 8 min read
+        </div>
+
+        <div class="info-box">
+            <p><strong>TL;DR:</strong> Built a web app that automates payroll processing across 32 VMS platforms and 50 states, reducing processing time by 94% and eliminating manual calculation errors.</p>
+        </div>
+
+        <h2>The Business Problem</h2>
+
+        <p>Managing contingent workforce payroll across multiple Vendor Management Systems (VMS) was a nightmare. Each week, our team faced:</p>
+
+        <ul>
+            <li><strong>32 different VMS platforms</strong>, each with unique CSV/PDF export formats</li>
+            <li><strong>50 different state overtime rules</strong> requiring manual calculation</li>
+            <li><strong>Hours of manual data entry</strong> and reformatting for EOR partners</li>
+            <li><strong>High error risk</strong> from copy-paste mistakes and calculation errors</li>
+        </ul>
+
+        <p>The process took 5-7 hours per pay period per payroll specialist, with frequent errors requiring corrections and amended paychecks.</p>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">94%</div>
+                <div class="stat-label">Time Reduction</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">$14K+</div>
+                <div class="stat-label">Annual Value</div>
+            </div>
+        </div>
+
+        <h2>The Solution</h2>
+
+        <p>VMSFlex Pay is a browser-based tool that:</p>
+
+        <ol>
+            <li><strong>Intelligently parses</strong> CSV/PDF files from any VMS format</li>
+            <li><strong>Applies 50-state overtime rules</strong> automatically</li>
+            <li><strong>Validates compliance</strong> before processing</li>
+            <li><strong>Exports standardized data</strong> for EOR partners</li>
+            <li><strong>Tracks OBBBA taxes</strong> for year-end reporting</li>
+        </ol>
+
+        <h2>Technical Deep Dive</h2>
+
+        <h3>1. Smart File Parsing</h3>
+
+        <p>The biggest challenge was handling 32 different VMS formats. Some provided daily breakdowns, others weekly totals. Date formats varied. Column names were inconsistent.</p>
+
+        <p><strong>Solution:</strong> Built a visual column mapper that:</p>
+        <ul>
+            <li>Auto-detects common formats (Beeline, Fieldglass, IQN, etc.)</li>
+            <li>Lets users drag-and-drop columns to map fields</li>
+            <li>Saves templates per VMS for reuse</li>
+            <li>Handles both CSV and PDF uploads</li>
+        </ul>
+
+        <h3>2. Name Matching Algorithm</h3>
+
+        <p>Employee names varied between systems: "John Smith" vs "Smith, John" vs "Smith,John" vs "SMITH, JOHN".</p>
+
+        <p><strong>Solution:</strong> Implemented 4-tier matching:</p>
+        <pre><code>1. Exact match (case-insensitive)
+2. Normalized match (trim, lowercase, remove punctuation)
+3. Token-based match (first + last names in any order)
+4. Fuzzy match (Levenshtein distance < 2)</code></pre>
+
+        <h3>3. 50-State Overtime Rules</h3>
+
+        <p>Every state has different overtime thresholds. California has daily OT rules. Alaska has weekly OT at 8 hours/day AND 40 hours/week.</p>
+
+        <p><strong>Solution:</strong> Built a rule engine that:</p>
+        <ul>
+            <li>Applies daily thresholds (CA: 8h/day, 12h/day for double-time)</li>
+            <li>Applies weekly thresholds (40h/week federal minimum)</li>
+            <li>Calculates 7th consecutive day rules (CA)</li>
+            <li>Reconciles FLSA vs state rules (highest rate wins)</li>
+            <li>Validates California daily breakdown requirements</li>
+        </ul>
+
+        <h3>4. OBBBA Tax Tracking</h3>
+
+        <p>"OBBBA" regulation requires tracking state-mandated overtime separately from federal for tax reporting.</p>
+
+        <p><strong>Solution:</strong> System tracks:</p>
+        <ul>
+            <li>Regular hours (straight time)</li>
+            <li>FLSA overtime (federal 1.5x after 40h/week)</li>
+            <li>State overtime (e.g., CA daily OT)</li>
+            <li>Generates year-end W-2 Box 14 reports</li>
+        </ul>
+
+        <h3>5. Exception Detection</h3>
+
+        <p>The system automatically flags potential issues:</p>
+        <ul>
+            <li><strong>Excessive hours:</strong> Any day > 12 hours</li>
+            <li><strong>Consecutive work days:</strong> 7+ days in a row</li>
+            <li><strong>High OT ratio:</strong> OT > 40% of total hours</li>
+            <li><strong>Missing daily breakdowns:</strong> California employees without day-by-day data</li>
+        </ul>
+
+        <h2>Key Features</h2>
+
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>File Import</h4>
+                <p>Drag & drop CSV/PDF<br>
+                Auto-detect formats<br>
+                Visual column mapper<br>
+                Template library</p>
+            </div>
+            <div class="feature-card">
+                <h4>Smart Processing</h4>
+                <p>50-state OT rules<br>
+                PDF text extraction<br>
+                Name matching (4 strategies)</p>
+            </div>
+            <div class="feature-card">
+                <h4>Compliance</h4>
+                <p>50-state OT rules<br>
+                CA daily validation<br>
+                OBBBA tax tracking</p>
+            </div>
+            <div class="feature-card">
+                <h4>Quality Control</h4>
+                <p>Exception flagging<br>
+                Daily breakdowns<br>
+                Audit trail</p>
+            </div>
+            <div class="feature-card">
+                <h4>Reporting</h4>
+                <p>Summary export (EOR)<br>
+                Detailed export (audit)<br>
+                OBBBA report (tax)</p>
+            </div>
+        </div>
+
+        <h2>Try It Yourself</h2>
+
+        <div style="text-align: center;">
+            <a href="vmsflex-pay-demo.html" class="cta-button">Launch VMSFlex Pay Demo →</a>
+        </div>
+
+        <h3>What's Included</h3>
+        <ul>
+            <li>✅ Demo employees (CA, TX, CO, NY, NV)</li>
+            <li>✅ Sample data generator</li>
+            <li>✅ All 50-state rules</li>
+            <li>✅ PDF upload capability</li>
+            <li>✅ OBBBA tax tracking</li>
+            <li>✅ Exception detection</li>
+        </ul>
+        <hr style="margin: 50px 0; border: none; border-top: 2px solid var(--border-color);">
+
+        <h2>Contact</h2>
+        <p>Questions about VMSFlex Pay or payroll automation?</p>
+        <p>
+            📧 <strong>Email:</strong> amybray0315@gmail.com.com<br>
+            💼 <strong>LinkedIn:</strong> linkedin.com/in/amybrayphr
+        </p>
+
+        <p style="font-size: 0.9em; color: var(--text-muted); margin-top: 30px;">
+            <strong>Note:</strong> Implementation shows how the system handles new compliance requirements.
+        </p>
+    </div>
+
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const html = document.documentElement;
+
+        // Check for saved theme preference or default to light mode
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', currentTheme);
+        updateThemeIcon(currentTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+
+        function updateThemeIcon(theme) {
+            themeIcon.textContent = theme === 'light' ? '🌙' : '☀️';
+        }
+    </script>
+</body>
+</html>
