@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AuniConnect — Amy Bray</title>
-    <meta name="description" content="AuniConnect: Unified employee engagement platform with AI chatbot Aunikah for seamless HR communication.">
+    <meta name="description" content="AuniConnect: Pre-marketplace infrastructure platform for talent operations, engagement, and performance management.">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -172,199 +172,130 @@
             z-index: 1;
             opacity: 0.4;
             background-image: 
-                radial-gradient(circle at 1px 1px, var(--border) 1px, transparent 0);
-            background-size: 24px 24px;
-            mix-blend-mode: multiply;
+                radial-gradient(at 20% 30%, rgba(79, 70, 229, 0.15) 0px, transparent 50%),
+                radial-gradient(at 80% 70%, rgba(6, 182, 212, 0.15) 0px, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(139, 92, 246, 0.1) 0px, transparent 50%);
+            animation: float 20s ease-in-out infinite;
         }
 
-        :root[data-theme="dark"] body::before {
-            mix-blend-mode: overlay;
-            opacity: 0.2;
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
         }
 
-        .bg-canvas {
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
-            background: var(--bg-primary);
-        }
-
-        :root[data-theme="light"] .bg-canvas {
-            background: 
-                radial-gradient(800px circle at 85% 15%, rgba(79, 70, 229, 0.08) 0%, transparent 50%),
-                radial-gradient(600px circle at 15% 85%, rgba(6, 182, 212, 0.06) 0%, transparent 50%),
-                linear-gradient(135deg, #fafbff 0%, #f1f5f9 50%, #e2e8f0 100%);
-        }
-
-        :root[data-theme="dark"] .bg-canvas {
-            background: 
-                radial-gradient(800px circle at 85% 15%, rgba(99, 102, 241, 0.12) 0%, transparent 50%),
-                radial-gradient(600px circle at 15% 85%, rgba(34, 211, 238, 0.08) 0%, transparent 50%),
-                linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
-        }
-
-        .accent-blob {
-            position: fixed;
-            pointer-events: none;
-            z-index: 0;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.6;
-            animation: floatGentle 20s ease-in-out infinite;
-        }
-
-        .blob-1 {
-            width: 400px;
-            height: 400px;
-            background: var(--accent-gradient);
-            top: -200px;
-            right: -200px;
-            animation-delay: 0s;
-        }
-
-        .blob-2 {
-            width: 300px;
-            height: 300px;
-            background: var(--accent-gradient-alt);
-            bottom: -150px;
-            left: -150px;
-            animation-delay: 10s;
-        }
-
-        @keyframes floatGentle {
-            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.4; }
-            33% { transform: translate(30px, -20px) scale(1.1); opacity: 0.6; }
-            66% { transform: translate(-20px, 30px) scale(0.9); opacity: 0.5; }
-        }
-
-        /* Header */
-        .site-header {
+        /* Navigation */
+        .site-nav {
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
+            background: rgba(250, 251, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
             transition: all 0.3s ease;
         }
 
-        :root[data-theme="dark"] .site-header {
-            background: rgba(30, 41, 59, 0.95);
+        :root[data-theme="dark"] .site-nav {
+            background: rgba(15, 23, 42, 0.8);
         }
 
-        .header-content {
+        .nav-content {
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            padding: 16px 0;
-            position: relative;
-            z-index: 2;
-        }
-
-        .brand {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            text-decoration: none;
-            letter-spacing: -0.02em;
-        }
-
-        .nav-actions {
-            display: flex;
             align-items: center;
-            gap: 8px;
+            padding: 20px 0;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-left: 24px;
+            padding-right: 24px;
         }
 
-        .nav-btn {
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-weight: 500;
-            font-size: 0.95rem;
+        .nav-brand {
+            font-size: 1.25rem;
+            font-weight: 700;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.03em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-link {
             color: var(--text-secondary);
+            font-weight: 500;
             transition: all 0.2s ease;
-            border: 1px solid transparent;
+            position: relative;
         }
 
-        .nav-btn:hover {
-            color: var(--text-primary);
-            background: var(--surface);
-            border-color: var(--border);
-            transform: translateY(-1px);
-        }
-
-        .nav-btn.active {
+        .nav-link:hover {
             color: var(--accent-primary);
-            background: var(--surface);
-            border-color: var(--border);
-            font-weight: 600;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-gradient);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
         }
 
         .theme-toggle {
             background: var(--surface);
             border: 1px solid var(--border);
+            padding: 8px 12px;
             border-radius: 8px;
-            padding: 8px;
             cursor: pointer;
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             transition: all 0.2s ease;
-            margin-left: 8px;
-            color: var(--text-primary);
         }
 
         .theme-toggle:hover {
+            background: var(--surface-hover);
             border-color: var(--border-hover);
-            transform: translateY(-1px);
+            transform: scale(1.05);
         }
 
-        /* Back Button */
-        .back-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--text-secondary);
-            font-weight: 500;
-            font-size: 0.95rem;
-            margin-bottom: 32px;
-            padding: 8px 16px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            background: var(--surface);
-            transition: all 0.2s ease;
-        }
-
-        .back-btn:hover {
-            color: var(--text-primary);
-            border-color: var(--border-hover);
-            transform: translateX(-4px);
-        }
-
-        /* Hero Section */
+        /* Project Hero */
         .project-hero {
-            padding: 60px 0 40px;
+            padding: 120px 0 60px 0;
             position: relative;
             z-index: 2;
         }
 
-        .project-hero-content {
-            max-width: 900px;
-            margin: 0 auto;
+        .project-header {
+            text-align: center;
+            margin-bottom: 48px;
         }
 
-        .project-status-badge {
+        .project-category {
             display: inline-block;
-            background: var(--warning-bg);
-            color: var(--warning);
-            padding: 6px 16px;
-            border-radius: 20px;
+            padding: 8px 16px;
+            background: var(--accent-gradient);
+            color: white;
+            border-radius: 100px;
             font-size: 0.875rem;
             font-weight: 600;
+            letter-spacing: 0.05em;
             text-transform: uppercase;
             margin-bottom: 24px;
         }
 
-        .project-hero h1 {
-            margin-bottom: 20px;
+        .project-title {
+            margin-bottom: 24px;
             background: var(--accent-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -374,24 +305,49 @@
         .project-subtitle {
             font-size: 1.25rem;
             color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 32px auto;
             line-height: 1.6;
-            margin-bottom: 32px;
         }
 
+        .project-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 32px;
+            background: var(--accent-gradient);
+            color: white;
+            border-radius: 12px;
+            font-weight: 600;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.3s ease;
+        }
+
+        .project-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+            color: white;
+        }
+
+        /* Project Meta */
         .project-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 24px;
-            padding: 24px;
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: var(--radius);
-            margin-top: 32px;
+            border-radius: var(--radius-large);
+            padding: 32px;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 32px;
         }
 
         .meta-item {
-            flex: 1;
-            min-width: 200px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
 
         .meta-label {
@@ -400,13 +356,12 @@
             text-transform: uppercase;
             letter-spacing: 0.05em;
             font-weight: 600;
-            margin-bottom: 8px;
         }
 
         .meta-value {
-            font-size: 1rem;
+            font-size: 1.125rem;
             color: var(--text-primary);
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .tech-tags {
@@ -416,34 +371,23 @@
         }
 
         .tech-tag {
-            padding: 4px 10px;
-            background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(6, 182, 212, 0.1));
-            color: var(--accent-primary);
+            padding: 6px 12px;
+            background: var(--accent-gradient);
+            color: white;
+            border-radius: 6px;
             font-size: 0.875rem;
             font-weight: 500;
-            border-radius: 4px;
-            border: 1px solid rgba(79, 70, 229, 0.2);
         }
 
         /* Content Sections */
         .content-section {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 40px;
-            margin-bottom: 32px;
+            margin-bottom: 64px;
         }
 
-        .content-section h2 {
-            color: var(--text-primary);
+        .content-section:last-child {
+            margin-bottom: 0;
         }
 
-        .content-section h3 {
-            color: var(--text-primary);
-            margin-top: 24px;
-        }
-
-        /* Stats Grid */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -452,11 +396,18 @@
         }
 
         .stat-card {
-            text-align: center;
-            padding: 24px;
-            background: var(--bg-secondary);
-            border-radius: 12px;
+            background: var(--surface);
             border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-medium);
+            border-color: var(--accent-primary);
         }
 
         .stat-value {
@@ -466,74 +417,83 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            line-height: 1.2;
             margin-bottom: 8px;
         }
 
         .stat-label {
             font-size: 0.875rem;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
-/* Project Action Buttons */
-        .project-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-            margin: 32px 0;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 14px 28px;
-            border-radius: 12px;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
             font-weight: 600;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: 2px solid transparent;
-            text-decoration: none;
         }
 
-        .btn-primary {
-            background: var(--accent-gradient);
-            color: var(--text-inverse);
-            box-shadow: 0 4px 16px rgba(79, 70, 229, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(79, 70, 229, 0.4);
-        }
-
-        .btn-secondary {
+        /* Feature Showcase */
+        .feature-showcase {
             background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-large);
+            padding: 40px;
+            margin: 48px 0;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .feature-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 700;
             color: var(--text-primary);
-            border: 2px solid var(--border-strong);
+            margin: 0;
         }
 
-        .btn-secondary:hover {
+        .feature-description {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+
+        .screenshot-container {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+            margin-top: 24px;
+        }
+
+        .screenshot-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            display: block;
+        }
+
+        .screenshot-placeholder {
             background: var(--surface-hover);
-            border-color: var(--accent-primary);
-            transform: translateY(-2px);
+            border: 2px dashed var(--border);
+            border-radius: var(--radius);
+            padding: 60px 20px;
+            text-align: center;
+            color: var(--text-tertiary);
+            font-style: italic;
         }
 
-        .btn span {
-            font-size: 1.2rem;
-            transition: transform 0.2s ease;
-        }
-
-        .btn:hover span {
-            transform: translateX(4px);
-        }
-		
         /* Footer */
         .site-footer {
             background: var(--surface);
             border-top: 1px solid var(--border);
-            padding: 60px 0 40px;
+            padding: 48px 0;
+            margin-top: 120px;
             position: relative;
             z-index: 2;
         }
@@ -544,145 +504,107 @@
 
         .footer-text {
             color: var(--text-tertiary);
-            font-size: 0.9rem;
+            font-size: 0.875rem;
         }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
+            .nav-links {
                 gap: 16px;
-                padding: 20px 0;
             }
 
-            .nav-actions {
-                flex-wrap: wrap;
-                justify-content: center;
+            .nav-link {
+                font-size: 0.875rem;
             }
 
             .project-hero {
-                padding: 40px 0 30px;
+                padding: 80px 0 40px 0;
             }
 
             .section {
                 padding: 60px 0;
             }
 
-            .container, .container-narrow {
-                padding: 0 16px;
-            }
-
-            .content-section {
-                padding: 24px;
-            }
-
-            .project-meta {
-                padding: 16px;
+            .meta-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
             }
 
             .stats-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr);
             }
+
+            .feature-showcase {
+                padding: 24px;
+            }
+        }
+		/* Screenshot Container Styles */
+        .screenshot-container {
+            width: 100%;
+            overflow: hidden;
+            border-radius: var(--radius);
+            margin: 1.5rem 0;
+            background: var(--surface);
+            box-shadow: var(--shadow-soft);
         }
 
-        /* Accessibility */
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-            
-            .accent-blob {
-                animation: none;
-            }
+        .screenshot-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+            max-height: 600px;
         }
-
-        .nav-btn:focus-visible,
-        .theme-toggle:focus-visible,
-        .back-btn:focus-visible {
-            outline: 2px solid var(--accent-primary);
-            outline-offset: 2px;
-        }
+    </style>
     </style>
 </head>
 <body>
-    <!-- Professional background system -->
-    <div class="bg-canvas" aria-hidden="true"></div>
-    <div class="accent-blob blob-1" aria-hidden="true"></div>
-    <div class="accent-blob blob-2" aria-hidden="true"></div>
-
-    <!-- Header -->
-    <header class="site-header">
-        <div class="container">
-            <div class="header-content">
-                <a class="brand" href="index.html">Amy Bray</a>
-                
-                <nav class="nav-actions">
-                    <a class="nav-btn" href="index.html">Home</a>
-                    <a class="nav-btn" href="projects.html">Projects</a>
-                    <a class="nav-btn" href="about.html">About</a>
-					<a href="blog/index.html" target="_blank">Blog</a>
-                    <a class="nav-btn" href="contact.html">Contact</a>
-                    <button
-                        id="theme-toggle"
-                        class="theme-toggle"
-                        aria-label="Toggle between light and dark themes"
-                        title="Toggle theme"
-                    >
-                        🌙
-                    </button>
-                </nav>
+    <!-- Navigation -->
+    <nav class="site-nav">
+        <div class="nav-content">
+            <a href="index.html" class="nav-brand">Amy Bray</a>
+            <div class="nav-links">
+                <a href="index.html#projects" class="nav-link">Projects</a>
+                <a href="index.html#about" class="nav-link">About</a>
+                <a href="index.html#contact" class="nav-link">Contact</a>
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">🌙</button>
             </div>
         </div>
-    </header>
+    </nav>
 
     <!-- Main Content -->
     <main>
-        <!-- Hero Section -->
+        <!-- Project Hero -->
         <section class="project-hero">
             <div class="container-narrow">
-                <a href="projects.html" class="back-btn">← Back to Projects</a>
-                
-                <div class="project-hero-content">
-                    <span class="project-status-badge">Beta Testing</span>
-                    <h1>AuniConnect</h1>
+                <div class="project-header">
+                    <span class="project-category">HR Technology Platform</span>
+                    <h1 class="project-title">AuniConnect</h1>
                     <p class="project-subtitle">
-    Unified employee engagement platform featuring Aunikah, an AI-powered chatbot that provides 24/7 HR support, answers policy questions, and connects employees with the resources they need.
-</p>
+                        Pre-marketplace infrastructure platform connecting talent operations, engagement, and performance management for distributed workforces.
+                    </p>
+                    <a href="https://amybray-systems.github.io/auniconnect-chatbot/" target="_blank" class="project-cta">
+                        Chat with Aunikah →
+                    </a>
+                </div>
 
-<!-- ADD THIS -->
-<div class="project-actions">
-    <a href="https://amybray-systems.github.io/auniconnect-chatbot/" target="_blank" class="btn btn-primary">
-        Chat with Aunikah
-        <span>↗</span>
-    </a>
-    <a href="contact.html" class="btn btn-secondary">
-        Schedule Full Demo
-        <span>→</span>
-    </a>
-</div>
-<!-- END ADD -->
-
-<div class="project-meta">
-    <div class="meta-item">
-
-                    <div class="project-meta">
+                <div class="project-meta">
+                    <div class="meta-grid">
                         <div class="meta-item">
                             <div class="meta-label">Role</div>
-                            <div class="meta-value">Full-Stack Developer & System Architect</div>
+                            <div class="meta-value">Product Designer & Builder</div>
                         </div>
                         <div class="meta-item">
                             <div class="meta-label">Timeline</div>
-                            <div class="meta-value">4 months (2025 - ongoing)</div>
+                            <div class="meta-value">6 Months (Ongoing)</div>
                         </div>
                         <div class="meta-item">
                             <div class="meta-label">Technology Stack</div>
                             <div class="tech-tags">
-                                <span class="tech-tag">React</span>
-                                <span class="tech-tag">Node.js</span>
-                                <span class="tech-tag">MongoDB</span>
-                                <span class="tech-tag">OpenAI API</span>
+                                <span class="tech-tag">Python/Flask</span>
+                                <span class="tech-tag">HTML/CSS/JS</span>
+                                <span class="tech-tag">JSON Database</span>
+                                <span class="tech-tag">AI/NLP</span>
                             </div>
                         </div>
                     </div>
@@ -694,121 +616,181 @@
             <div class="container-narrow">
                 <!-- Project Overview -->
                 <div class="content-section">
-                    <h2>Project Overview</h2>
+                    <h2>The Problem: Reactive Talent Operations</h2>
                     <p>
-                        AuniConnect emerged from watching HR teams manually copy and paste candidate information between their ATS (Applicant Tracking System) and HRIS (Human Resource Information System) dozens of times per week. This manual process wasn't just time-consuming—it was error-prone and created frustrating data inconsistencies.
+                        While managing contractors at The Mom Project, I experienced critical operational gaps firsthand. We were constantly <strong>reactive rather than proactive</strong>—scrambling when contracts ended unexpectedly, manually tracking assignment details across spreadsheets, and lacking visibility into contractor engagement and performance.
                     </p>
                     <p>
-                        The platform creates a seamless bridge between recruiting and HR operations, automatically syncing candidate data, maintaining real-time status updates, and ensuring that when someone is hired, their information flows perfectly from recruitment into employee records.
+                        Three specific pain points stood out:
                     </p>
-                    <p>
-                        At the heart of AuniConnect is <strong>Aunikah</strong>, an AI-powered chatbot that acts as a 24/7 HR concierge. Employees can ask questions about benefits, policies, time-off balances, or company resources and receive instant, accurate responses—reducing the burden on HR staff while improving the employee experience.
+                    <ul style="margin-left: 1rem; color: var(--text-secondary); line-height: 1.8;">
+                        <li><strong>Contractors lacked visibility</strong> into their performance and value—no systematic way to showcase client feedback</li>
+                        <li><strong>Managers had no tools</strong> to recognize engagement or track team performance across distributed talent</li>
+                        <li><strong>Assignment lifecycle was reactive</strong>—we discovered retention risks too late, after contracts had already lapsed</li>
+                    </ul>
+                    <p style="margin-top: 1.5rem;">
+                        I asked: <em>What if we could build contractor confidence through recognition, predict churn before it happens, and give managers the tools to support distributed talent proactively?</em>
                     </p>
 
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-value">40hrs</div>
-                            <div class="stat-label">Time Saved/Week</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-value">95%</div>
-                            <div class="stat-label">Error Reduction</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-value">15</div>
-                            <div class="stat-label">Beta Companies</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-value">24/7</div>
-                            <div class="stat-label">Employee Support</div>
-                        </div>
+                    <h2 style="margin-top: 48px;">The Solution: Pre-Marketplace Infrastructure</h2>
+                    <p>
+                        AuniConnect emerged as an <strong>integrated talent operations platform</strong> that solves the operational and engagement challenges talent marketplaces face before they even reach billing and payments. It's the foundation that makes marketplace success possible.
+                    </p>
+                    <p>
+                        The platform evolved organically—each feature solving a real operational need. What some might call "scope creep" was actually <strong>systems thinking</strong>: recognition data should inform retention, retention should inform assignment management, and all of it should be visible to managers who can take action.
+                    </p>
+                </div>
+
+                <!-- Feature Showcase: Renewal Radar -->
+                <div class="feature-showcase">
+                    <div class="feature-header">
+                        <span class="feature-icon">🎯</span>
+                        <h3 class="feature-title">Renewal Radar: Predictive Retention</h3>
+                    </div>
+                    <p class="feature-description">
+                        Stop reacting to contract expirations. Renewal Radar provides <strong>predictive alerts</strong> for upcoming end dates with risk scoring, filterable time windows (T-60, T-45, T-30, T-15), and one-click action buttons to extend, end, or convert assignments. Every action is logged with full audit history.
+                    </p>
+                    <div class="screenshot-container">
+						<img src="images/renewalradar.png" alt="Renewal Radar dashboard showing risk levels and action buttons">
+                    </div>
+                    <p style="margin-top: 16px; font-size: 0.875rem; color: var(--text-tertiary); font-style: italic;">
+                        This feature alone addresses the #1 pain point from The Mom Project—being proactive instead of reactive about contractor retention.
+                    </p>
+                </div>
+
+                <!-- Feature Showcase: Recognition System -->
+                <div class="feature-showcase">
+                    <div class="feature-header">
+                        <span class="feature-icon">⭐</span>
+                        <h3 class="feature-title">Recognition & Company Values</h3>
+                    </div>
+                    <p class="feature-description">
+						Drawing from talent marketplace best practices, this module allows managers and colleagues to leave <strong>public recognition</strong> tied to company values. Contractors see their impact reflected back, clients can view performance history, and the platform tracks recognition patterns to identify who might need support—similar to how freelance platforms use visible feedback to build contractor reputation.
+					</p>
+                    <div class="screenshot-container">
+                        <img src="images/heatmapdashboard.png" alt="Company Values Dashboard with heat maps and recognition analytics">
+                    </div>
+                    <p style="margin-top: 16px; font-size: 0.875rem; color: var(--text-tertiary); font-style: italic;">
+                        Recognition isn't just nice—it's performance data that feeds into retention predictions and manager insights.
+                    </p>
+                </div>
+
+                <!-- Feature Showcase: Employee Database -->
+                <div class="feature-showcase">
+                    <div class="feature-header">
+                        <span class="feature-icon">📊</span>
+                        <h3 class="feature-title">Assignment Lifecycle Management</h3>
+                    </div>
+                    <p class="feature-description">
+                        Comprehensive talent database tracking client assignments, employment types (direct hire, 1099, W2), EOR partners, start/end dates, and status. Includes <strong>full audit history</strong> for all changes, document management for contracts and tax forms, and escalation flags for issues requiring immediate attention.
+                    </p>
+                    <div class="screenshot-container">
+                        <img src="images/contractordatabase.png" alt="Employee Database with assignment tracking and action buttons">
+                    </div>
+                    <p style="margin-top: 16px; font-size: 0.875rem; color: var(--text-tertiary); font-style: italic;">
+                        Clean assignment data is the foundation. Without this, you can't accurately bill, track performance, or predict retention.
+                    </p>
+                </div>
+
+                <!-- Feature Showcase: Escalation Triage -->
+                <div class="feature-showcase">
+                    <div class="feature-header">
+                        <span class="feature-icon">🎫</span>
+                        <h3 class="feature-title">Escalation Triage IQ</h3>
+                    </div>
+                    <p class="feature-description">
+                        Smart support ticketing system with <strong>automated priority scoring, SLA tracking</strong>, and intelligent routing. Categorizes issues by severity, tracks response times, and flags SLA breaches before they happen. Integrates with Aunikah to escalate questions the chatbot can't handle.
+                    </p>
+                    <div class="screenshot-container">
+                         <img src="images/escalationdashboard.png" alt="Escalation Triage IQ dashboard with SLA metrics and priority queue">
+                    </div>
+                    <p style="margin-top: 16px; font-size: 0.875rem; color: var(--text-tertiary); font-style: italic;">
+                        Support operations matter. This ensures critical contractor issues get immediate attention with full accountability.
+                    </p>
+                </div>
+
+                <!-- Feature Showcase: Manager Dashboard [in development] -->
+                <div class="feature-showcase">
+                    <div class="feature-header">
+                        <span class="feature-icon">👥</span>
+                        <h3 class="feature-title">Manager Enablement Tools</h3>
+                    </div>
+                    <p class="feature-description">
+                        Give managers visibility into their distributed teams with <strong>team performance dashboards</strong>, recognition analytics, and AI-powered suggestions for who needs recognition. Managers can see who hasn't received kudos recently, track team values alignment, and access coaching resources from Aunikah.
+                    </p>
+                    <div class="screenshot-container">
+                        <div class="screenshot-placeholder">COMING SOON</div>
+                    </div>
+                    <p style="margin-top: 16px; font-size: 0.875rem; color: var(--text-tertiary); font-style: italic;">
+                        Managers of distributed talent need different tools than traditional people managers. This gives them what they need.
+                    </p>
+                </div>
+
+                <!-- Aunikah Section -->
+                <div class="content-section">
+                    <h2>Aunikah: AI-Powered Support Agent</h2>
+                    <p>
+                        At the heart of the platform is <strong>Aunikah</strong>, an AI chatbot that serves as a 24/7 HR concierge. Contractors and managers can ask questions about benefits, policies, time-off balances, and company resources—receiving instant, contextual responses that reduce the burden on HR staff.
+                    </p>
+                    <p>
+                        Aunikah is designed with <strong>intelligent escalation</strong>: when she encounters questions outside her knowledge base, she automatically creates a support ticket in the Escalation Triage IQ system, ensuring nothing falls through the cracks.
+                    </p>
+                    <div style="margin-top: 32px; padding: 24px; background: var(--accent-gradient); border-radius: var(--radius); text-align: center;">
+                        <p style="color: white; margin-bottom: 16px; font-size: 1.125rem; font-weight: 600;">Try Aunikah yourself</p>
+                        <a href="https://amybray-systems.github.io/auniconnect-chatbot/" target="_blank" style="display: inline-block; padding: 12px 32px; background: white; color: var(--accent-primary); border-radius: 8px; font-weight: 600; box-shadow: var(--shadow-soft);">
+                            Chat with Aunikah →
+                        </a>
                     </div>
                 </div>
 
                 <!-- Technical Implementation -->
                 <div class="content-section">
-                    <h2>Technical Implementation</h2>
-                    
-                    <h3>Architecture & Technology Stack</h3>
+                    <h2>How It's Built</h2>
                     <p>
-                        Built with event-driven architecture using WebSockets and message queues to ensure instant updates across platforms. The platform uses a modular adapter architecture that makes it easy to add new ATS and HRIS integrations.
+                        AuniConnect is built with modern, AI-assisted development practices using <strong>Python/Flask</strong> for the backend, <strong>HTML/CSS/JavaScript</strong> for the frontend, and <strong>JSON-based data storage</strong> for rapid prototyping and iteration.
                     </p>
                     <p>
-                        <strong>Aunikah</strong>, the AI chatbot component, leverages natural language processing to understand employee queries and provide contextual responses based on company policies, benefits information, and employee-specific data—all while maintaining strict data privacy and security standards.
-                    </p>
-
-                    <h3>Key Features</h3>
-                    <p><strong>Data Integration:</strong></p>
-                    <ul style="margin-left: 1rem; color: var(--text-secondary); line-height: 1.8;">
-                        <li>Bi-directional sync between ATS and HRIS platforms</li>
-                        <li>Real-time candidate status updates</li>
-                        <li>Automated offer letter to onboarding workflow</li>
-                        <li>Custom field mapping engine</li>
-                    </ul>
-
-                    <p style="margin-top: 1.5rem;"><strong>Aunikah AI Chatbot:</strong></p>
-                    <ul style="margin-left: 1rem; color: var(--text-secondary); line-height: 1.8;">
-                        <li>24/7 instant responses to HR questions</li>
-                        <li>Policy and benefits information lookup</li>
-                        <li>Time-off balance inquiries</li>
-                        <li>Employee directory search</li>
-                        <li>Multilingual support</li>
-                        <li>Escalation to human HR staff when needed</li>
-                    </ul>
-
-                    <p style="margin-top: 1.5rem;"><strong>Security & Compliance:</strong></p>
-                    <ul style="margin-left: 1rem; color: var(--text-secondary); line-height: 1.8;">
-                        <li>End-to-end encryption for all data transfers</li>
-                        <li>Role-based access control</li>
-                        <li>GDPR and SOC 2 compliant</li>
-                        <li>Audit logging for all system actions</li>
-                    </ul>
-                </div>
-
-                <!-- Challenges & Solutions -->
-                <div class="content-section">
-                    <h2>Challenges & Solutions</h2>
-
-                    <h3>Challenge: Data Format Inconsistencies</h3>
-                    <p>
-                        Different ATS and HRIS platforms use vastly different data structures, field names, and formats. A "phone number" might be stored as "PhoneNumber", "Phone_Number", "Contact_Phone", or split across multiple fields.
-                    </p>
-                    <p>
-                        <strong>Solution:</strong> Built an intelligent field mapping engine that learns from user configurations and suggests mappings for new integrations. The system includes pre-built templates for major platforms and allows custom mapping rules with validation.
-                    </p>
-
-                    <h3>Challenge: Real-Time Sync Without Overwhelming APIs</h3>
-                    <p>
-                        Maintaining real-time synchronization while respecting API rate limits and avoiding excessive polling that could impact system performance.
-                    </p>
-                    <p>
-                        <strong>Solution:</strong> Implemented webhook-based updates where supported, with intelligent polling intervals for platforms without webhooks. Used Redis caching to minimize redundant API calls and queue-based processing to handle burst traffic.
-                    </p>
-
-                    <h3>Challenge: Training Aunikah to Provide Accurate Answers</h3>
-                    <p>
-                        Ensuring the chatbot provides accurate, company-specific information without hallucinating policies or giving incorrect guidance.
-                    </p>
-                    <p>
-                        <strong>Solution:</strong> Built a hybrid approach using retrieval-augmented generation (RAG) that grounds all responses in actual company documents and policies. Implemented confidence scoring and automatic escalation to human HR when the system isn't certain of an answer.
-                    </p>
-                </div>
-
-                <!-- The Impact -->
-                <div class="content-section">
-                    <h2>The Impact</h2>
-                    <p>
-                        Beta companies using AuniConnect report significant improvements in both operational efficiency and employee satisfaction:
+                        The platform is designed with <strong>modularity and integration points</strong> in mind. While Phase 1 focuses on operations and engagement infrastructure, it's architected to integrate with:
                     </p>
                     <ul style="margin-left: 1rem; color: var(--text-secondary); line-height: 1.8;">
-                        <li><strong>40+ hours saved per week</strong> previously spent on manual data entry</li>
-                        <li><strong>95% reduction in data entry errors</strong> and inconsistencies</li>
-                        <li><strong>68% decrease in basic HR inquiries</strong> handled by Aunikah</li>
-                        <li><strong>Average 2-minute response time</strong> for employee questions (vs. 4-6 hours previously)</li>
-                        <li><strong>92% employee satisfaction</strong> rating for the chatbot experience</li>
+                        <li>Payment processors (Stripe, PayPal) for billing automation</li>
+                        <li>Time tracking systems for 1099 contractor management</li>
+                        <li>Existing HRIS platforms (Workday, BambooHR, UKG) via API</li>
+                        <li>Communication tools (Slack, Microsoft Teams) for notifications</li>
                     </ul>
                     <p style="margin-top: 1.5rem;">
-                        HR teams can now focus on strategic initiatives and complex employee needs rather than repetitive data entry and routine questions.
+                        This is <strong>pre-marketplace infrastructure</strong>—the operational foundation that makes billing, payments, and marketplace features possible by ensuring clean data, engaged talent, and proactive management.
+                    </p>
+                </div>
+
+                <!-- What This Demonstrates -->
+                <div class="content-section">
+                    <h2>What This Demonstrates</h2>
+                    <p>
+                        Building AuniConnect showcases several key capabilities that translate directly to HRIS and People Operations roles:
+                    </p>
+                    <ul style="margin-left: 1rem; color: var(--text-secondary); line-height: 1.8;">
+                        <li><strong>Systems thinking</strong> — Understanding how talent operations, engagement, and performance management interconnect</li>
+                        <li><strong>Problem identification</strong> — Recognizing operational gaps from real-world experience and designing solutions</li>
+                        <li><strong>Product development</strong> — Making strategic scope decisions, prioritizing features, and iterating based on needs</li>
+                        <li><strong>Data architecture</strong> — Modeling complex relationships between contractors, assignments, clients, and performance data</li>
+                        <li><strong>Process improvement</strong> — Shifting from reactive to proactive operations through predictive analytics</li>
+                        <li><strong>Technical aptitude</strong> — Using modern development tools and AI assistance to build working products</li>
+                        <li><strong>Change management</strong> — Designing user-friendly interfaces and support systems for distributed teams</li>
+                    </ul>
+                    <p style="margin-top: 1.5rem;">
+                        This isn't just a demo project—it's a working platform that solves real problems I experienced firsthand. It represents the type of 0→1 thinking and execution that early-stage companies need when building HR systems from scratch.
+                    </p>
+                </div>
+
+                <!-- Next Steps -->
+                <div class="content-section">
+                    <h2>What's Next</h2>
+                    <p>
+                        The current platform represents Phase 1: the operational and engagement foundation. <strong>Phase 2</strong> would focus on marketplace completion with time tracking integration for 1099 contractors and payment/billing automation—the pieces that transform this from pre-marketplace infrastructure into a full talent marketplace platform.
+                    </p>
+                    <p>
+                        In a real startup environment, next steps would be driven by user feedback, business priorities, and integration requirements. The modular architecture makes it straightforward to add new capabilities or integrate with existing enterprise systems.
                     </p>
                 </div>
             </div>
