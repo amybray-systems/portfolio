@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building the Financial Operations Suite I Wished I Had | Amy Bray</title>
+    
+    <!-- Meta description -->
+    <meta name="description" content="From managing $80M+ in payroll to building automated tools that save hours. The story of transforming operations pain points into Python solutions.">
+    
+    <!-- Open Graph (LinkedIn, Facebook) -->
+    <meta property="og:title" content="Building the Financial Operations Suite I Wished I Had">
+    <meta property="og:description" content="From managing $80M+ in payroll to building automated tools that save hours. Real operations experience meets Python.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="/portfolio/posts/finops-suite-story.html">
+    
+    <!-- Twitter (X) -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Building the Financial Operations Suite I Wished I Had">
+    <meta name="twitter:description" content="From $80M+ in payroll operations to automated Python tools. The story of building what I needed.">
+    
+    <!-- Article schema -->
+    <script type="application/ld+json">
+    {
+      "@context":"https://schema.org",
+      "@type":"Article",
+      "headline":"Building the Financial Operations Suite I Wished I Had",
+      "author":{"@type":"Person","name":"Amy Bray"},
+      "datePublished":"October 17, 2025",
+      "description":"From managing $80M+ in payroll to building automated tools that save hours. Real operations experience meets Python.",
+      "mainEntityOfPage":"/portfolio/posts/finops-suite-story.html"
+    }
+    </script>
+    
+    <style>
+        :root {
+            --bg-primary: #f7fafc;
+            --bg-secondary: #ffffff;
+            --bg-accent: #edf2f7;
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --text-muted: #718096;
+            --border-color: #e2e8f0;
+            --code-bg: #f7fafc;
+            --gradient-1: #667eea;
+            --gradient-2: #764ba2;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1a202c;
+            --bg-secondary: #2d3748;
+            --bg-accent: #374151;
+            --text-primary: #f7fafc;
+            --text-secondary: #e2e8f0;
+            --text-muted: #a0aec0;
+            --border-color: #4a5568;
+            --code-bg: #2d3748;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-primary);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+            position: sticky; top: 0; z-index: 100;
+            transition: background-color 0.3s ease;
+        }
+
+        .header-content {
+            max-width: 800px; margin: 0 auto; padding: 0 20px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .back-link {
+            color: var(--text-secondary); text-decoration: none; font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+        .back-link:hover { color: var(--gradient-1); }
+
+        .theme-toggle {
+            background: none; border: 2px solid var(--border-color); border-radius: 50%;
+            width: 40px; height: 40px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; transition: all 0.3s ease;
+        }
+        .theme-toggle:hover { border-color: var(--gradient-1); transform: rotate(20deg); }
+
+        .container {
+            max-width: 800px; margin: 0 auto; padding: 40px 20px;
+            background: var(--bg-secondary); transition: background-color 0.3s ease;
+        }
+
+        h1 { font-size: 2.5rem; margin-bottom: 0.5rem; color: var(--text-primary); transition: color 0.3s ease; }
+        h2, h3, h4 { color: var(--text-primary); margin-top: 2rem; margin-bottom: 1rem; transition: color 0.3s ease; }
+        p { margin-bottom: 1rem; color: var(--text-secondary); transition: color 0.3s ease; }
+
+        .meta { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 2rem; transition: color 0.3s ease; }
+
+        .highlight-box {
+            background: var(--bg-accent);
+            border-left: 4px solid var(--gradient-1);
+            padding: 1.5rem; margin: 2rem 0; border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+        .highlight-box p { margin: 0; color: var(--text-secondary); font-size: 1.1rem; line-height: 1.8; }
+        .highlight-box strong { color: var(--text-primary); }
+
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem; margin: 2rem 0;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2));
+            color: white; padding: 1.5rem; border-radius: 8px; text-align: center;
+        }
+        .stat-number { font-size: 2rem; font-weight: bold; margin-bottom: 0.5rem; }
+        .stat-label { font-size: 0.9rem; opacity: 0.9; }
+
+        .tech-stack {
+            display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1.5rem 0;
+        }
+        .tech-badge {
+            background: var(--bg-accent); color: var(--text-primary);
+            padding: 0.4rem 0.8rem; border-radius: 16px; font-size: 0.85rem;
+            border: 1px solid var(--border-color);
+        }
+
+        ul { margin-left: 1.5rem; margin-bottom: 1rem; }
+        li { color: var(--text-secondary); margin-bottom: 0.5rem; }
+        strong { color: var(--text-primary); }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2));
+            color: white; padding: 1rem 2rem; border-radius: 8px;
+            text-decoration: none; font-weight: 600;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            margin-top: 1rem;
+        }
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        code {
+            background: var(--code-bg); padding: 0.2rem 0.4rem; border-radius: 3px;
+            font-size: 0.9em; font-family: 'Monaco', 'Courier New', monospace;
+            border: 1px solid var(--border-color);
+        }
+
+        blockquote {
+            border-left: 4px solid var(--gradient-1);
+            padding-left: 1.5rem; margin: 2rem 0;
+            font-style: italic; color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="../index.html" class="back-link">← Back to Portfolio</a>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                <span id="themeIcon">🌙</span>
+            </button>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1>Building the Financial Operations Suite I Wished I Had</h1>
+        <p class="meta">Amy Bray • October 27, 2025 • 9 min read</p>
+
+        <div class="highlight-box">
+            <p><strong>TL;DR:</strong> After managing $80M+ in payroll operations and spending hours every week on manual data transformations, I built the automated suite I always needed: Data Pipeline Pro for vendor data cleanup and GSV Tracker Pro for instant growth analytics. What took hours now takes seconds.</p>
+        </div>
+
+        <h2>The Problem: Death by Excel</h2>
+        <p>Let me paint you a picture of a typical Tuesday afternoon in operations:</p>
+        
+        <p><strong>2:00 PM</strong> — Download vendor payroll report (15 different column formats depending on which VMS it came from)<br>
+        <strong>2:15 PM</strong> — Open Excel, start manually reformatting for our billing system<br>
+        <strong>2:45 PM</strong> — Realize there's a duplicate entry and a missing contractor<br>
+        <strong>3:00 PM</strong> — Fix the errors, recalculate totals<br>
+        <strong>3:30 PM</strong> — Export to billing format, check my work (again)<br>
+        <strong>4:00 PM</strong> — Finally send to finance<br>
+        <strong>Next Week</strong> — Do it all over again</p>
+
+        <p>This was my reality managing $80M+ in payroll operations. And the reporting? Don't even get me started.</p>
+
+        <blockquote>
+            "What's our month-over-month growth by department?"<br>
+            "Give me 30 minutes and a pivot table..."
+        </blockquote>
+
+        <p>Every time leadership asked for growth metrics, I'd spend another hour building pivot tables, calculating percentages, and creating charts. The data was <em>right there</em>, but getting actionable insights felt like archaeology.</p>
+
+        <h2>The "Aha" Moment</h2>
+        <p>The breaking point came when I discovered a <strong>27% year-over-year growth</strong> trend buried in the data—but only <em>after</em> spending three hours building a comprehensive analysis for the quarterly business review.</p>
+
+        <p>I thought: <strong>"This should take 30 seconds, not 3 hours."</strong></p>
+
+        <p>That's when I decided to build the tools I'd been wishing for. Not another "generic analytics platform" that needs weeks of configuration. I wanted something that just <em>worked</em>—built specifically for the messy reality of operations data.</p>
+
+        <h2>What I Built: Two Tools, One Goal</h2>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">2</div>
+                <div class="stat-label">Integrated Tools</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">$80M+</div>
+                <div class="stat-label">Real Operations Experience</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">Hours→Min</div>
+                <div class="stat-label">Time Savings</div>
+            </div>
+        </div>
+
+        <h3>🔄 Data Pipeline Pro</h3>
+        <p><strong>The problem it solves:</strong> Vendor reports come in 15 different formats. Our billing system needs one specific format. Manual transformation = hours wasted and room for errors.</p>
+
+        <p><strong>What it does:</strong></p>
+        <ul>
+            <li><strong>Ingests anything:</strong> Excel, CSV, multiple sheets—it handles them all</li>
+            <li><strong>Validates automatically:</strong> Catches duplicates, missing data, and wonky totals</li>
+            <li><strong>Transforms intelligently:</strong> Maps columns, calculates fields, standardizes formats</li>
+            <li><strong>Exports clean data:</strong> Billing format, payment format, executive reports—pick your poison</li>
+        </ul>
+
+        <p>Upload messy data → Get clean, validated, ready-to-use output. <strong>That's it.</strong></p>
+
+        <h3>📊 GSV Tracker Pro</h3>
+        <p><strong>The problem it solves:</strong> Leadership asks "How's growth looking?" and you need to stop everything to build a custom analysis.</p>
+
+        <p><strong>What it does:</strong></p>
+        <ul>
+            <li><strong>Instant metrics:</strong> Upload data, see MoM/QoQ/YoY growth immediately</li>
+            <li><strong>Department analytics:</strong> Which teams are driving revenue? Charts show you instantly</li>
+            <li><strong>Trend detection:</strong> Spot growth patterns or concerning dips automatically</li>
+            <li><strong>Visual insights:</strong> Interactive Plotly charts that actually look good in presentations</li>
+        </ul>
+
+        <p>The same analysis that took me 3 hours? <strong>Now takes 30 seconds.</strong></p>
+
+        <h2>The Tech Stack (and Why)</h2>
+
+        <div class="tech-stack">
+            <span class="tech-badge">Python 3.11</span>
+            <span class="tech-badge">Streamlit</span>
+            <span class="tech-badge">Pandas</span>
+            <span class="tech-badge">NumPy</span>
+            <span class="tech-badge">Plotly</span>
+            <span class="tech-badge">OpenPyXL</span>
+        </div>
+
+        <p><strong>Why Python?</strong> I needed something fast to prototype and powerful enough to handle real operations data. Python + Pandas is the gold standard for data transformation.</p>
+
+        <p><strong>Why Streamlit?</strong> I wanted to ship something <em>usable</em>, not just a Jupyter notebook. Streamlit let me go from prototype to live demo in hours, not weeks. Plus, it handles file uploads, charts, and dark mode out of the box.</p>
+
+        <p><strong>Why Plotly?</strong> Because Excel charts in 2025 are sad. Plotly gives me interactive, presentation-ready visualizations that actually help people understand the data.</p>
+
+        <h2>Key Design Decisions</h2>
+
+        <h3>1. Real-time, not batch</h3>
+        <p>Every upload triggers immediate processing. No "submit and wait." You see results as soon as the data loads. This mirrors how I actually wanted to work—upload, verify, export. Done.</p>
+
+        <h3>2. Data validation first</h3>
+        <p>Bad data in = bad insights out. The pipeline automatically checks for:</p>
+        <ul>
+            <li>Null values and their impact</li>
+            <li>Duplicate entries</li>
+            <li>Missing required columns</li>
+            <li>Suspicious outliers in hours/rates</li>
+        </ul>
+        <p>Catch issues <em>before</em> they become problems downstream.</p>
+
+        <h3>3. Dark mode isn't optional</h3>
+        <p>Financial analysts work late. I work late. Blinding white interfaces at 9 PM are torture. Dark mode is a <code>localStorage</code>-persisted toggle that works across both tools.</p>
+
+        <h3>4. Export everything</h3>
+        <p>Great insights trapped in a tool are useless. Every analysis can be exported as Excel with the click of a button. Because sometimes finance just wants the spreadsheet.</p>
+
+        <h2>What I Learned</h2>
+
+        <p><strong>1. Build for the pain, not the theory.</strong><br>
+        I didn't build a "universal data platform." I built two specific tools for two specific pain points I lived with every week. That specificity is why they actually work.</p>
+
+        <p><strong>2. Fast iteration beats perfect planning.</strong><br>
+        Streamlit let me prototype the data pipeline in a weekend. I showed it to former colleagues, got feedback, and iterated. Weeks later, it was battle-tested.</p>
+
+        <p><strong>3. Real data is messier than you think.</strong><br>
+        Test data is clean. Real vendor reports have merged cells, inconsistent date formats, and random blank rows. Building for the mess made the tool robust.</p>
+
+        <p><strong>4. Visual feedback is mandatory.</strong><br>
+        Users trust systems that <em>show</em> them what's happening. Progress bars, validation summaries, preview tables—these aren't "nice to have," they're essential.</p>
+
+        <h2>The Impact</h2>
+
+        <div class="highlight-box">
+            <p><strong>⏱️ Time savings:</strong> What took 2-3 hours per week now takes 10-15 minutes<br>
+            <strong>📊 Faster decisions:</strong> Leadership gets growth metrics in real-time, not next Tuesday<br>
+            <strong>✅ Fewer errors:</strong> Automated validation catches issues humans miss at 4:30 PM on Friday<br>
+            <strong>💡 Hidden insights:</strong> Found growth trends and department patterns I never would have spotted manually</p>
+        </div>
+
+        <p>This isn't just about saving time. It's about <strong>enabling better decisions</strong> by making data accessible when you need it.</p>
+
+        <h2>What's Next</h2>
+
+        <p><strong>Short term:</strong></p>
+        <ul>
+            <li>Add custom metric builder (let users define their own KPIs)</li>
+            <li>Schedule automated reports (daily/weekly summaries)</li>
+            <li>Multi-currency support for global operations</li>
+        </ul>
+
+        <p><strong>Long term:</strong></p>
+        <ul>
+            <li>Database backend for larger datasets and historical analysis</li>
+            <li>Team collaboration features (shared workspaces, annotations)</li>
+            <li>Predictive analytics (forecast growth based on historical trends)</li>
+        </ul>
+
+        <h2>Try It Yourself</h2>
+        <div style="text-align: center; margin: 3rem 0;">
+            <a href="../project-finops-suite.html" class="cta-button">View Full Project Details →</a>
+        </div>
+
+        <hr style="margin: 50px 0; border: none; border-top: 2px solid var(--border-color);">
+
+        <h2>Questions? Let's Talk</h2>
+        <p>Building financial operations tools? Have messy data problems? Just want to chat about Python and operations?</p>
+        <p>
+            📧 <strong>Email:</strong> amybray0315@gmail.com<br>
+            💼 <strong>LinkedIn:</strong> linkedin.com/in/amybrayphr
+        </p>
+
+        <p style="font-size: 0.9em; color: var(--text-muted); margin-top: 30px;">
+            <strong>Note:</strong> This suite is a portfolio demonstration built from real operations experience. Demo data only; no production PII.
+        </p>
+    </div>
+
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const html = document.documentElement;
+
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', currentTheme);
+        updateThemeIcon(currentTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const current = html.getAttribute('data-theme');
+            const next = current === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+            updateThemeIcon(next);
+        });
+
+        function updateThemeIcon(theme) {
+            themeIcon.textContent = theme === 'light' ? '🌙' : '☀️';
+        }
+    </script>
+</body>
+</html>

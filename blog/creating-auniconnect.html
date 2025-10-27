@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What I Learned Building a Full-Stack HR Platform in 12 Weeks — AuniConnect | Amy Bray</title>
+	<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>What I Learned Building a Full-Stack HR Platform in 12 Weeks — AuniConnect | Amy Bray</title>
+
+  <!-- Meta description -->
+  <meta name="description" content="I built AuniConnect to replace isolation with belonging: role-aware workflows, recognition that travels with the work, and gentle AI nudges—in 12 weeks.">
+
+  <!-- Open Graph (LinkedIn, Facebook) -->
+  <meta property="og:title" content="What I Learned Building a Full-Stack HR Platform in 12 Weeks — AuniConnect">
+  <meta property="og:description" content="I built AuniConnect to replace isolation with belonging: role-aware workflows, recognition that travels with the work, and gentle AI nudges—in 12 weeks.">
+  <meta property="og:type" content="article">
+  <!-- Use a RELATIVE URL for GitHub Pages -->
+  <meta property="og:url" content="/portfolio/posts/auniconnect-12-weeks.html">
+  <meta property="og:image" content="/portfolio/assets/images/auniconnect_og.jpg">
+  <meta property="og:image:alt" content="AuniConnect manager view with recognition and AI assistant">
+
+  <!-- Twitter (X) -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="What I Learned Building a Full-Stack HR Platform in 12 Weeks — AuniConnect">
+  <meta name="twitter:description" content="Less isolation, more clarity. AuniConnect brings role-aware workflows, recognition, and AI nudges—built in 12 weeks.">
+  <meta name="twitter:image" content="/portfolio/assets/images/auniconnect_og.jpg">
+
+  <!-- Optional: Article schema (helps SEO) -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Article",
+    "headline":"What I Learned Building a Full-Stack HR Platform in 12 Weeks — AuniConnect",
+    "author":{"@type":"Person","name":"Amy Bray"},
+    "datePublished":"2025-10-27",
+    "description":"I built AuniConnect to replace isolation with belonging: role-aware workflows, recognition that travels with the work, and gentle AI nudges—in 12 weeks.",
+    "image":"/portfolio/assets/images/auniconnect_og.jpg",
+    "mainEntityOfPage":"/portfolio/posts/auniconnect-12-weeks.html"
+  }
+  </script>
+
+  <!-- your existing <style> ... continues -->
+
+    <style>
+        :root {
+            --bg-primary: #f7fafc;
+            --bg-secondary: #ffffff;
+            --bg-accent: #edf2f7;
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --text-muted: #718096;
+            --border-color: #e2e8f0;
+            --code-bg: #f7fafc;
+            --gradient-1: #667eea;
+            --gradient-2: #764ba2;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1a202c;
+            --bg-secondary: #2d3748;
+            --bg-accent: #374151;
+            --text-primary: #f7fafc;
+            --text-secondary: #e2e8f0;
+            --text-muted: #a0aec0;
+            --border-color: #4a5568;
+            --code-bg: #2d3748;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-primary);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+            position: sticky; top: 0; z-index: 100;
+            transition: background-color 0.3s ease;
+        }
+
+        .header-content {
+            max-width: 800px; margin: 0 auto; padding: 0 20px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .back-link {
+            color: var(--text-secondary); text-decoration: none; font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+        .back-link:hover { color: var(--gradient-1); }
+
+        .theme-toggle {
+            background: none; border: 2px solid var(--border-color); border-radius: 50%;
+            width: 40px; height: 40px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; transition: all 0.3s ease;
+        }
+        .theme-toggle:hover { border-color: var(--gradient-1); transform: rotate(20deg); }
+
+        .container {
+            max-width: 800px; margin: 0 auto; padding: 40px 20px;
+            background: var(--bg-secondary); transition: background-color 0.3s ease;
+        }
+
+        h1 { font-size: 2.5rem; margin-bottom: 0.5rem; color: var(--text-primary); transition: color 0.3s ease; }
+        h2, h3, h4 { color: var(--text-primary); margin-top: 2rem; margin-bottom: 1rem; transition: color 0.3s ease; }
+        p { margin-bottom: 1rem; color: var(--text-secondary); transition: color 0.3s ease; }
+
+        .meta { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 2rem; transition: color 0.3s ease; }
+
+        .info-box {
+            background: var(--bg-accent);
+            border-left: 4px solid var(--gradient-1);
+            padding: 1rem; margin: 1.5rem 0; border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+        .info-box p { margin: 0; color: var(--text-secondary); }
+
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem; margin: 2rem 0;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2));
+            color: white; padding: 1.5rem; border-radius: 8px; text-align: center;
+        }
+        .stat-number { font-size: 2rem; font-weight: bold; margin-bottom: 0.5rem; }
+        .stat-label { font-size: 0.9rem; opacity: 0.9; }
+
+        .feature-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem; margin: 2rem 0;
+        }
+        .feature-card {
+            background: var(--bg-accent); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15); }
+        .feature-card h4 { margin-top: 0; color: var(--gradient-1); font-size: 1rem; }
+        .feature-card p { font-size: 0.85rem; margin: 0; color: var(--text-muted); }
+
+        pre {
+            background: var(--code-bg); border: 1px solid var(--border-color); border-radius: 6px;
+            padding: 1rem; overflow-x: auto; margin: 1rem 0;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        code { font-family: 'Courier New', monospace; font-size: 0.9rem; color: var(--text-primary); transition: color 0.3s ease; }
+
+        ul, ol { margin-left: 2rem; margin-bottom: 1rem; }
+        li { margin-bottom: 0.5rem; color: var(--text-secondary); transition: color 0.3s ease; }
+
+        .cta-button {
+            display: inline-block; background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2));
+            color: white; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 600;
+            margin: 2rem auto; transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .cta-button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3); }
+
+        .inline-badges { display: flex; flex-wrap: wrap; gap: 8px; margin: 0.5rem 0 1rem; }
+        .badge {
+            background: var(--bg-accent); color: var(--text-secondary); border: 1px solid var(--border-color);
+            padding: 4px 10px; border-radius: 999px; font-size: 0.8rem;
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 2rem; }
+            .stats-grid, .feature-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="https://amybray-systems.github.io/portfolio/" class="back-link">← Back to Portfolio</a>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                <span id="themeIcon">🌙</span>
+            </button>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1>What I Learned Building a Full-Stack HR Platform in 12 Weeks</h1>
+        <div class="meta">
+            By Amy Bray • October 27, 2025 • 8 min read
+        </div>
+
+        <div class="info-box">
+            <p><strong>TL;DR:</strong> In 12 weeks, I shipped <strong>AuniConnect</strong>—a role-aware HR platform with a Manager Portal, Admin tools, Kudos & Weekly Challenges, an employee database, and an embedded AI assistant (“Aunikah”). I focused on shipping vertical slices, simple tooling (Flask + vanilla JS), and letting “done” beat “perfect.”</p>
+        </div>
+
+        <h2>Why I Built It</h2>
+<p>I’ve lived the chaos: scattered spreadsheets, unclear approvals, reactive instead of proactive renewals, and managers/contractors asking the same questions across different tools. In previous marketplace roles, I could feel the gap: we needed clearer communication, shared (non-sensitive) context, and simple paths for doing the right thing—without a scavenger hunt.</p>
+
+<p>One outreach call made it painfully concrete. A 1099 contractor told me, “In all the marketplaces I’ve contracted through, no one has checked in. You feel like you’re on an island.” I was proud that my team’s check-ins changed her experience—but I hated that feeling alone had become normal.</p>
+
+<p><strong>AuniConnect</strong> is my answer to that. It puts people back in the loop:</p>
+<ul>
+  <li><strong>Recognition that travels with the work</strong> so wins are visible, not lost in chats.</li>
+  <li><strong>Role-aware workflows</strong> so managers, admins, and contractors see what’s theirs to do—nothing more, nothing less.</li>
+  <li><strong>Gentle AI nudges</strong> that turn “Where do I…?” into “Already done.”</li>
+  <li><strong>Rhythms, not heroics</strong>—weekly habits and renewal visibility replace last-minute scrambles.</li>
+</ul>
+
+<div class="info-box" role="note" aria-label="Pull quote">
+  <p><strong>“You feel like you’re on an island.”</strong> — 1099 contractor<br>
+  <em>AuniConnect aims to change that.</em></p>
+</div>
+
+<div class="info-box" role="note" aria-label="What AuniConnect fixes">
+  <p><strong>What it fixes, in human terms:</strong><br>
+  • From <em>isolation</em> → <strong>connection</strong> (recognition, check-ins, shared context)<br>
+  • From <em>guesswork</em> → <strong>clarity</strong> (role-aware views, next-step prompts)<br>
+  • From <em>reactive</em> → <strong>proactive</strong> (renewal visibility, weekly rhythms)<br>
+  • From <em>tool sprawl</em> → <strong>one place</strong> to do the right thing
+  </p>
+</div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">12</div>
+                <div class="stat-label">Weeks to First Release</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">3</div>
+                <div class="stat-label">Role Views (Admin / Manager / Talent)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">6+</div>
+                <div class="stat-label">Core Features Shipped</div>
+            </div>
+        </div>
+
+        <h2>The Tech Stack (short &amp; sweet)</h2>
+        <ul>
+            <li><strong>Backend:</strong> Flask (Python)</li>
+            <li><strong>Frontend:</strong> HTML, CSS, vanilla JavaScript (custom theme + dark mode)</li>
+            <li><strong>Data:</strong> JSON files for speed; plan to migrate to SQLite/Postgres for concurrency &amp; analytics</li>
+            <li><strong>AI:</strong> <strong>ChatGPT</strong> (planning, scaffolding, debugging) + <strong>Claude</strong> (UI polish, formatting, manager-coaching tone)</li>
+            <li><strong>Storage Files:</strong> <code>users.json</code>, <code>kudos.json</code>, <code>faqs.json</code>, <code>escalations.json</code>, <code>challenges.json</code>, <code>challenge_progress.json</code></li>
+        </ul>
+
+        <h3>AI Copilots I Tried (short)</h3>
+        <div class="inline-badges">
+            <span class="badge">ChatGPT</span>
+            <span class="badge">Claude</span>
+            <span class="badge">Gemini</span>
+        </div>
+        <p><strong>ChatGPT:</strong> Fast iteration for planning, code scaffolding, and debugging—great rubber duck for tricky bugs.</p>
+        <p><strong>Claude:</strong> Strong at copy tone, spacing/HTML fixes, and consistency passes—helped the manager-coaching voice feel natural.</p>
+        <p><strong>Gemini:</strong> Interesting reasoning and Google-ecosystem fit, but for this app its UI code/consistency didn’t beat my ChatGPT+Claude combo. Keeping it in mind for data-heavy or Google-integrated workflows.</p>
+        <p style="font-size:0.9em;color:var(--text-muted)">Privacy note: I scrubbed prompts of sensitive data and kept test records local.</p>
+
+        <h2>Key Lessons Learned</h2>
+        <p><strong>1) Flask over Django for speed.</strong> I needed to ship pages, not frameworks. Minimal ceremony wins during proof-of-value.</p>
+        <p><strong>2) Roles are product, not just permissions.</strong> Contractors, managers, and admins think in different workflows. Designing by role tasks simplified UI and reduced conditionals.</p>
+        <p><strong>3) Dark mode isn’t “just a theme.”</strong> A 3-day rabbit hole taught me to centralize CSS variables (<code>--bg</code>, <code>--text</code>, spacing) and reuse components.</p>
+        <p><strong>4) “Make it work” first, then harden it.</strong> JSON let me iterate fast. Now that flows are stable, migrating to a DB is straightforward and justified.</p>
+        <p><strong>5) AI shines when it’s narrow and contextual.</strong> Aunikah handles FAQs, suggests next steps, and logs escalations. <em>Using two LLMs for different strengths (ChatGPT for speed, Claude for polish) noticeably sped up shipping.</em></p>
+
+        <h2>Biggest Challenges (and fixes)</h2>
+        <h3>Challenge 1: UI Drift</h3>
+        <p><strong>Problem:</strong> Forms looked fine in one view and broken in another (light mode unreadable, odd spacing).</p>
+        <p><strong>Solution:</strong> Centralized form styles &amp; typography, introduced design tokens with CSS custom properties, and tested with real content.</p>
+        <p><strong>Takeaway:</strong> Design tokens first. Test with real data, not lorem ipsum.</p>
+
+        <h3>Challenge 2: Role Logic Sprawl</h3>
+        <p><strong>Problem:</strong> Templates filled with <code>if admin/manager/contractor</code> conditionals.</p>
+        <p><strong>Solution:</strong> Route-level guards + role-scoped partials. Each role gets a dedicated dashboard with only the actions they need.</p>
+        <p><strong>Takeaway:</strong> Treat roles like distinct products.</p>
+
+        <h3>Challenge 3: Files Work… Until They Don’t</h3>
+        <p><strong>Problem:</strong> Concurrent writes are risky and analytics (e.g., kudos by tag/week) can get slow.</p>
+        <p><strong>Solution:</strong> Abstracted file access behind helpers that can be swapped for SQLite/Postgres.</p>
+        <p><strong>Takeaway:</strong> Prototype with files, architect for a DB.</p>
+
+        <h2>Key Features</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>Manager Portal</h4>
+                <p>Approvals, insights, and manager coaching cues from Aunikah.</p>
+            </div>
+            <div class="feature-card">
+                <h4>Aunikah Chatbot</h4>
+                <p>FAQ answers, gentle nudges, and escalation logging to admins.</p>
+            </div>
+            <div class="feature-card">
+                <h4>Kudos &amp; Recognition</h4>
+                <p>Tags (e.g., Teamwork), weekly stats, and dashboard previews.</p>
+            </div>
+            <div class="feature-card">
+                <h4>Weekly Challenges</h4>
+                <p>Mon–Fri streaks, completion tracking, and admin challenge editor.</p>
+            </div>
+            <div class="feature-card">
+                <h4>Admin Tools</h4>
+                <p>User creation, roles, employment type (W-2/1099/EOR), start/end dates.</p>
+            </div>
+            <div class="feature-card">
+                <h4>Employee Database</h4>
+                <p>Active/inactive views, end-date history, and basic reporting.</p>
+            </div>
+        </div>
+
+        <h2>What I’d Do Differently</h2>
+        <ul>
+            <li>Plan roles from day 1 with a quick “role → tasks → screens” map.</li>
+            <li>Start with a tiny relational schema (SQLite) for filters/joins.</li>
+            <li>Componentize sooner: forms, tables, cards to prevent style drift.</li>
+        </ul>
+
+        <h2>What’s Next</h2>
+        <ul>
+            <li><strong>Data Migration:</strong> JSON → SQLite/Postgres with schemas for users, kudos, challenges, escalations.</li>
+            <li><strong>Permissions V2:</strong> Finer-grained actions for managers vs admins.</li>
+            <li><strong>AI Upgrades:</strong> Manager playbooks, smarter escalation summaries, increased W-2/1099/EOR nuance detection.</li>
+            <li><strong>Polish:</strong> Accessibility pass (focus states, contrast), empty states, cleaner approval flows.</li>
+        </ul>
+
+        <h2>Try It Yourself</h2>
+        <div style="text-align: center;">
+            <!-- Replace these hrefs when ready -->
+            <a href="#" class="cta-button">Launch AuniConnect Demo [coming soon] →</a>
+        </div>
+      
+        </ul>
+
+        <hr style="margin: 50px 0; border: none; border-top: 2px solid var(--border-color);">
+
+        <h2>Contact</h2>
+        <p>Questions about AuniConnect, AI in HR, or building people-ops tools?</p>
+        <p>
+            📧 <strong>Email:</strong> amybray0315@gmail.com<br>
+            💼 <strong>LinkedIn:</strong> linkedin.com/in/amybrayphr
+        </p>
+
+        <p style="font-size: 0.9em; color: var(--text-muted); margin-top: 30px;">
+            <strong>Note:</strong> AuniConnect is a portfolio build demonstrating secure, role-aware workflows and AI-assisted guidance. Demo data only; no production PII.
+        </p>
+    </div>
+
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const html = document.documentElement;
+
+        // Load saved theme or default to light
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', currentTheme);
+        updateThemeIcon(currentTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const current = html.getAttribute('data-theme');
+            const next = current === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+            updateThemeIcon(next);
+        });
+
+        function updateThemeIcon(theme) {
+            themeIcon.textContent = theme === 'light' ? '🌙' : '☀️';
+        }
+    </script>
+</body>
+</html>
