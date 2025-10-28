@@ -1,0 +1,17 @@
+Candidate_Name,Client_Bill_Amount,TotalHours,Department,Week_Ending
+John Doe,1500,40,Engineering,1/7/2024
+Jane Smith,2000,50,Design,1/7/2024
+Alex Kim,1200,35,Marketing,1/7/2024
+Priya Patel,1800,45,Support,1/7/2024
+John Doe,1600,42,Engineering,1/14/2024
+Jane Smith,1900,45,Design,1/14/2024
+Alex Kim,1300,38,Marketing,1/14/2024
+Priya Patel,1750,44,Support,1/14/2024
+John Doe,1550,41,Engineering,1/21/2024
+Jane Smith,2100,52,Design,1/21/2024
+Alex Kim,1250,36,Marketing,1/21/2024
+Priya Patel,1850,46,Support,1/21/2024
+John Doe,1700,44,Engineering,1/28/2024
+Jane Smith,2050,49,Design,1/28/2024
+Alex Kim,1350,39,Marketing,1/28/2024
+Priya Patel,1900,47,Support,1/28/2024
