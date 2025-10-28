@@ -1,405 +1,248 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Financial Operations Suite | Amy Bray</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Building the Financial Operations Suite I Wished I Had | Amy Bray</title>
 
-    <!-- Canonical -->
-    <link rel="canonical" href="https://amybray-systems.github.io/portfolio/project-finops-suite.html" />
+  <!-- Canonical -->
+  <link rel="canonical" href="https://amybray-systems.github.io/portfolio/blog/finops-suite-story.html" />
 
-    <!-- Meta description -->
-    <meta name="description" content="Transform vendor data, track GSV, and discover insights. Built from $80M+ in real payroll operations experience." />
+  <!-- Meta description -->
+  <meta name="description" content="From managing $80M+ in payroll to building beta tools that turn hours into minutes. Real operations pain → practical Python solutions." />
 
-    <!-- Open Graph -->
-    <meta property="og:title" content="Financial Operations Suite | Amy Bray" />
-    <meta property="og:description" content="Transform vendor data → Track GSV → Discover insights. The tools I wished I had in operations." />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://amybray-systems.github.io/portfolio/project-finops-suite.html" />
-    <meta property="og:image" content="https://amybray-systems.github.io/portfolio/assets/finops/og_finops_dashboard.png" />
+  <!-- Open Graph -->
+  <meta property="og:title" content="Building the Financial Operations Suite I Wished I Had" />
+  <meta property="og:description" content="From managing $80M+ in payroll to building beta tools that turn hours into minutes. Real operations pain → practical Python solutions." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://amybray-systems.github.io/portfolio/blog/finops-suite-story.html" />
+  <meta property="og:image" content="https://amybray-systems.github.io/portfolio/assets/finops/og_finops_dashboard.png" />
 
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Financial Operations Suite | Amy Bray" />
-    <meta name="twitter:description" content="Transform vendor data → Track GSV → Discover insights. Beta demo with sample data." />
-    <meta name="twitter:image" content="https://amybray-systems.github.io/portfolio/assets/finops/og_finops_dashboard.png" />
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Building the Financial Operations Suite I Wished I Had" />
+  <meta name="twitter:description" content="From managing $80M+ in payroll to building beta tools that turn hours into minutes." />
+  <meta name="twitter:image" content="https://amybray-systems.github.io/portfolio/assets/finops/og_finops_dashboard.png" />
 
-    <style>
-        :root {
-            --bg-primary: #f7fafc;
-            --bg-secondary: #ffffff;
-            --bg-accent: #edf2f7;
-            --text-primary: #2d3748;
-            --text-secondary: #4a5568;
-            --text-muted: #718096;
-            --border-color: #e2e8f0;
-            --gradient-1: #667eea;
-            --gradient-2: #764ba2;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --info: #3b82f6;
-        }
-        [data-theme="dark"] {
-            --bg-primary: #1a202c;
-            --bg-secondary: #2d3748;
-            --bg-accent: #374151;
-            --text-primary: #f7fafc;
-            --text-secondary: #e2e8f0;
-            --text-muted: #a0aec0;
-            --border-color: #4a5568;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.6;
-            color: var(--text-primary);
-            background: var(--bg-primary);
-            transition: all 0.3s ease;
-        }
-        .header {
-            background: var(--bg-secondary);
-            border-bottom: 1px solid var(--border-color);
-            padding: 1rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .back-link {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.95rem;
-            transition: color 0.3s ease;
-        }
-        .back-link:hover { color: var(--gradient-1); }
-        .theme-toggle {
-            background: none;
-            border: 2px solid var(--border-color);
-            border-radius: 50%;
-            width: 40px; height: 40px;
-            cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.2rem;
-            transition: all 0.3s ease;
-        }
-        .theme-toggle:hover { border-color: var(--gradient-1); transform: rotate(20deg); }
-        .hero {
-            background: linear-gradient(135deg, var(--gradient-1) 0%, var(--gradient-2) 100%);
-            color: white; padding: 4rem 20px; text-align: center;
-        }
-        .hero h1 { font-size: 2.5rem; margin-bottom: 0.5rem; font-weight: 700; }
-        .hero p { font-size: 1.25rem; opacity: 0.95; max-width: 800px; margin: 0 auto 1.25rem; }
-        .badge {
-            display: inline-flex; align-items: center; gap: 0.5rem;
-            background: rgba(255,255,255,0.18);
-            border: 1px solid rgba(255,255,255,0.5);
-            color: #fff; padding: 0.35rem 0.65rem; border-radius: 999px; font-size: 0.9rem; font-weight: 600;
-        }
-        .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem; }
-        .btn { padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; display: inline-block; }
-        .btn-primary { background: white; color: var(--gradient-1); }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
-        .btn-secondary { background: rgba(255,255,255,0.2); color: white; border: 2px solid white; }
-        .btn-secondary:hover { background: rgba(255,255,255,0.3); }
-        .btn-outline { background: transparent; border: 2px solid var(--gradient-1); color: var(--gradient-1); }
-        .btn-outline:hover { background: var(--gradient-1); color: white; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 3rem 20px; }
-        .section { margin-bottom: 4rem; }
-        h2 { font-size: 2rem; margin-bottom: 1rem; color: var(--text-primary); }
-        h3 { font-size: 1.5rem; margin-bottom: 0.75rem; color: var(--text-primary); }
-        p { margin-bottom: 1rem; color: var(--text-secondary); }
-        ul { margin-left: 1.5rem; margin-bottom: 1rem; }
-        li { color: var(--text-secondary); margin-bottom: 0.5rem; }
-        strong { color: var(--text-primary); }
-        .callout {
-            background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(99,102,241,0.1));
-            border-left: 4px solid var(--info);
-            padding: 1.25rem; border-radius: 10px; margin: 1.5rem 0 0.5rem;
-        }
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
-        .stat-card { background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2)); color: white; padding: 2rem; border-radius: 12px; text-align: center; }
-        .stat-number { font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem; }
-        .stat-label { font-size: 1rem; opacity: 0.9; }
-        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 2rem 0; }
-        .feature-card { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; padding: 2rem; transition: all 0.3s ease; }
-        .feature-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15); }
-        .feature-icon { font-size: 2.5rem; margin-bottom: 1rem; }
-        .feature-card h3 { color: var(--gradient-1); margin-bottom: 1rem; }
-        .tech-stack { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 1.5rem 0; }
-        .tech-badge { background: var(--bg-accent); color: var(--text-primary); padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem; font-weight: 500; }
-        .impact-box { background: linear-gradient(135deg, rgba(16,185,129,0.1), rgba(5,150,105,0.1)); border-left: 4px solid var(--success); padding: 1.5rem; border-radius: 8px; margin: 2rem 0; }
-        .impact-box h4 { color: var(--success); margin-bottom: 0.5rem; }
-        .screenshot { width: 100%; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin: 1.25rem 0; }
-        .caption { font-size: 0.95rem; color: var(--text-muted); margin-top: -0.25rem; margin-bottom: 1rem; text-align: center; }
-        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 2rem 0; }
-        @media (max-width: 768px) { .two-col { grid-template-columns: 1fr; } .hero h1 { font-size: 2rem; } .hero p { font-size: 1.1rem; } }
-        .kbd { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; background: var(--bg-accent); padding: 0.15rem 0.45rem; border-radius: 6px; font-size: 0.85rem; }
-        .note { color: var(--text-muted); font-size: 0.95rem; }
-        .hr { margin: 4rem 0; border: none; border-top: 2px solid var(--border-color); }
-    </style>
+  <!-- Article schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Building the Financial Operations Suite I Wished I Had",
+    "author": {"@type": "Person", "name": "Amy Bray"},
+    "datePublished": "2025-10-27",
+    "dateModified": "2025-10-28",
+    "description": "From managing $80M+ in payroll to building beta tools that turn hours into minutes. Real operations pain → practical Python solutions.",
+    "mainEntityOfPage": "https://amybray-systems.github.io/portfolio/blog/finops-suite-story.html",
+    "image": "https://amybray-systems.github.io/portfolio/assets/finops/og_finops_dashboard.png"
+  }
+  </script>
+
+  <style>
+    :root { --bg-primary:#f7fafc; --bg-secondary:#ffffff; --bg-accent:#edf2f7; --text-primary:#2d3748; --text-secondary:#4a5568; --text-muted:#718096; --border-color:#e2e8f0; --code-bg:#f7fafc; --gradient-1:#667eea; --gradient-2:#764ba2; }
+    [data-theme="dark"] { --bg-primary:#0f1623; --bg-secondary:#141b2b; --bg-accent:#1c2540; --text-primary:#eef2ff; --text-secondary:#cbd5e1; --text-muted:#94a3b8; --border-color:#24324a; --code-bg:#0f1a2b; }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,sans-serif;line-height:1.65;color:var(--text-primary);background:var(--bg-primary);transition:background-color .3s,color .3s}
+    .header{background:var(--bg-secondary);border-bottom:1px solid var(--border-color);padding:1rem 0;position:sticky;top:0;z-index:100}
+    .header-content{max-width:840px;margin:0 auto;padding:0 20px;display:flex;justify-content:space-between;align-items:center}
+    .back-link{color:var(--text-secondary);text-decoration:none;font-size:.95rem;transition:color .3s}
+    .back-link:hover{color:var(--gradient-1)}
+    .theme-toggle{background:none;border:2px solid var(--border-color);border-radius:50%;width:40px;height:40px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.2rem;transition:all .3s}
+    .theme-toggle:hover{border-color:var(--gradient-1);transform:rotate(20deg)}
+    .container{max-width:840px;margin:0 auto;background:var(--bg-secondary);padding:44px 20px}
+    h1{font-size:2.35rem;margin-bottom:.35rem}
+    h2,h3,h4{margin-top:2rem;margin-bottom:1rem}
+    p{margin-bottom:1rem;color:var(--text-secondary)}
+    .meta{color:var(--text-muted);font-size:.95rem;margin-bottom:1.25rem}
+    .badge{display:inline-flex;align-items:center;gap:.5rem;background:var(--bg-accent);border:1px solid var(--border-color);color:var(--text-primary);padding:.35rem .6rem;border-radius:999px;font-size:.85rem;font-weight:600}
+    .highlight-box{background:var(--bg-accent);border-left:4px solid var(--gradient-1);padding:1.2rem 1.4rem;margin:1.25rem 0;border-radius:8px}
+    .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin:1.5rem 0}
+    .stat-card{background:linear-gradient(135deg,var(--gradient-1),var(--gradient-2));color:#fff;padding:1.25rem;border-radius:10px;text-align:center}
+    .stat-number{font-size:1.6rem;font-weight:800;margin-bottom:.25rem}
+    .stat-label{font-size:.9rem;opacity:.95}
+    .tech-stack{display:flex;flex-wrap:wrap;gap:.5rem;margin:1.2rem 0}
+    .tech-badge{background:var(--bg-accent);color:var(--text-primary);padding:.35rem .7rem;border-radius:16px;font-size:.85rem;border:1px solid var(--border-color)}
+    ul{margin-left:1.25rem;margin-bottom:1rem}
+    li{color:var(--text-secondary);margin-bottom:.45rem}
+    code{background:var(--code-bg);padding:.2rem .4rem;border-radius:4px;border:1px solid var(--border-color);font-size:.9em;font-family:ui-monospace,Menlo,Consolas,monospace}
+    blockquote{border-left:4px solid var(--gradient-1);padding-left:1.1rem;margin:1.25rem 0;color:var(--text-secondary);font-style:italic}
+    .toc{background:var(--bg-accent);border:1px solid var(--border-color);border-radius:8px;padding:1rem;margin:1.25rem 0}
+    .cta-button{display:inline-block;background:linear-gradient(135deg,var(--gradient-1),var(--gradient-2));color:white;padding:1rem 1.5rem;border-radius:10px;text-decoration:none;font-weight:700;transition:transform .2s,box-shadow .2s}
+    .cta-button:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(102,126,234,.3)}
+    .footer-note{font-size:.9em;color:var(--text-muted);margin-top:30px}
+    hr{margin:40px 0;border:none;border-top:2px solid var(--border-color)}
+    .end-nav{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+    .end-nav a{color:var(--gradient-1);text-decoration:none}
+  </style>
 </head>
 <body>
-<header class="header">
+  <header class="header">
     <div class="header-content">
-        <a href="index.html" class="back-link">← Back to Portfolio</a>
-        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme"><span id="themeIcon">🌙</span></button>
+      <a href="../index.html" class="back-link">← Back to Portfolio</a>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme"><span id="themeIcon">🌙</span></button>
     </div>
-</header>
+  </header>
 
-<section class="hero">
-    <div class="badge">Status: <strong>Beta</strong> <span class="note">(demo dataset)</span></div>
-    <h1>💼 Financial Operations Suite</h1>
-    <p>Transform vendor data → Track GSV → Discover insights</p>
-    <p style="font-size: 1rem; margin-bottom: 1.25rem;">Built from $80M+ in real payroll operations experience</p>
-    <div class="hero-buttons">
-        <a href="#" class="btn btn-primary">🚀 Live Demo (Beta – Coming Soon)</a>
-        <a href="https://amybray-systems.github.io/portfolio/blog/finops-suite-story.html" class="btn btn-secondary">📖 Read the Story</a>
-    </div>
-</section>
+  <main class="container">
+    <div class="badge">Status: <strong>Beta</strong> <span style="opacity:.7">(demo dataset)</span></div>
+    <h1>Building the Financial Operations Suite I Wished I Had</h1>
+    <p class="meta">Amy Bray • October 27, 2025 • ~9 min read</p>
 
-<div class="container">
-    <!-- TL;DR -->
-    <section class="section" aria-labelledby="tldr">
-        <h2 id="tldr">TL;DR</h2>
-        <div class="callout">
-            <p><strong>Fin Ops Suite</strong> is a beta, two‑tool bundle that validates vendor files on upload, standardizes outputs, and produces exec‑ready <span class="kbd">MoM/QoQ/YoY</span> GSV insights. Includes error previews and exportable reports using synthetic data.</p>
-        </div>
-    </section>
-
-    <section class="section">
-        <h2>The Challenge</h2>
-        <p>During my time managing $80M+ in payroll operations, I spent countless hours on tasks that should have been automated:</p>
-        <ul>
-            <li><strong>Manual data transformation:</strong> Converting messy vendor reports into standardized formats</li>
-            <li><strong>Growth analysis in Excel:</strong> Building MoM/QoQ/YoY calculations from scratch</li>
-            <li><strong>Executive reporting:</strong> Creating dashboards for leadership visibility</li>
-            <li><strong>Data quality issues:</strong> Catching errors before they reached downstream systems</li>
-        </ul>
-        <p>Hours of work. Every week. With room for human error at every step.</p>
-    </section>
-
-    <section class="section">
-        <h2>The Solution</h2>
-        <p>I built the tools I wished I had. This suite automates what took hours into seconds, with two integrated tools:</p>
-        <div class="feature-grid">
-            <div class="feature-card">
-                <div class="feature-icon">🔄</div>
-                <h3>Data Pipeline Pro</h3>
-                <p>Transform messy vendor data into clean, standardized formats:</p>
-                <ul>
-                    <li>Accepts Excel and CSV files</li>
-                    <li>Validates and cleans automatically</li>
-                    <li>Exports in multiple formats (billing, payment, funding)</li>
-                    <li>Flags data quality issues with an error preview</li>
-                </ul>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">📊</div>
-                <h3>GSV Tracker Pro</h3>
-                <p>Track revenue and discover growth insights:</p>
-                <ul>
-                    <li>Automatic MoM/QoQ/YoY calculations</li>
-                    <li>Department performance analytics</li>
-                    <li>Interactive visualizations</li>
-                    <li>Real-time insights on upload</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <!-- Screenshots -->
-    <section class="section" aria-labelledby="shots">
-        <h2 id="shots">Screenshots</h2>
-        <img class="screenshot" src="assets/finops/validation_flow.png" alt="Validation and error preview on file upload" />
-        <div class="caption">Validation on upload with error preview and field-type checks.</div>
-        <img class="screenshot" src="assets/finops/gsv_dashboard.png" alt="GSV dashboard with MoM, QoQ, YoY charts" />
-        <div class="caption">GSV dashboard with MoM/QoQ/YoY trends and executive-ready summaries.</div>
-    </section>
-
-    <div class="impact-box">
-        <h4>📈 Real-World Impact</h4>
-        <p><strong>This suite mirrors workflows that helped me:</strong></p>
-        <ul>
-            <li>Surface hidden YoY growth (e.g., <em>27%</em> in prior payroll data)</li>
-            <li>Reduce reporting time from hours to minutes</li>
-            <li>Improve data accuracy by eliminating manual errors</li>
-            <li>Enable faster business decisions with instant insights</li>
-        </ul>
+    <div class="highlight-box">
+      <p><strong>TL;DR:</strong> After managing $80M+ in payroll ops and losing too many evenings to Excel archaeology, I built the pragmatic, <em>beta</em> suite I always wanted: <strong>Data Pipeline Pro</strong> (clean vendor files) and <strong>GSV Tracker Pro</strong> (instant MoM/QoQ/YoY). It’s production‑shaped, demo‑data powered, and honest about the messy parts.</p>
     </div>
 
-    <section class="section">
-        <h2>Key Metrics</h2>
-        <div class="stats-grid">
-            <div class="stat-card"><div class="stat-number">2</div><div class="stat-label">Integrated Tools</div></div>
-            <div class="stat-card"><div class="stat-number">$80M+</div><div class="stat-label">Operations Experience</div></div>
-            <div class="stat-card"><div class="stat-number">3</div><div class="stat-label">View Modes (Light/Dark)</div></div>
-            <div class="stat-card"><div class="stat-number">Hours→Min</div><div class="stat-label">Time Savings</div></div>
-        </div>
+    <!-- Real story intro -->
+    <section aria-label="Why I built it (the real version)">
+      <h2>Why I Built It (the real version)</h2>
+      <p>I love structure, but my Tuesdays did not. The work was important—people’s paychecks depended on it—but the <em>way</em> we did the work felt brittle. Fifteen report formats. A dozen small judgement calls. Late‑day math when your brain wants tea and a walk.</p>
+      <p>The night I found a 27% YoY trend after three hours of pivots, I felt equal parts proud and annoyed. Proud because: cool insight. Annoyed because: why was it so hard to see what was already there? That was the moment I decided I didn’t want to be the hero with a spreadsheet cape anymore. I wanted the system to be the hero.</p>
     </section>
 
-    <section class="section">
-        <h2>Tech Stack</h2>
-        <div class="tech-stack">
-            <span class="tech-badge">Python</span>
-            <span class="tech-badge">Streamlit</span>
-            <span class="tech-badge">Pandas</span>
-            <span class="tech-badge">NumPy</span>
-            <span class="tech-badge">Plotly</span>
-            <span class="tech-badge">OpenPyXL</span>
-            <span class="tech-badge">JSON/CSV templates</span>
-        </div>
-        <p class="note"><strong>Includes:</strong> demo dataset • error preview table • exportable reports • dark/light modes.</p>
+    <nav class="toc" aria-label="Table of contents">
+      <strong>Jump to:</strong>
+      <ul>
+        <li><a href="#problem">The Problem</a></li>
+        <li><a href="#aha">The Aha</a></li>
+        <li><a href="#what-i-built">What I Built</a></li>
+        <li><a href="#stack">The Tech Stack</a></li>
+        <li><a href="#design">Key Design Decisions</a></li>
+        <li><a href="#impact">The Impact</a></li>
+        <li><a href="#next">What’s Next</a></li>
+      </ul>
+    </nav>
+
+    <h2 id="problem">The Problem: Death by Excel</h2>
+    <p>Typical Tuesday in ops: download vendor report → reformat 15 columns → find a duplicate → recalc totals → export to billing → repeat next week. Multiply by a dozen vendors and a few years. You get the picture.</p>
+    <blockquote>“What’s our month‑over‑month growth by department?” — “Give me 30 minutes and a pivot table…”</blockquote>
+    <p>The data was <em>there</em>, but getting insights felt like archaeology.</p>
+
+    <h2 id="aha">The “Aha” Moment</h2>
+    <p>Finding a <strong>27% YoY growth</strong> signal after a three‑hour analysis was the last straw. That should’ve been a 30‑second check, not a quarterly project. So I built the tools I wanted: tiny, opinionated, and tuned for ops reality.</p>
+
+    <h2 id="what-i-built">What I Built: Two Tools, One Goal</h2>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-number">2</div><div class="stat-label">Integrated Tools</div></div>
+      <div class="stat-card"><div class="stat-number">$80M+</div><div class="stat-label">Ops Experience</div></div>
+      <div class="stat-card"><div class="stat-number">Hours→Min</div><div class="stat-label">Time Savings</div></div>
+    </div>
+
+    <h3>🔄 Data Pipeline Pro</h3>
+    <p><strong>Solves:</strong> 15 vendor formats into one billing‑ready output.</p>
+    <ul>
+      <li><strong>Ingests:</strong> Excel/CSV, multiple sheets</li>
+      <li><strong>Validates:</strong> duplicates, missing fields, totals drift</li>
+      <li><strong>Transforms:</strong> column mapping, derived fields, standard types</li>
+      <li><strong>Exports:</strong> billing, payments, exec rollups</li>
+    </ul>
+
+    <h3>📊 GSV Tracker Pro</h3>
+    <p><strong>Solves:</strong> instant answers to “How’s growth?” without rebuilding pivot tables.</p>
+    <ul>
+      <li>MoM/QoQ/YoY in one view</li>
+      <li>Department performance at a glance</li>
+      <li>Trend detection for spikes/dips</li>
+      <li>Interactive charts (Plotly) that drop straight into decks</li>
+    </ul>
+
+    <h2 id="stack">The Tech Stack (and Why)</h2>
+    <div class="tech-stack">
+      <span class="tech-badge">Python 3.11</span>
+      <span class="tech-badge">Streamlit</span>
+      <span class="tech-badge">Pandas</span>
+      <span class="tech-badge">NumPy</span>
+      <span class="tech-badge">Plotly</span>
+      <span class="tech-badge">OpenPyXL</span>
+    </div>
+    <p><strong>Python + Pandas:</strong> fast to iterate, strong for gnarly transformations.</p>
+    <p><strong>Streamlit:</strong> demo‑ready UI without yak‑shaving a front‑end.</p>
+    <p><strong>Plotly:</strong> interactive visuals managers actually understand.</p>
+
+    <h2 id="design">Key Design Decisions</h2>
+    <p class="meta">(a.k.a. lessons I wish I’d learned sooner)</p>
+    <h3>1) Real‑time, not batch</h3>
+    <p>Upload → process → see results. No job queues, no waiting.</p>
+    <h3>2) Validation first</h3>
+    <p>“Bad data in = bad insights out.” Checks for nulls, dups, missing columns, and rate/hour outliers.</p>
+    <h3>3) Dark mode is a requirement</h3>
+    <p>Finance folks (hi, it’s me) work late. A persisted toggle keeps eyes happy.</p>
+    <h3>4) Export everything</h3>
+    <p>If Finance can’t download it, it doesn’t exist. Every view can export.</p>
+
+    <!-- The messy middle -->
+    <section aria-label="The messy middle">
+      <h2>The Messy Middle</h2>
+      <ul>
+        <li><strong>My first parser was too clever.</strong> It handled 12 edge cases and broke on the 13th. Simpler rules with clear errors won.</li>
+        <li><strong>I underestimated dates.</strong> Week ending vs. pay period vs. service dates—humans improvise; code shouldn’t. I added strict validation + friendly messages.</li>
+        <li><strong>I over‑designed the charts.</strong> Managers wanted three numbers and a line. I kept the pretty stuff, but defaulted to fast and obvious.</li>
+      </ul>
     </section>
 
-    <section class="section">
-        <h2>Core Features</h2>
-        <div class="two-col">
-            <div>
-                <h3>🔍 Data Quality Checks</h3>
-                <ul>
-                    <li>Automatic validation on upload</li>
-                    <li>Null value detection</li>
-                    <li>Column type analysis</li>
-                    <li>Data profiling</li>
-                </ul>
-            </div>
-            <div>
-                <h3>📈 Growth Analytics</h3>
-                <ul>
-                    <li>Month-over-Month (MoM)</li>
-                    <li>Quarter-over-Quarter (QoQ)</li>
-                    <li>Year-over-Year (YoY)</li>
-                    <li>Trend detection</li>
-                </ul>
-            </div>
-            <div>
-                <h3>📊 Department Insights</h3>
-                <ul>
-                    <li>Performance by department</li>
-                    <li>Worker count analysis</li>
-                    <li>Hours and rate tracking</li>
-                    <li>Visual comparisons</li>
-                </ul>
-            </div>
-            <div>
-                <h3>📤 Export Options</h3>
-                <ul>
-                    <li>Excel format output</li>
-                    <li>Billing-ready reports</li>
-                    <li>Executive summaries</li>
-                    <li>Custom transformations</li>
-                </ul>
-            </div>
-        </div>
+    <!-- Tiny delights -->
+    <section aria-label="Tiny delights">
+      <h2>Tiny Delights</h2>
+      <ul>
+        <li>That little <em>“Errors (3)”</em> badge next to the upload? Instant trust.</li>
+        <li>Dark mode at 9:37 PM. Necessary. Humane.</li>
+        <li>Export buttons everywhere. Because if Finance can’t download it, it doesn’t exist.</li>
+      </ul>
     </section>
 
-    <!-- Controls & Audit -->
-    <section class="section" aria-labelledby="controls">
-        <h2 id="controls">Controls & Audit</h2>
-        <div class="callout">
-            <ul>
-                <li>Field‑type & range validation at intake</li>
-                <li>Error log with row and column references</li>
-                <li>Export checksum / row‑count confirmation</li>
-                <li>Documented assumptions & transformation rules</li>
-            </ul>
-        </div>
+    <h2 id="impact">The Impact</h2>
+    <div class="highlight-box">
+      <p><strong>⏱️ Time:</strong> 2–3 hrs → 10–15 mins • <strong>📊 Decisions:</strong> real‑time metrics • <strong>✅ Errors:</strong> validation catches 4:30‑PM mistakes • <strong>💡 Insights:</strong> surfaced hidden YoY growth (e.g., 27%).</p>
+    </div>
+    <p>It’s not just speed—it’s trust. You can make decisions because the data pipeline is predictable and visible.</p>
+
+    <h2 id="next">What’s Next</h2>
+    <ul>
+      <li>Custom metric builder (pick your own KPIs)</li>
+      <li>Scheduled reports (daily/weekly/monthly)</li>
+      <li>Multi‑currency support</li>
+      <li>SQL backend for history + bigger files</li>
+      <li>Team workspaces with annotations</li>
+    </ul>
+
+    <h2>Read the Project Flow</h2>
+    <div style="text-align:center;margin:2rem 0 2.5rem">
+      <a href="../project-finops-suite.html" class="cta-button">View Full Project Details →</a>
+    </div>
+
+    <hr />
+
+    <section aria-label="Contact">
+      <h2>Questions? Let’s Talk</h2>
+      <p>Messy vendor files? Need a faster pipeline? Or just want to nerd out about ops + Python?</p>
+      <p>📧 <strong>Email:</strong> amybray0315@gmail.com<br />
+         💼 <strong>LinkedIn:</strong> linkedin.com/in/amybrayphr
+      </p>
+      <p class="footer-note"><strong>Note:</strong> Portfolio demonstration. Demo data only; no production PII.</p>
     </section>
 
-    <!-- Downloads -->
-    <section class="section" aria-labelledby="downloads">
-        <h2 id="downloads">Download Sample Data & Templates</h2>
-        <p class="note">Synthetic examples to test the beta flow.</p>
-        <div class="hero-buttons" style="justify-content:flex-start">
-            <a class="btn btn-outline" href="/portfolio/assets/finops/sampledatafinops.csv" download>⬇️ Sample Vendor File (CSV)</a>
-			<a class="btn btn-outline" href="/portfolio/assets/finops/upload_templates.zip" download>⬇️ Upload Templates (ZIP)</a>
-			<a class="btn btn-outline" href="/portfolio/assets/finops/exec_summary_example.xlsx" download>⬇️ Example Exec Summary (XLSX)</a>
+    <hr />
 
-        </div>
-    </section>
+    <nav class="end-nav" aria-label="More posts">
+      <a href="../project-finops-suite.html">← Project page</a>
+      <a href="../blog/index.html">Blog index →</a>
+    </nav>
+  </main>
 
-    <section class="section">
-        <h2>What I Learned</h2>
-        <ul>
-            <li><strong>Build for real needs:</strong> Theory is nice; real operations pain points drive value</li>
-            <li><strong>Data validation first:</strong> Bad data in = bad insights out. Validate early.</li>
-            <li><strong>Visual feedback matters:</strong> Users trust systems that show them what's happening</li>
-            <li><strong>Export is essential:</strong> Great insights trapped in a tool are useless</li>
-            <li><strong>Dark mode isn't optional:</strong> Financial analysts work late. Support their eyes.</li>
-        </ul>
-    </section>
-
-    <section class="section">
-        <h2>What's Next</h2>
-        <ul>
-            <li><strong>Database integration:</strong> Handle larger datasets with SQL backend</li>
-            <li><strong>Custom metric builder:</strong> Let users define their own KPIs</li>
-            <li><strong>Scheduled reports:</strong> Automated daily/weekly/monthly reporting</li>
-            <li><strong>Multi-currency support:</strong> For global operations</li>
-            <li><strong>Team collaboration:</strong> Shared workspaces and insights</li>
-        </ul>
-    </section>
-
-    <hr class="hr" />
-
-    <!-- Changelog -->
-    <section class="section" aria-labelledby="changelog">
-        <h2 id="changelog">Changelog</h2>
-        <ul>
-            <li><strong>2025‑10‑28:</strong> Added TL;DR, Controls & Audit, downloads section, and screenshot placeholders; updated meta tags; marked status as Beta.</li>
-        </ul>
-    </section>
-
-    <section class="section">
-        <h2>Contact</h2>
-        <p>Questions about this project or financial operations tools?</p>
-        <p>
-            📧 <strong>Email:</strong> amybray0315@gmail.com<br />
-            💼 <strong>LinkedIn:</strong> linkedin.com/in/amybrayphr<br />
-            🌐 <strong>Portfolio:</strong> amybray-systems.github.io/portfolio
-        </p>
-    </section>
-</div>
-
-<script>
-    // Theme toggle functionality
+  <script>
     const themeToggle = document.getElementById('themeToggle');
     const themeIcon = document.getElementById('themeIcon');
     const html = document.documentElement;
     const currentTheme = localStorage.getItem('theme') || 'light';
     html.setAttribute('data-theme', currentTheme);
-    updateThemeIcon(currentTheme);
+    themeIcon.textContent = currentTheme === 'light' ? '🌙' : '☀️';
     themeToggle.addEventListener('click', () => {
-        const current = html.getAttribute('data-theme');
-        const next = current === 'light' ? 'dark' : 'light';
-        html.setAttribute('data-theme', next);
-        localStorage.setItem('theme', next);
-        updateThemeIcon(next);
+      const current = html.getAttribute('data-theme');
+      const next = current === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+      themeIcon.textContent = next === 'light' ? '🌙' : '☀️';
     });
-    function updateThemeIcon(theme) { themeIcon.textContent = theme === 'light' ? '🌙' : '☀️'; }
-</script>
-
-<!-- JSON-LD -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "SoftwareSourceCode",
-  "name": "Financial Operations Suite (Beta)",
-  "author": {"@type": "Person", "name": "Amy Bray"},
-  "description": "Beta suite that validates vendor files, standardizes outputs, and generates MoM/QoQ/YoY GSV insights with error previews and exportable reports.",
-  "programmingLanguage": ["Python"],
-  "applicationCategory": "BusinessApplication",
-  "softwareVersion": "0.9-beta",
-  "url": "https://amybray-systems.github.io/portfolio/project-finops-suite.html",
-  "image": "https://amybray-systems.github.io/portfolio/assets/finops/og_finops_dashboard.png"
-}
-</script>
+  </script>
 </body>
 </html>
