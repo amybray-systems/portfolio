@@ -310,6 +310,12 @@
         .callout p {
             color: #e2e8f0;
         }
+		
+		/* 👇 New: softer link color in dark mode */
+    .blog-post-content a {
+        color: #a3bffa; /* softer, lighter indigo */
+        border-bottom-color: rgba(163, 191, 250, 0.7);
+		 }
     }
 </style>
 </head>
@@ -329,6 +335,69 @@
     </div>
 
     <div class="blog-container">
+	<!-- Blog Post 4 – Aunikah / W-2 vs 1099 -->
+<article class="blog-post-card">
+    <div class="post-date">November 19, 2025</div>
+    <div class="blog-categories">
+        <span class="category-tag">AI</span>
+        <span class="category-tag">HR Tech</span>
+        <span class="category-tag">Marketplaces</span>
+    </div>
+    <h2 class="post-title">
+        <a href="building-aunikah.html">
+            Building Aunikah: When Workers Don't Know if They're W-2 or 1099
+        </a>
+    </h2>
+    <p class="post-excerpt">
+        Across marketplaces and EOR programs, I kept seeing the same painful pattern:
+        people didn’t know who actually employed them or who handled their benefits,
+        PTO, or payroll, or if they even qualified. In this post I walk through the problem,
+         how I designed the Aunikah chatbot to diagnose W-2 vs 1099 and EOR vs client vs marketplace, and
+        what I’d ship next in a production version.
+    </p>
+    <a href="building-aunikah.html" class="read-more">
+        Read more <span>→</span>
+    </a>
+</article>
+
+	 <!-- Blog Post 3 - Financial Operations Suite -->
+        <article class="blog-post-card">
+            <div class="post-date">October 27, 2025</div>
+            <div class="blog-categories">
+                <span class="category-tag">Python</span>
+                <span class="category-tag">Automation</span>
+                <span class="category-tag">Operations</span>
+            </div>
+            <h2 class="post-title">
+                <a href="finops-suite-story.html">Building the Financial Operations Suite I Wished I Had</a>
+            </h2>
+            <p class="post-excerpt">
+                After managing $80M+ in payroll operations and spending hours every week on manual data transformations, I built the automated suite I always needed. What took hours now takes seconds.
+            </p>
+            <a href="finops-suite-story.html" class="read-more">
+                Read more <span>→</span>
+            </a>
+        </article>
+	
+	 <!-- Blog Post 2 - AuniConnect -->
+        <article class="blog-post-card">
+            <div class="post-date">October 27, 2025</div>
+            <div class="blog-categories">
+                <span class="category-tag">Web Development</span>
+                <span class="category-tag">AI</span>
+                <span class="category-tag">HR Tech</span>
+            </div>
+            <h2 class="post-title">
+                <a href="creating-auniconnect.html">What I Learned Building a Full-Stack HR Platform in 12 Weeks</a>
+            </h2>
+            <p class="post-excerpt">
+                Built AuniConnect to replace isolation with belonging: role-aware workflows, recognition that travels with the work, and gentle AI nudges—in 12 weeks. Here's how I went from Flask basics to a production-ready engagement platform.
+            </p>
+            <a href="creating-auniconnect.html" class="read-more">
+                Read more <span>→</span>
+            </a>
+        </article>
+		
         <!-- Blog Post 1 - VMSFlex Pay -->
         <article class="blog-post-card">
             <div class="post-date">October 17, 2025</div>
@@ -347,46 +416,8 @@
                 Read more <span>→</span>
             </a>
         </article>
-
-        <!-- Blog Post 2 - AuniConnect -->
-        <article class="blog-post-card">
-            <div class="post-date">October 27, 2025</div>
-            <div class="blog-categories">
-                <span class="category-tag">Web Development</span>
-                <span class="category-tag">AI</span>
-                <span class="category-tag">HR Tech</span>
-            </div>
-            <h2 class="post-title">
-                <a href="creating-auniconnect.html">What I Learned Building a Full-Stack HR Platform in 12 Weeks</a>
-            </h2>
-            <p class="post-excerpt">
-                Built AuniConnect to replace isolation with belonging: role-aware workflows, recognition that travels with the work, and gentle AI nudges—in 12 weeks. Here's how I went from Flask basics to a production-ready engagement platform.
-            </p>
-            <a href="creating-auniconnect.html" class="read-more">
-                Read more <span>→</span>
-            </a>
-        </article>
-
-        <!-- Blog Post 3 - Financial Operations Suite -->
-        <article class="blog-post-card">
-            <div class="post-date">October 27, 2025</div>
-            <div class="blog-categories">
-                <span class="category-tag">Python</span>
-                <span class="category-tag">Automation</span>
-                <span class="category-tag">Operations</span>
-            </div>
-            <h2 class="post-title">
-                <a href="finops-suite-story.html">Building the Financial Operations Suite I Wished I Had</a>
-            </h2>
-            <p class="post-excerpt">
-                After managing $80M+ in payroll operations and spending hours every week on manual data transformations, I built the automated suite I always needed. What took hours now takes seconds.
-            </p>
-            <a href="finops-suite-story.html" class="read-more">
-                Read more <span>→</span>
-            </a>
-        </article>
-
-        <!-- Blog Post 4 - Coming soon -->
+		
+        <!-- Blog Post 5 - Coming soon -->
         <article class="blog-post-card">
             <div class="post-date">Coming Soon</div>
             <div class="blog-categories">
@@ -401,7 +432,7 @@
             </p>
         </article>
 
-        <!-- Blog Post 5 - Coming soon -->
+        <!-- Blog Post 6 - Coming soon -->
         <article class="blog-post-card">
             <div class="post-date">Coming Soon</div>
             <div class="blog-categories">
