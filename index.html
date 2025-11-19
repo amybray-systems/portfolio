@@ -3,16 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projects — Amy Bray</title>
-    <meta name="description" content="Explore Amy Bray's HR technology projects including AI automation, payroll systems, and workflow optimization solutions.">
+    <title>Amy Bray — HR Technology & AI Solutions</title>
+    <meta name="description" content="People Ops & HRIS Solutions | AI + Engagement | Global Workforce Programs">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MKQSBEKBG0"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-MKQSBEKBG0');
+    </script>
     
     <style>
-        /* Professional Design System - Same as index.html */
+        /* Professional Design System - Complete CSS */
         :root {
             --radius: 16px;
             --radius-large: 24px;
@@ -79,6 +88,54 @@
             --error: #f87171;
             --error-bg: rgba(248, 113, 113, 0.1);
         }
+/* Recent blog posts */
+.section-blog .blog-grid {
+    display: grid;
+    gap: 24px;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.blog-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    box-shadow: var(--shadow-soft);
+    transition: all 0.25s ease;
+}
+
+.blog-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-medium);
+    border-color: var(--border-hover);
+}
+
+.blog-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+.blog-card h3 a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.blog-card h3 a:hover {
+    color: var(--accent-primary);
+}
+
+.blog-meta {
+    font-size: 0.85rem;
+    color: var(--text-tertiary);
+    margin-bottom: 10px;
+}
+
+.blog-excerpt {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
 
         /* Base Styles */
         * {
@@ -145,6 +202,11 @@
             padding: 80px 0;
             position: relative;
             z-index: 2;
+        }
+
+        /* Tighten gap between hero and first section */
+        .hero + .section {
+            padding-top: 0;
         }
 
         /* Background System */
@@ -308,7 +370,7 @@
 
         /* Hero Section */
         .hero {
-            padding: 80px 0 60px;
+            padding: 80px 0 120px;
             position: relative;
             z-index: 2;
         }
@@ -348,206 +410,202 @@
         .hero-subtitle {
             font-size: 1.25rem;
             color: var(--text-secondary);
-            max-width: 600px;
+            margin-bottom: 40px;
+            max-width: 650px;
             margin-left: auto;
             margin-right: auto;
             line-height: 1.6;
         }
 
-        /* Project Cards */
-        .projects-grid {
-            display: grid;
-            gap: 32px;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-        }
-
-        .project-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+        .cta-group {
             display: flex;
-            flex-direction: column;
-        }
-
-        .project-card::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: var(--accent-gradient);
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
-        }
-
-        .project-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-medium);
-            border-color: var(--border-hover);
-        }
-
-        .project-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .project-header {
-            padding: 24px 24px 16px;
-        }
-
-        .project-status {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: var(--success-bg);
-            color: var(--success);
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .project-status.beta {
-            background: var(--warning-bg);
-            color: var(--warning);
-        }
-
-        .project-icon {
-            width: 48px;
-            height: 48px;
-            background: var(--accent-gradient);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
+            gap: 16px;
             justify-content: center;
-            font-size: 1.5rem;
-            margin-bottom: 16px;
-        }
-
-        .project-card h3 {
-            color: var(--text-primary);
-            margin-bottom: 8px;
-        }
-
-        .project-tagline {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            line-height: 1.5;
-        }
-
-        .project-content {
-            padding: 0 24px 24px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .tech-stack {
-            display: flex;
             flex-wrap: wrap;
-            gap: 8px;
-            margin: 16px 0;
         }
 
-        .tech-tag {
-            padding: 4px 10px;
-            background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(6, 182, 212, 0.1));
-            color: var(--accent-primary);
-            font-size: 0.75rem;
-            font-weight: 500;
-            border-radius: 4px;
-            border: 1px solid rgba(79, 70, 229, 0.2);
-        }
-
-        .project-features {
-            list-style: none;
-            padding: 0;
-            margin: 16px 0;
-            flex-grow: 1;
-        }
-
-        .project-features li {
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
-            margin-bottom: 8px;
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            line-height: 1.5;
-        }
-
-        .project-features li::before {
-            content: "✓";
-            color: var(--success);
-            font-weight: bold;
-            flex-shrink: 0;
-        }
-
-        .project-actions {
-            padding: 16px 24px 24px;
-            border-top: 1px solid var(--border);
-            display: flex;
-            gap: 12px;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.875rem;
-            transition: all 0.2s ease;
+        .cta-button {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            flex: 1;
-            justify-content: center;
+            gap: 8px;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            border: 1px solid transparent;
         }
 
-        .btn-primary {
+        .cta-button.primary {
             background: var(--accent-gradient);
             color: var(--text-inverse);
+            box-shadow: var(--shadow-medium);
         }
 
-        .btn-primary:hover {
+        .cta-button.primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3);
+            box-shadow: 0 16px 48px rgba(79, 70, 229, 0.3);
             color: var(--text-inverse);
         }
 
-        .btn-secondary {
-            background: transparent;
+        .cta-button.secondary {
+            background: var(--surface);
             color: var(--text-primary);
-            border: 1px solid var(--border);
+            border-color: var(--border);
         }
 
-        .btn-secondary:hover {
+        .cta-button.secondary:hover {
             background: var(--surface-hover);
             border-color: var(--border-hover);
+            transform: translateY(-1px);
             color: var(--text-primary);
         }
 
-        /* Footer */
-        .site-footer {
-            background: var(--surface);
-            border-top: 1px solid var(--border);
-            padding: 60px 0 40px;
-            position: relative;
-            z-index: 2;
-        }
+      /* Cards */
+.featured-grid {
+    display: grid;
+    gap: 32px;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+}
 
-        .footer-content {
-            text-align: center;
-        }
+.featured-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
 
-        .footer-text {
-            color: var(--text-tertiary);
-            font-size: 0.9rem;
-        }
+    /* NEW: make heights consistent and align footer */
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.featured-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--accent-gradient);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.featured-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-medium);
+    border-color: var(--border-hover);
+}
+
+.featured-card:hover::before {
+    transform: scaleX(1);
+}
+
+.featured-card.primary {
+    border-color: var(--accent-primary);
+    background: linear-gradient(135deg, var(--surface) 0%, rgba(79, 70, 229, 0.02) 100%);
+}
+
+.card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.card-icon {
+    font-size: 2rem;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.card-meta h3 {
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.card-tag {
+    display: inline-block;
+    padding: 4px 8px;
+    background: var(--surface-hover);
+    color: var(--text-tertiary);
+    font-size: 0.8rem;
+    font-weight: 500;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* UPDATED: footer pinned to bottom */
+.card-footer {
+    margin-top: auto;              /* push footer to bottom of card */
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.card-link {
+    color: var(--accent-primary);
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.tech-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.tech-tag {
+    padding: 4px 8px;
+    background: var(--accent-gradient);
+    color: var(--text-inverse);
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-radius: 4px;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.section-subtitle {
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    margin-top: 16px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Footer */
+.site-footer {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 60px 0 40px;
+    position: relative;
+    z-index: 2;
+}
+
+.footer-content {
+    text-align: center;
+}
+
+.footer-text {
+    color: var(--text-tertiary);
+    font-size: 0.9rem;
+}
+
 
         /* Responsive */
         @media (max-width: 768px) {
@@ -563,14 +621,19 @@
             }
 
             .hero {
-                padding: 60px 0 40px;
+                padding: 60px 0 80px;
             }
 
             .hero-subtitle {
                 font-size: 1.1rem;
             }
 
-            .projects-grid {
+            .cta-group {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .featured-grid {
                 grid-template-columns: 1fr;
                 gap: 24px;
             }
@@ -581,10 +644,6 @@
 
             .container {
                 padding: 0 16px;
-            }
-
-            .project-actions {
-                flex-direction: column;
             }
         }
 
@@ -603,14 +662,14 @@
 
         .nav-btn:focus-visible,
         .theme-toggle:focus-visible,
-        .btn:focus-visible {
+        .cta-button:focus-visible {
             outline: 2px solid var(--accent-primary);
             outline-offset: 2px;
         }
     </style>
 </head>
 <body>
-    <!-- Professional background system -->
+    <!-- Background system -->
     <div class="bg-canvas" aria-hidden="true"></div>
     <div class="accent-blob blob-1" aria-hidden="true"></div>
     <div class="accent-blob blob-2" aria-hidden="true"></div>
@@ -622,10 +681,10 @@
                 <a class="brand" href="index.html">Amy Bray</a>
                 
                 <nav class="nav-actions">
-                    <a class="nav-btn" href="index.html">Home</a>
-                    <a class="nav-btn active" href="projects.html">Projects</a>
+                    <a class="nav-btn active" href="index.html">Home</a>
+                    <a class="nav-btn" href="projects.html">Projects</a>
                     <a class="nav-btn" href="about.html">About</a>
-					<a href="blog/index.html" target="_blank">Blog</a>
+                    <a class="nav-btn" href="blog/index.html" target="_blank">Blog</a>
                     <a class="nav-btn" href="contact.html">Contact</a>
                     <button
                         id="theme-toggle"
@@ -647,195 +706,227 @@
             <div class="container">
                 <div class="hero-content">
                     <div class="hero-badge">
-                        <span class="badge-text">🚀 Innovation in Action</span>
+                        <span class="badge-text">✨ People Ops Systems & HR Tech</span>
                     </div>
-                    <h1>Building the Future of HR Technology</h1>
+                    <h1>HR systems that match how people actually work.</h1>
                     <p class="hero-subtitle">
-                        From AI-powered assistants to seamless payroll automation, each project represents a step toward more efficient, human-centered workplace technology.
+                        I design and document HRIS, payroll, and engagement tools for distributed teams — with a focus on contingent work, EOR programs, and AI-powered support. Less confusion, fewer escalations, cleaner data.
                     </p>
+                    <div class="cta-group">
+                        <a class="cta-button primary" href="projects.html">
+                            <span>Explore Projects</span>
+                            <span>→</span>
+                        </a>
+                        <a class="cta-button secondary" href="contact.html">
+                            <span>Get in Touch</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </section>
-		<!-- Projects Section -->
+
+        <!-- Featured Work -->
         <section class="section">
             <div class="container">
-                <div class="projects-grid">
-                    
-                    <!-- Project 1: Financial Operations Suite -->
-                    <article class="project-card">
-                        <div class="project-status">Live</div>
-                        <div class="project-header">
-                            <div class="project-icon">💼</div>
-                            <h3>Financial Operations Suite</h3>
-                            <p class="project-tagline">Transform vendor data, track GSV, and discover growth insights</p>
-                        </div>
-                        <div class="project-content">
-                            <div class="tech-stack">
-                                <span class="tech-tag">Python</span>
-                                <span class="tech-tag">Streamlit</span>
-                                <span class="tech-tag">Pandas</span>
-                                <span class="tech-tag">Plotly</span>
-                                <span class="tech-tag">OpenPyXL</span>
+                <div class="section-header">
+                    <h2>Featured Solutions</h2>
+                    <p class="section-subtitle">Prototypes and tools built from 13+ years in People Ops & global contingent programs.</p>
+                </div>
+                
+                <div class="featured-grid">
+                    <!-- FinOps Suite Featured Project -->
+		<article class="featured-card primary">
+		<div class="card-header">
+			<div class="card-icon">📊</div>
+			<div class="card-meta">
+			<h3>Financial Operations Suite</h3>
+			<span class="card-tag">Payroll & Vendor Analytics</span>
+			</div>
+			</div>
+				<p>
+				Streamlit-based toolkit that turns messy vendor and payroll exports into clean,
+				dashboard-ready data. Built from $80M+ in payroll operations experience to automate
+				GSV tracking, margin views, and “what happened this quarter?” analysis.
+				</p>
+			<div class="card-footer">
+				<a href="project-finops-suite.html" class="card-link">View Case Study →</a>
+				<div class="tech-tags">
+				<span class="tech-tag">Python</span>
+				<span class="tech-tag">Streamlit</span>
+				<span class="tech-tag">Pandas</span>
+			</div>
+		</div>
+		</article>
+                    <!-- AuniConnect Featured Project -->
+                    <article class="featured-card">
+                        <div class="card-header">
+                            <div class="card-icon">🔄</div>
+                            <div class="card-meta">
+                                <h3>AuniConnect & Aunikah Chatbot</h3>
+                                <span class="card-tag">Engagement & HR Support</span>
                             </div>
-                            <ul class="project-features">
-                                <li>Built from $80M+ in real payroll operations experience</li>
-                                <li>Data Pipeline Pro: Transform messy vendor data into clean formats</li>
-                                <li>GSV Tracker Pro: Automatic MoM/QoQ/YoY growth calculations</li>
-                                <li>Reduced reporting time from hours to minutes with automation</li>
-                            </ul>
                         </div>
-                        <div class="project-actions">
-                            <a href="project-finops-suite.html" class="btn btn-primary">View Details →</a>
-                        </div>
-                    </article>
-
-                    <!-- Project 2: AuniConnect -->
-                    <article class="project-card">
-                        <div class="project-status">Live</div>
-                        <div class="project-header">
-                            <div class="project-icon">🌐</div>
-                            <h3>AuniConnect</h3>
-                            <p class="project-tagline">Unified communication platform for distributed HR teams</p>
-                        </div>
-                        <div class="project-content">
-                            <div class="tech-stack">
-                                <span class="tech-tag">React</span>
-                                <span class="tech-tag">Node.js</span>
-                                <span class="tech-tag">WebRTC</span>
-                                <span class="tech-tag">MongoDB</span>
-                            </div>
-                            <ul class="project-features">
-                                <li>Real-time collaboration tools for remote HR teams</li>
-                                <li>Integrated video conferencing and document sharing</li>
-                                <li>Role-based access control and compliance tracking</li>
-                                <li>Seamless integration with existing HR systems</li>
-                            </ul>
-                        </div>
-                        <div class="project-actions">
-                            <a href="project-auniconnect.html" class="btn btn-primary">View Details →</a>
-                        </div>
-                    </article>
-
-                    <!-- Project 3: VMSFlex Pay -->
-                    <article class="project-card">
-                        <div class="project-status">Live</div>
-                        <div class="project-header">
-                            <div class="project-icon">💼</div>
-                            <h3>VMSFlex Pay</h3>
-                            <p class="project-tagline">Flexible payment solutions for contingent workforce management</p>
-                        </div>
-                        <div class="project-content">
-                            <div class="tech-stack">
-                                <span class="tech-tag">Java</span>
-                                <span class="tech-tag">Spring Boot</span>
-                                <span class="tech-tag">MySQL</span>
-                                <span class="tech-tag">Stripe API</span>
-                            </div>
-                            <ul class="project-features">
-                                <li>Multi-currency payment processing for global contractors</li>
-                                <li>Automated invoice generation and reconciliation</li>
-                                <li>Compliance management for various labor regulations</li>
-                                <li>Real-time reporting and analytics dashboard</li>
-                            </ul>
-                        </div>
-                        <div class="project-actions">
-                            <a href="project-vmsflex.html" class="btn btn-primary">View Details →</a>
-                        </div>
-                    </article>
-
-                    <!-- Project 4: HR Games Collection -->
-                    <article class="project-card">
-                        <div class="project-status">Live</div>
-                        <div class="project-header">
-                            <div class="project-icon">🎮</div>
-                            <h3>HR Games Collection</h3>
-                            <p class="project-tagline">Educational games for HR professionals and tech enthusiasts</p>
-                        </div>
-                        <div class="project-content">
-                            <div class="tech-stack">
-                                <span class="tech-tag">HTML5</span>
+                        <p>
+                            A Flask-based engagement app with the Aunikah HR chatbot at the center. It answers policy questions based on employment type and employer of record, supports kudos & recognition, and gives admins tools to manage distributed teams.
+                        </p>
+                        <div class="card-footer">
+                            <a href="https://amybray-systems.github.io/auniconnect-chatbot/" class="card-link" target="_blank" rel="noopener">Talk to Aunikah →</a>
+                            <div class="tech-tags">
+                                <span class="tech-tag">Flask</span>
                                 <span class="tech-tag">JavaScript</span>
-                                <span class="tech-tag">CSS3</span>
-                                <span class="tech-tag">LocalStorage</span>
+                                <span class="tech-tag">HR Chatbot</span>
                             </div>
-                            <ul class="project-features">
-                                <li>Acronym Attack: 95+ HR, Salesforce, and Azure acronyms</li>
-                                <li>Context Matters mode for advanced learning</li>
-                                <li>6 specialized topics with separate high scores</li>
-                                <li>Mobile-responsive design with streak tracking</li>
-                            </ul>
-                        </div>
-                        <div class="project-actions">
-                            <a href="https://amybray-systems.github.io/hr-games/" target="_blank" class="btn btn-primary">Play Now →</a>
-                            <a href="https://github.com/amybray-systems/hr-games" target="_blank" class="btn btn-secondary">GitHub</a>
                         </div>
                     </article>
 
-                    <!-- Project 5: Agentforce HR Compliance Agent -->
-                    <article class="project-card">
-                        <div class="project-status beta">In Development</div>
-                        <div class="project-header">
-                            <div class="project-icon">⚡</div>
-                            <h3>Agentforce HR Compliance Agent</h3>
-                            <p class="project-tagline">AI-powered compliance automation on Salesforce platform</p>
-                        </div>
-                        <div class="project-content">
-                            <div class="tech-stack">
-                                <span class="tech-tag">Salesforce</span>
-                                <span class="tech-tag">Apex</span>
-                                <span class="tech-tag">Einstein AI</span>
-                                <span class="tech-tag">LWC</span>
+                    <!-- VMSFlex Pay Featured Project -->
+                    <article class="featured-card">
+                        <div class="card-header">
+                            <div class="card-icon">⏱️</div>
+                            <div class="card-meta">
+                                <h3>VMSFlex Pay – Smart Payroll Calculator</h3>
+                                <span class="card-tag">Payroll Automation</span>
                             </div>
-                            <ul class="project-features">
-                                <li>Automated compliance monitoring and alerts</li>
-                                <li>AI-driven policy recommendations and updates</li>
-                                <li>Integration with Salesforce HR Cloud</li>
-                                <li>Real-time regulatory change tracking</li>
-                            </ul>
                         </div>
-                        <div class="project-actions">
-                            <a href="project-agentforce.html" class="btn btn-primary">View Details →</a>
-                            <a href="#" class="btn btn-secondary">Coming Soon</a>
+                        <p>
+                            A browser-based overtime and pay calculator designed for multi-VMS environments. It standardizes upload formats, applies location-specific rules, and helps reduce manual review time by 2–3 hours per pay period.
+                        </p>
+                        <div class="card-footer">
+                            <a href="vmsflex-demo.html" class="card-link" target="_blank" rel="noopener">Try Demo →</a>
+                            <div class="tech-tags">
+                                <span class="tech-tag">JavaScript</span>
+                                <span class="tech-tag">HTML/CSS</span>
+                                <span class="tech-tag">Payroll</span>
+                            </div>
                         </div>
                     </article>
-
                 </div>
             </div>
         </section>
+		<!-- Recent Blog Posts -->
+<section class="section section-blog">
+  <div class="container">
+    <div class="section-header">
+      <h2>Recent Writing</h2>
+      <p class="section-subtitle">
+        Short case studies behind the builds – classification, payroll, and HR games.
+      </p>
+    </div>
+
+    <div class="blog-grid">
+      <article class="blog-card">
+        <h3><a href="blog/building-aunikah.html">Building Aunikah: When Workers Don't Know if They're W-2 or 1099</a></h3>
+        <p class="blog-meta">November 2025 • Contingent workforce · Chatbots</p>
+        <p class="blog-excerpt">
+          How I turned years of “who is my actual employer?” escalations into a
+          conversational classifier that routes people to the right benefits and payroll support.
+        </p>
+      </article>
+
+      <article class="blog-card">
+        <h3><a href="blog/building-vmsflex-pay.html">Building VMSFlex Pay: Solving the Multi-VMS Payroll Problem</a></h3>
+        <p class="blog-meta">October 2025 • Payroll · Automation</p>
+        <p class="blog-excerpt">
+          The story behind a browser-based calculator that handles overtime rules across
+          multiple VMS exports without blowing up Finance’s weekend.
+        </p>
+      </article>
+
+      <article class="blog-card">
+        <h3><a href="blog/hr-games-creation.html">HR Games: Turning Compliance Into Play</a></h3>
+        <p class="blog-meta">October 2025 • Learning · Gamification</p>
+        <p class="blog-excerpt">
+          Why I started building mini-games like Acronym Attack, Escape the Office, and
+          HR Simulator to help HR teams learn faster (and have more fun doing it).
+        </p>
+      </article>
+    </div>
+  </div>
+</section>
+
     </main>
 
     <!-- Footer -->
     <footer class="site-footer">
         <div class="container">
             <div class="footer-content">
-                <p class="footer-text">© 2025 Amy Bray. Building innovative HR technology solutions.</p>
+                <p class="footer-text">© <span id="current-year"></span> Amy Bray. Crafted with precision and purpose.</p>
             </div>
         </div>
     </footer>
 
-    <!-- Theme Toggle Script -->
+    <!-- JavaScript -->
     <script>
-        // Theme Management
-        const themeToggle = document.getElementById('theme-toggle');
-        const html = document.documentElement;
-        
-        // Initialize theme from localStorage or default to light
-        const currentTheme = localStorage.getItem('theme') || 'light';
-        html.setAttribute('data-theme', currentTheme);
-        updateThemeIcon(currentTheme);
-        
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = html.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        (function() {
+            'use strict';
+
+            // Theme Management
+            const root = document.documentElement;
+            const toggleButton = document.getElementById('theme-toggle');
             
-            html.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            updateThemeIcon(newTheme);
-        });
-        
-        function updateThemeIcon(theme) {
-            themeToggle.textContent = theme === 'light' ? '🌙' : '☀️';
-        }
+            const getPreferredTheme = () => {
+                const stored = localStorage.getItem('amy-portfolio-theme');
+                if (stored && ['light', 'dark'].includes(stored)) {
+                    return stored;
+                }
+                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            };
+
+            const applyTheme = (theme) => {
+                root.setAttribute('data-theme', theme);
+                localStorage.setItem('amy-portfolio-theme', theme);
+                
+                if (toggleButton) {
+                    toggleButton.textContent = theme === 'dark' ? '☀️' : '🌙';
+                    toggleButton.setAttribute('aria-label', 
+                        theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'
+                    );
+                }
+            };
+
+            const toggleTheme = () => {
+                const currentTheme = root.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                applyTheme(newTheme);
+            };
+
+            // Initialize theme
+            applyTheme(getPreferredTheme());
+
+            // Bind events
+            if (toggleButton) {
+                toggleButton.addEventListener('click', toggleTheme);
+            }
+
+            // Update copyright year
+            const yearElement = document.getElementById('current-year');
+            if (yearElement) {
+                yearElement.textContent = new Date().getFullYear();
+            }
+
+            // Navigation active states
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navLinks = document.querySelectorAll('.nav-btn');
+            
+            navLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                link.classList.remove('active');
+                
+                if (href === currentPage || 
+                    (currentPage === '' && href === 'index.html') ||
+                    (href === 'index.html' && (currentPage === 'index.html' || currentPage === ''))) {
+                    link.classList.add('active');
+                }
+            });
+
+            // System theme change listener
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (!localStorage.getItem('amy-portfolio-theme')) {
+                    applyTheme(e.matches ? 'dark' : 'light');
+                }
+            });
+
+        })();
     </script>
 </body>
 </html>
