@@ -1,383 +1,930 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Financial Operations Suite | Amy Bray</title>
 
-    <!-- Canonical -->
-    <link rel="canonical" href="https://amybray-systems.github.io/portfolio/project-finops-suite.html" />
-
     <!-- Meta description -->
-    <meta name="description" content="Transform vendor data, track GSV, and discover insights. Built from $80M+ in real payroll operations experience." />
+    <meta name="description" content="Financial Operations Suite: vendor data pipeline and GSV analytics built from $80M+ in real payroll operations experience." />
 
     <!-- Open Graph -->
     <meta property="og:title" content="Financial Operations Suite | Amy Bray" />
     <meta property="og:description" content="Transform vendor data → Track GSV → Discover insights. The tools I wished I had in operations." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://amybray-systems.github.io/portfolio/project-finops-suite.html" />
-    <meta property="og:image" content="https://amybray-systems.github.io/portfolio/assets/finops/og_finops_dashboard.png" />
 
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Financial Operations Suite | Amy Bray" />
-    <meta name="twitter:description" content="Transform vendor data → Track GSV → Discover insights. Beta demo with sample data." />
-    <meta name="twitter:image" content="https://amybray-systems.github.io/portfolio/assets/finops/og_finops_dashboard.png" />
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MKQSBEKBG0"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-MKQSBEKBG0');
+    </script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
     <style>
+        /* ===== Design System (same as portfolio) ===== */
         :root {
-            --bg-primary: #f7fafc;
-            --bg-secondary: #ffffff;
-            --bg-accent: #edf2f7;
-            --text-primary: #2d3748;
-            --text-secondary: #4a5568;
-            --text-muted: #718096;
-            --border-color: #e2e8f0;
-            --gradient-1: #667eea;
-            --gradient-2: #764ba2;
+            --radius: 16px;
+            --radius-large: 24px;
+            --gap: 24px;
+            --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.08);
+            --shadow-medium: 0 12px 40px rgba(0, 0, 0, 0.12);
+            --shadow-large: 0 20px 60px rgba(0, 0, 0, 0.15);
+
+            /* Light theme */
+            --bg-primary: #fafbff;
+            --bg-secondary: #f8fafc;
+            --surface: #ffffff;
+            --surface-elevated: #ffffff;
+            --surface-hover: #f1f5f9;
+            --border: rgba(15, 23, 42, 0.08);
+            --border-hover: rgba(15, 23, 42, 0.16);
+            --border-strong: rgba(15, 23, 42, 0.24);
+
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-tertiary: #64748b;
+            --text-inverse: #ffffff;
+
+            --accent-primary: #4f46e5;
+            --accent-secondary: #06b6d4;
+            --accent-tertiary: #8b5cf6;
+            --accent-gradient: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%);
+            --accent-gradient-alt: linear-gradient(135deg, #8b5cf6 0%, #4f46e5 100%);
+
             --success: #10b981;
+            --success-bg: #d1fae5;
             --warning: #f59e0b;
-            --info: #3b82f6;
+            --warning-bg: #fef3c7;
+            --error: #ef4444;
+            --error-bg: #fee2e2;
         }
-        [data-theme="dark"] {
-            --bg-primary: #1a202c;
-            --bg-secondary: #2d3748;
-            --bg-accent: #374151;
-            --text-primary: #f7fafc;
-            --text-secondary: #e2e8f0;
-            --text-muted: #a0aec0;
-            --border-color: #4a5568;
+
+        :root[data-theme="dark"] {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --surface: #1e293b;
+            --surface-elevated: #334155;
+            --surface-hover: #475569;
+            --border: rgba(255, 255, 255, 0.1);
+            --border-hover: rgba(255, 255, 255, 0.2);
+            --border-strong: rgba(255, 255, 255, 0.3);
+
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-tertiary: #94a3b8;
+            --text-inverse: #0f172a;
+
+            --accent-primary: #6366f1;
+            --accent-secondary: #22d3ee;
+            --accent-tertiary: #a855f7;
+            --accent-gradient: linear-gradient(135deg, #6366f1 0%, #22d3ee 100%);
+            --accent-gradient-alt: linear-gradient(135deg, #a855f7 0%, #6366f1 100%);
+
+            --success: #34d399;
+            --success-bg: rgba(52, 211, 153, 0.1);
+            --warning: #fbbf24;
+            --warning-bg: rgba(251, 191, 36, 0.1);
+            --error: #f87171;
+            --error-bg: rgba(248, 113, 113, 0.1);
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.6;
-            color: var(--text-primary);
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
             background: var(--bg-primary);
-            transition: all 0.3s ease;
+            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
-        .header {
-            background: var(--bg-secondary);
-            border-bottom: 1px solid var(--border-color);
-            padding: 1rem 0;
+
+        h1, h2, h3, h4, h5, h6 {
+            margin: 0;
+            font-weight: 600;
+            line-height: 1.3;
+            letter-spacing: -0.02em;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 3.5vw, 3rem);
+            font-weight: 700;
+        }
+
+        h2 {
+            font-size: clamp(1.6rem, 2.6vw, 2.1rem);
+        }
+
+        h3 {
+            font-size: 1.25rem;
+        }
+
+        p {
+            margin: 0;
+            color: var(--text-secondary);
+        }
+
+        a {
+            color: var(--accent-primary);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        a:hover {
+            color: var(--accent-secondary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .section {
+            padding: 60px 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Background system */
+        body {
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.4;
+            background-image:
+                radial-gradient(circle at 1px 1px, var(--border) 1px, transparent 0);
+            background-size: 24px 24px;
+            mix-blend-mode: multiply;
+        }
+
+        :root[data-theme="dark"] body::before {
+            mix-blend-mode: overlay;
+            opacity: 0.2;
+        }
+
+        .bg-canvas {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        :root[data-theme="light"] .bg-canvas {
+            background:
+                radial-gradient(800px circle at 85% 15%, rgba(79, 70, 229, 0.08) 0%, transparent 50%),
+                radial-gradient(600px circle at 15% 85%, rgba(6, 182, 212, 0.06) 0%, transparent 50%),
+                linear-gradient(135deg, #fafbff 0%, #f1f5f9 50%, #e2e8f0 100%);
+        }
+
+        :root[data-theme="dark"] .bg-canvas {
+            background:
+                radial-gradient(800px circle at 85% 15%, rgba(99, 102, 241, 0.12) 0%, transparent 50%),
+                radial-gradient(600px circle at 15% 85%, rgba(34, 211, 238, 0.08) 0%, transparent 50%),
+                linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+        }
+
+        .accent-blob {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.6;
+            animation: floatGentle 20s ease-in-out infinite;
+        }
+
+        .blob-1 {
+            width: 400px;
+            height: 400px;
+            background: var(--accent-gradient);
+            top: -200px;
+            right: -200px;
+        }
+
+        .blob-2 {
+            width: 300px;
+            height: 300px;
+            background: var(--accent-gradient-alt);
+            bottom: -150px;
+            left: -150px;
+            animation-delay: 10s;
+        }
+
+        @keyframes floatGentle {
+            0%, 100% { transform: translate(0,0) scale(1); opacity: 0.4; }
+            33% { transform: translate(30px,-20px) scale(1.1); opacity: 0.6; }
+            66% { transform: translate(-20px,30px) scale(0.9); opacity: 0.5; }
+        }
+
+        /* Header (same as portfolio) */
+        .site-header {
             position: sticky;
             top: 0;
             z-index: 100;
-        }
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .back-link {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.95rem;
-            transition: color 0.3s ease;
-        }
-        .back-link:hover { color: var(--gradient-1); }
-        .theme-toggle {
-            background: none;
-            border: 2px solid var(--border-color);
-            border-radius: 50%;
-            width: 40px; height: 40px;
-            cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.2rem;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
             transition: all 0.3s ease;
         }
-        .theme-toggle:hover { border-color: var(--gradient-1); transform: rotate(20deg); }
-        .hero {
-            background: linear-gradient(135deg, var(--gradient-1) 0%, var(--gradient-2) 100%);
-            color: white; padding: 4rem 20px; text-align: center;
+
+        :root[data-theme="dark"] .site-header {
+            background: rgba(30, 41, 59, 0.95);
         }
-        .hero h1 { font-size: 2.5rem; margin-bottom: 0.5rem; font-weight: 700; }
-        .hero p { font-size: 1.25rem; opacity: 0.95; max-width: 800px; margin: 0 auto 1.25rem; }
-        .badge {
-            display: inline-flex; align-items: center; gap: 0.5rem;
-            background: rgba(255,255,255,0.18);
-            border: 1px solid rgba(255,255,255,0.5);
-            color: #fff; padding: 0.35rem 0.65rem; border-radius: 999px; font-size: 0.9rem; font-weight: 600;
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0;
+            position: relative;
+            z-index: 2;
         }
-        .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem; }
-        .btn { padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; display: inline-block; }
-        .btn-primary { background: white; color: var(--gradient-1); }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
-        .btn-secondary { background: rgba(255,255,255,0.2); color: white; border: 2px solid white; }
-        .btn-secondary:hover { background: rgba(255,255,255,0.3); }
-        .btn-outline { background: transparent; border: 2px solid var(--gradient-1); color: var(--gradient-1); }
-        .btn-outline:hover { background: var(--gradient-1); color: white; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 3rem 20px; }
-        .section { margin-bottom: 4rem; }
-        h2 { font-size: 2rem; margin-bottom: 1rem; color: var(--text-primary); }
-        h3 { font-size: 1.5rem; margin-bottom: 0.75rem; color: var(--text-primary); }
-        p { margin-bottom: 1rem; color: var(--text-secondary); }
-        ul { margin-left: 1.5rem; margin-bottom: 1rem; }
-        li { color: var(--text-secondary); margin-bottom: 0.5rem; }
-        strong { color: var(--text-primary); }
-        .callout {
-            background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(99,102,241,0.1));
-            border-left: 4px solid var(--info);
-            padding: 1.25rem; border-radius: 10px; margin: 1.5rem 0 0.5rem;
+
+        .brand {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
         }
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
-        .stat-card { background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2)); color: white; padding: 2rem; border-radius: 12px; text-align: center; }
-        .stat-number { font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem; }
-        .stat-label { font-size: 1rem; opacity: 0.9; }
-        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 2rem 0; }
-        .feature-card { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; padding: 2rem; transition: all 0.3s ease; }
-        .feature-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15); }
-        .feature-icon { font-size: 2.5rem; margin-bottom: 1rem; }
-        .feature-card h3 { color: var(--gradient-1); margin-bottom: 1rem; }
-        .tech-stack { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 1.5rem 0; }
-        .tech-badge { background: var(--bg-accent); color: var(--text-primary); padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem; font-weight: 500; }
-        .impact-box { background: linear-gradient(135deg, rgba(16,185,129,0.1), rgba(5,150,105,0.1)); border-left: 4px solid var(--success); padding: 1.5rem; border-radius: 8px; margin: 2rem 0; }
-        .impact-box h4 { color: var(--success); margin-bottom: 0.5rem; }
-        .screenshot { width: 100%; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin: 1.25rem 0; }
-        .caption { font-size: 0.95rem; color: var(--text-muted); margin-top: -0.25rem; margin-bottom: 1rem; text-align: center; }
-        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 2rem 0; }
-        @media (max-width: 768px) { .two-col { grid-template-columns: 1fr; } .hero h1 { font-size: 2rem; } .hero p { font-size: 1.1rem; } }
-        .kbd { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; background: var(--bg-accent); padding: 0.15rem 0.45rem; border-radius: 6px; font-size: 0.85rem; }
-        .note { color: var(--text-muted); font-size: 0.95rem; }
-        .hr { margin: 4rem 0; border: none; border-top: 2px solid var(--border-color); }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .nav-btn:hover {
+            color: var(--text-primary);
+            background: var(--surface);
+            border-color: var(--border);
+            transform: translateY(-1px);
+        }
+
+        .nav-btn.active {
+            color: var(--accent-primary);
+            background: var(--surface);
+            border-color: var(--border);
+            font-weight: 600;
+        }
+
+        .theme-toggle {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.2s ease;
+            margin-left: 8px;
+            color: var(--text-primary);
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-1px);
+        }
+
+        /* ===== Project Hero ===== */
+        .project-hero {
+            padding: 70px 0 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .project-hero-inner {
+            display: grid;
+            gap: 32px;
+            grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+        }
+
+        @media (max-width: 900px) {
+            .project-hero-inner {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .project-title {
+            margin-bottom: 16px;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .project-tagline {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .hero-meta {
+            font-size: 0.95rem;
+            color: var(--text-tertiary);
+            margin-bottom: 24px;
+        }
+
+        .project-cta-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border: 1px solid transparent;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .cta-button.primary {
+            background: var(--accent-gradient);
+            color: var(--text-inverse);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .cta-button.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 40px rgba(79, 70, 229, 0.3);
+            color: var(--text-inverse);
+        }
+
+        .cta-button.secondary {
+            background: var(--surface);
+            color: var(--text-primary);
+            border-color: var(--border);
+        }
+
+        .cta-button.secondary:hover {
+            background: var(--surface-hover);
+            border-color: var(--border-hover);
+            transform: translateY(-1px);
+        }
+
+        .project-meta-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 20px 20px 18px;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .project-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0,1fr));
+            gap: 12px 24px;
+            font-size: 0.9rem;
+        }
+
+        .meta-label {
+            font-size: 0.8rem;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .meta-value {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .tech-tag {
+            padding: 4px 9px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            background: linear-gradient(135deg, rgba(79,70,229,0.12), rgba(6,182,212,0.12));
+            color: var(--accent-primary);
+            border: 1px solid rgba(79,70,229,0.25);
+        }
+
+        /* ===== Content sections ===== */
+        .section-header {
+            margin-bottom: 28px;
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: minmax(0, 3fr) minmax(0, 3fr);
+            gap: 32px;
+        }
+
+        @media (max-width: 900px) {
+            .two-col {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 24px;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .card h3 {
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .card p,
+        .card li {
+            font-size: 0.95rem;
+        }
+
+        ul {
+            margin: 12px 0 0 20px;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 6px;
+            color: var(--text-secondary);
+        }
+
+        strong {
+            color: var(--text-primary);
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 20px;
+            text-align: left;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .stat-number {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        /* Impact box */
+        .impact-box {
+            border-radius: var(--radius);
+            border: 1px solid rgba(16,185,129,0.3);
+            background: linear-gradient(135deg, rgba(16,185,129,0.08), rgba(5,150,105,0.05));
+            padding: 20px 24px;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .impact-box h3 {
+            color: var(--success);
+            margin-bottom: 8px;
+        }
+
+        .impact-box ul {
+            margin-top: 10px;
+        }
+
+        /* Contact / CTA */
+        .centered {
+            text-align: center;
+        }
+
+        .section-divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 40px 0;
+        }
+
+        /* Footer */
+        .site-footer {
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            padding: 40px 0 32px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .footer-content {
+            text-align: center;
+        }
+
+        .footer-text {
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive tweaks */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .container {
+                padding: 0 16px;
+            }
+
+            .section {
+                padding: 48px 0;
+            }
+        }
+
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+
+            .accent-blob {
+                animation: none;
+            }
+        }
+
+        .nav-btn:focus-visible,
+        .theme-toggle:focus-visible,
+        .cta-button:focus-visible {
+            outline: 2px solid var(--accent-primary);
+            outline-offset: 2px;
+        }
     </style>
 </head>
 <body>
-<header class="header">
-    <div class="header-content">
-        <a href="index.html" class="back-link">← Back to Portfolio</a>
-        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme"><span id="themeIcon">🌙</span></button>
-    </div>
-</header>
+    <!-- Background canvas -->
+    <div class="bg-canvas" aria-hidden="true"></div>
+    <div class="accent-blob blob-1" aria-hidden="true"></div>
+    <div class="accent-blob blob-2" aria-hidden="true"></div>
 
-<section class="hero">
-    <div class="badge">Status: <strong>Beta</strong> <span class="note">(demo dataset)</span></div>
-    <h1>💼 Financial Operations Suite</h1>
-    <p>Transform vendor data → Track GSV → Discover insights</p>
-    <p style="font-size: 1rem; margin-bottom: 1.25rem;">Built from $80M+ in real payroll operations experience</p>
-    <div class="hero-buttons">
-        <a href="#" class="btn btn-primary">🚀 Live Demo (Beta – Coming Soon)</a>
-        <a href="https://amybray-systems.github.io/portfolio/blog/finops-suite-story.html" class="btn btn-secondary">📖 Read the Story</a>
-    </div>
-</section>
-
-<div class="container">
-    <!-- TL;DR -->
-    <section class="section" aria-labelledby="tldr">
-        <h2 id="tldr">TL;DR</h2>
-        <div class="callout">
-            <p><strong>Fin Ops Suite</strong> is a beta, two‑tool bundle that validates vendor files on upload, standardizes outputs, and produces exec‑ready <span class="kbd">MoM/QoQ/YoY</span> GSV insights. Includes error previews and exportable reports using synthetic data.</p>
-        </div>
-    </section>
-
-    <section class="section">
-        <h2>The Challenge</h2>
-        <p>During my time managing $80M+ in payroll operations, I spent countless hours on tasks that should have been automated:</p>
-        <ul>
-            <li><strong>Manual data transformation:</strong> Converting messy vendor reports into standardized formats</li>
-            <li><strong>Growth analysis in Excel:</strong> Building MoM/QoQ/YoY calculations from scratch</li>
-            <li><strong>Executive reporting:</strong> Creating dashboards for leadership visibility</li>
-            <li><strong>Data quality issues:</strong> Catching errors before they reached downstream systems</li>
-        </ul>
-        <p>Hours of work. Every week. With room for human error at every step.</p>
-    </section>
-
-    <section class="section">
-        <h2>The Solution</h2>
-        <p>I built the tools I wished I had. This suite automates what took hours into seconds, with two integrated tools:</p>
-        <div class="feature-grid">
-            <div class="feature-card">
-                <div class="feature-icon">🔄</div>
-                <h3>Data Pipeline Pro</h3>
-                <p>Transform messy vendor data into clean, standardized formats:</p>
-                <ul>
-                    <li>Accepts Excel and CSV files</li>
-                    <li>Validates and cleans automatically</li>
-                    <li>Exports in multiple formats (billing, payment, funding)</li>
-                    <li>Flags data quality issues with an error preview</li>
-                </ul>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">📊</div>
-                <h3>GSV Tracker Pro</h3>
-                <p>Track revenue and discover growth insights:</p>
-                <ul>
-                    <li>Automatic MoM/QoQ/YoY calculations</li>
-                    <li>Department performance analytics</li>
-                    <li>Interactive visualizations</li>
-                    <li>Real-time insights on upload</li>
-                </ul>
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container">
+            <div class="header-content">
+                <a class="brand" href="index.html">Amy Bray</a>
+                <nav class="nav-actions">
+                    <a class="nav-btn" href="index.html">Home</a>
+                    <a class="nav-btn" href="projects.html">Projects</a>
+                    <a class="nav-btn" href="about.html">About</a>
+                    <a class="nav-btn" href="blog/index.html" target="_blank" rel="noopener">Blog</a>
+                    <a class="nav-btn" href="contact.html">Contact</a>
+                    <button
+                        id="theme-toggle"
+                        class="theme-toggle"
+                        aria-label="Toggle between light and dark themes"
+                        title="Toggle theme"
+                    >
+                        🌙
+                    </button>
+                </nav>
             </div>
         </div>
-    
-    <div class="impact-box">
-        <h4>📈 Real-World Impact</h4>
-        <p><strong>This suite mirrors workflows that helped me:</strong></p>
-        <ul>
-            <li>Surface hidden YoY growth (e.g., <em>27%</em> in prior payroll data)</li>
-            <li>Reduce reporting time from hours to minutes</li>
-            <li>Improve data accuracy by eliminating manual errors</li>
-            <li>Enable faster business decisions with instant insights</li>
-        </ul>
-    </div>
+    </header>
 
-    <section class="section">
-        <h2>Key Metrics</h2>
-        <div class="stats-grid">
-            <div class="stat-card"><div class="stat-number">2</div><div class="stat-label">Integrated Tools</div></div>
-            <div class="stat-card"><div class="stat-number">$80M+</div><div class="stat-label">Operations Experience</div></div>
-            <div class="stat-card"><div class="stat-number">3</div><div class="stat-label">View Modes (Light/Dark)</div></div>
-            <div class="stat-card"><div class="stat-number">Hours→Min</div><div class="stat-label">Time Savings</div></div>
-        </div>
-    </section>
+    <!-- Project Hero -->
+    <main>
+        <section class="project-hero">
+            <div class="container">
+                <div class="project-hero-inner">
+                    <div>
+                        <h1 class="project-title">Financial Operations Suite</h1>
+                        <p class="project-tagline">Transform vendor data → Track GSV → Discover insights.</p>
+                        <p class="hero-meta">
+                            Built from <strong>$80M+ in real payroll operations</strong>, this Streamlit suite turns hours of manual Excel work into minutes of repeatable workflows.
+                        </p>
+                        <div class="project-cta-group">
+                            <a class="cta-button primary" href="#" aria-disabled="true">
+                                <span>🚀 Live Demo (Coming Soon)</span>
+                            </a>
+                            <a class="cta-button secondary" href="blog/finops-suite-story.html">
+                                <span>📖 Read the Build Story</span>
+                            </a>
+                        </div>
+                    </div>
 
-    <section class="section">
-        <h2>Tech Stack</h2>
-        <div class="tech-stack">
-            <span class="tech-badge">Python</span>
-            <span class="tech-badge">Streamlit</span>
-            <span class="tech-badge">Pandas</span>
-            <span class="tech-badge">NumPy</span>
-            <span class="tech-badge">Plotly</span>
-            <span class="tech-badge">OpenPyXL</span>
-            <span class="tech-badge">JSON/CSV templates</span>
-        </div>
-        <p class="note"><strong>Includes:</strong> demo dataset • error preview table • exportable reports • dark/light modes.</p>
-    </section>
-
-    <section class="section">
-        <h2>Core Features</h2>
-        <div class="two-col">
-            <div>
-                <h3>🔍 Data Quality Checks</h3>
-                <ul>
-                    <li>Automatic validation on upload</li>
-                    <li>Null value detection</li>
-                    <li>Column type analysis</li>
-                    <li>Data profiling</li>
-                </ul>
+                    <aside class="project-meta-card">
+                        <div class="project-meta-grid">
+                            <div>
+                                <div class="meta-label">Role</div>
+                                <div class="meta-value">Designer • Builder • FP&A Partner</div>
+                            </div>
+                            <div>
+                                <div class="meta-label">Focus</div>
+                                <div class="meta-value">Payroll analytics & data cleanup</div>
+                            </div>
+                            <div>
+                                <div class="meta-label">Type</div>
+                                <div class="meta-value">Internal tools / Portfolio</div>
+                            </div>
+                            <div>
+                                <div class="meta-label">Built With</div>
+                                <div class="meta-value">Python & Streamlit</div>
+                            </div>
+                        </div>
+                        <div class="tech-tags">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Streamlit</span>
+                            <span class="tech-tag">Pandas</span>
+                            <span class="tech-tag">NumPy</span>
+                            <span class="tech-tag">Plotly</span>
+                            <span class="tech-tag">OpenPyXL</span>
+                        </div>
+                    </aside>
+                </div>
             </div>
-            <div>
-                <h3>📈 Growth Analytics</h3>
-                <ul>
-                    <li>Month-over-Month (MoM)</li>
-                    <li>Quarter-over-Quarter (QoQ)</li>
-                    <li>Year-over-Year (YoY)</li>
-                    <li>Trend detection</li>
-                </ul>
+        </section>
+
+        <!-- Challenge / Solution -->
+        <section class="section">
+            <div class="container two-col">
+                <article class="card">
+                    <div class="section-header">
+                        <h2>The Challenge</h2>
+                    </div>
+                    <p>During my time managing $80M+ in payroll operations, I spent countless hours on tasks that should have been automated:</p>
+                    <ul>
+                        <li><strong>Manual data transformation:</strong> Converting messy vendor reports into standardized formats</li>
+                        <li><strong>Growth analysis in Excel:</strong> Building MoM/QoQ/YoY calculations from scratch</li>
+                        <li><strong>Executive reporting:</strong> Creating dashboards for leadership visibility</li>
+                        <li><strong>Data quality issues:</strong> Catching errors before they reached downstream systems</li>
+                    </ul>
+                    <p>Hours of work. Every week. With room for human error at every step.</p>
+                </article>
+
+                <article class="card">
+                    <div class="section-header">
+                        <h2>The Solution</h2>
+                    </div>
+                    <p>I built the tools I wished I had. This suite automates what took hours into seconds with two integrated apps:</p>
+                    <ul>
+                        <li><strong>Data Pipeline Pro:</strong> turns messy vendor exports into clean, standardized files ready for billing, funding, and payment runs.</li>
+                        <li><strong>GSV Tracker Pro:</strong> calculates growth, surfaces trends, and visualizes performance on upload.</li>
+                    </ul>
+                    <p>The goal: make it easy for Finance and Operations to trust the data and move faster.</p>
+                </article>
             </div>
-            <div>
-                <h3>📊 Department Insights</h3>
-                <ul>
-                    <li>Performance by department</li>
-                    <li>Worker count analysis</li>
-                    <li>Hours and rate tracking</li>
-                    <li>Visual comparisons</li>
-                </ul>
+        </section>
+
+        <!-- Impact & Metrics -->
+        <section class="section">
+            <div class="container">
+                <div class="two-col" style="align-items:flex-start;">
+                    <div class="impact-box">
+                        <h3>📈 Real-World Impact</h3>
+                        <p><strong>This suite mirrors workflows that helped me:</strong></p>
+                        <ul>
+                            <li>Discover <strong>27% YoY growth</strong> hidden in payroll data</li>
+                            <li>Reduce reporting time from <strong>hours to minutes</strong></li>
+                            <li>Improve data accuracy by eliminating manual copy-paste errors</li>
+                            <li>Enable faster business decisions with instant, visual insights</li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h2 style="margin-bottom: 16px;">Key Metrics</h2>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-number">2</div>
+                                <div class="stat-label">Integrated tools (Pipeline & GSV)</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">$80M+</div>
+                                <div class="stat-label">Payroll operations experience baked in</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">Hours → Min</div>
+                                <div class="stat-label">Reporting time reduction</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">3</div>
+                                <div class="stat-label">View modes & visual dashboards</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div>
-                <h3>📤 Export Options</h3>
-                <ul>
-                    <li>Excel format output</li>
-                    <li>Billing-ready reports</li>
-                    <li>Executive summaries</li>
-                    <li>Custom transformations</li>
-                </ul>
+        </section>
+
+        <!-- Features -->
+        <section class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Core Features</h2>
+                    <p class="section-subtitle" style="color:var(--text-secondary); margin-top:10px;">
+                        Built to support Finance, Payroll, and People Ops teams who live in spreadsheets.
+                    </p>
+                </div>
+
+                <div class="two-col">
+                    <article class="card">
+                        <h3>🔄 Data Pipeline Pro</h3>
+                        <p style="margin-bottom:8px;">Transform messy vendor data into clean, standardized formats.</p>
+                        <ul>
+                            <li>Accepts Excel and CSV files</li>
+                            <li>Automatic validation and cleaning on upload</li>
+                            <li>Null value and data-type checks</li>
+                            <li>Exports for billing, payment, and funding workflows</li>
+                            <li>Flags data quality issues before they hit downstream systems</li>
+                        </ul>
+                    </article>
+
+                    <article class="card">
+                        <h3>📊 GSV Tracker Pro</h3>
+                        <p style="margin-bottom:8px;">Track revenue and discover growth insights instantly.</p>
+                        <ul>
+                            <li>Automatic MoM / QoQ / YoY growth calculations</li>
+                            <li>Department performance analytics and worker counts</li>
+                            <li>Interactive visualizations built with Plotly</li>
+                            <li>Trend detection and quick executive-ready summaries</li>
+                            <li>Export to Excel for further modeling</li>
+                        </ul>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lessons & Next steps -->
+        <section class="section">
+            <div class="container two-col">
+                <article class="card">
+                    <h2>What I Learned</h2>
+                    <ul>
+                        <li><strong>Build for real needs:</strong> theory is nice; real operations pain points drive adoption.</li>
+                        <li><strong>Data validation first:</strong> bad data in = bad insights out. Validate early and visibly.</li>
+                        <li><strong>Visual feedback matters:</strong> people trust systems that show what’s happening step-by-step.</li>
+                        <li><strong>Exports are essential:</strong> great insights trapped in a UI are useless to Finance.</li>
+                        <li><strong>Dark mode helps:</strong> analysts and payroll teams work late—support their eyes.</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h2>What’s Next</h2>
+                    <ul>
+                        <li><strong>Database integration:</strong> SQL backend for larger, multi-year datasets.</li>
+                        <li><strong>Custom metric builder:</strong> let users define and save their own KPIs.</li>
+                        <li><strong>Scheduled reports:</strong> automated daily/weekly/monthly reporting to stakeholders.</li>
+                        <li><strong>Multi-currency support:</strong> extend to global payroll operations.</li>
+                        <li><strong>Team collaboration:</strong> shared workspaces, saved views, and comments.</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+
+        <!-- Story CTA -->
+        <section class="section centered">
+            <div class="container">
+                <h2>Want the Full Story?</h2>
+                <p style="max-width:600px;margin:10px auto 24px;color:var(--text-secondary);">
+                    I wrote a behind-the-scenes walkthrough of how this suite came together, including design decisions and trade-offs.
+                </p>
+                <a class="cta-button primary" href="blog/finops-suite-story.html">
+                    📖 Read the Case Study
+                </a>
+            </div>
+        </section>
+
+        <hr class="section-divider" />
+
+        <!-- Contact -->
+        <section class="section">
+            <div class="container centered">
+                <h2>Let’s Talk Financial Ops Tools</h2>
+                <p style="max-width:520px;margin:10px auto 20px;color:var(--text-secondary);">
+                    Curious how something like this could support your HR, Payroll, or Finance team? I’m happy to walk through the flow and discuss how it might translate to your stack.
+                </p>
+                <p>
+                    📧 <strong>Email:</strong> <a href="mailto:amybray0315@gmail.com">amybray0315@gmail.com</a><br />
+                    💼 <strong>LinkedIn:</strong> <a href="https://linkedin.com/in/amybrayphr" target="_blank" rel="noopener">linkedin.com/in/amybrayphr</a>
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <p class="footer-text">© <span id="current-year"></span> Amy Bray. Building practical tools for real-world operations.</p>
             </div>
         </div>
-    </section>
+    </footer>
 
-    <!-- Controls & Audit -->
-    <section class="section" aria-labelledby="controls">
-        <h2 id="controls">Controls & Audit</h2>
-        <div class="callout">
-            <ul>
-                <li>Field‑type & range validation at intake</li>
-                <li>Error log with row and column references</li>
-                <li>Export checksum / row‑count confirmation</li>
-                <li>Documented assumptions & transformation rules</li>
-            </ul>
-        </div>
-    </section>
+    <!-- Theme + nav script (same behavior as other pages) -->
+    <script>
+        (function () {
+            'use strict';
 
-    <section class="section">
-        <h2>What I Learned</h2>
-        <ul>
-            <li><strong>Build for real needs:</strong> Theory is nice; real operations pain points drive value</li>
-            <li><strong>Data validation first:</strong> Bad data in = bad insights out. Validate early.</li>
-            <li><strong>Visual feedback matters:</strong> Users trust systems that show them what's happening</li>
-            <li><strong>Export is essential:</strong> Great insights trapped in a tool are useless</li>
-            <li><strong>Dark mode isn't optional:</strong> Financial analysts work late. Support their eyes.</li>
-        </ul>
-    </section>
+            const root = document.documentElement;
+            const toggleButton = document.getElementById('theme-toggle');
 
-    <section class="section">
-        <h2>What's Next</h2>
-        <ul>
-            <li><strong>Database integration:</strong> Handle larger datasets with SQL backend</li>
-            <li><strong>Custom metric builder:</strong> Let users define their own KPIs</li>
-            <li><strong>Scheduled reports:</strong> Automated daily/weekly/monthly reporting</li>
-            <li><strong>Multi-currency support:</strong> For global operations</li>
-            <li><strong>Team collaboration:</strong> Shared workspaces and insights</li>
-        </ul>
-    </section>
+            const getPreferredTheme = () => {
+                const stored = localStorage.getItem('amy-portfolio-theme');
+                if (stored && ['light', 'dark'].includes(stored)) return stored;
+                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            };
 
-    <hr class="hr" />
+            const applyTheme = (theme) => {
+                root.setAttribute('data-theme', theme);
+                localStorage.setItem('amy-portfolio-theme', theme);
+                if (toggleButton) {
+                    toggleButton.textContent = theme === 'dark' ? '☀️' : '🌙';
+                    toggleButton.setAttribute(
+                        'aria-label',
+                        theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'
+                    );
+                }
+            };
 
-    <!-- Changelog -->
-    <section class="section" aria-labelledby="changelog">
-        <h2 id="changelog">Changelog</h2>
-        <ul>
-            <li><strong>2025‑10‑28:</strong> Added TL;DR, Controls & Audit, removed downloads section and screenshot placeholders for now; updated meta tags; marked status as Beta.</li>
-        </ul>
-    </section>
+            const toggleTheme = () => {
+                const current = root.getAttribute('data-theme');
+                applyTheme(current === 'dark' ? 'light' : 'dark');
+            };
 
-    <section class="section">
-        <h2>Contact</h2>
-        <p>Questions about this project or financial operations tools?</p>
-        <p>
-            📧 <strong>Email:</strong> amybray0315@gmail.com<br />
-            💼 <strong>LinkedIn:</strong> linkedin.com/in/amybrayphr<br />
-            🌐 <strong>Portfolio:</strong> amybray-systems.github.io/portfolio
-        </p>
-    </section>
-</div>
+            applyTheme(getPreferredTheme());
 
-<script>
-    // Theme toggle functionality
-    const themeToggle = document.getElementById('themeToggle');
-    const themeIcon = document.getElementById('themeIcon');
-    const html = document.documentElement;
-    const currentTheme = localStorage.getItem('theme') || 'light';
-    html.setAttribute('data-theme', currentTheme);
-    updateThemeIcon(currentTheme);
-    themeToggle.addEventListener('click', () => {
-        const current = html.getAttribute('data-theme');
-        const next = current === 'light' ? 'dark' : 'light';
-        html.setAttribute('data-theme', next);
-        localStorage.setItem('theme', next);
-        updateThemeIcon(next);
-    });
-    function updateThemeIcon(theme) { themeIcon.textContent = theme === 'light' ? '🌙' : '☀️'; }
-</script>
+            if (toggleButton) {
+                toggleButton.addEventListener('click', toggleTheme);
+            }
 
-<!-- JSON-LD -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "SoftwareSourceCode",
-  "name": "Financial Operations Suite (Beta)",
-  "author": {"@type": "Person", "name": "Amy Bray"},
-  "description": "Beta suite that validates vendor files, standardizes outputs, and generates MoM/QoQ/YoY GSV insights with error previews and exportable reports.",
-  "programmingLanguage": ["Python"],
-  "applicationCategory": "BusinessApplication",
-  "softwareVersion": "0.9-beta",
-  "url": "https://amybray-systems.github.io/portfolio/project-finops-suite.html",
-  "image": "https://amybray-systems.github.io/portfolio/assets/finops/og_finops_dashboard.png"
-}
-</script>
+            // Active nav state
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navLinks = document.querySelectorAll('.nav-btn');
+            navLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                link.classList.remove('active');
+                if (
+                    href === currentPage ||
+                    (currentPage === '' && href === 'index.html') ||
+                    (href === 'index.html' && (currentPage === 'index.html' || currentPage === ''))
+                ) {
+                    link.classList.add('active');
+                }
+            });
+
+            // Year
+            const yearEl = document.getElementById('current-year');
+            if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+            // Sync with system theme if user hasn’t chosen
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+                if (!localStorage.getItem('amy-portfolio-theme')) {
+                    applyTheme(e.matches ? 'dark' : 'light');
+                }
+            });
+        })();
+    </script>
 </body>
 </html>
