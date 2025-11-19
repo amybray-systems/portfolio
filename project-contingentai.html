@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ContingentAI: Workforce Analytics + Leave Compliance | Amy Bray</title>
+	
+    <!-- Meta description -->
+    <meta name="description" content="ContingentAI: Workforce analytics platform with FMLA/PFML leave tracking for W-2 contractors. Built from $80M+ in contingent workforce operations." />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="ContingentAI | Amy Bray" />
+    <meta property="og:description" content="The workforce analytics platform that finally tracks leave compliance for contractors." />
+    <meta property="og:type" content="website" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <style>
+        /* ===== Design System (same as FinOps Suite) ===== */
+        :root {
+            --radius: 16px;
+            --radius-large: 24px;
+            --gap: 24px;
+            --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.08);
+            --shadow-medium: 0 12px 40px rgba(0, 0, 0, 0.12);
+            --shadow-large: 0 20px 60px rgba(0, 0, 0, 0.15);
+
+            /* Light theme */
+            --bg-primary: #fafbff;
+            --bg-secondary: #f8fafc;
+            --surface: #ffffff;
+            --surface-elevated: #ffffff;
+            --surface-hover: #f1f5f9;
+            --border: rgba(15, 23, 42, 0.08);
+            --border-hover: rgba(15, 23, 42, 0.16);
+            --border-strong: rgba(15, 23, 42, 0.24);
+
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-tertiary: #64748b;
+            --text-inverse: #ffffff;
+
+            --accent-primary: #4f46e5;
+            --accent-secondary: #06b6d4;
+            --accent-tertiary: #8b5cf6;
+            --accent-gradient: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%);
+            --accent-gradient-alt: linear-gradient(135deg, #8b5cf6 0%, #4f46e5 100%);
+
+            --success: #10b981;
+            --success-bg: #d1fae5;
+            --warning: #f59e0b;
+            --warning-bg: #fef3c7;
+            --error: #ef4444;
+            --error-bg: #fee2e2;
+        }
+
+        :root[data-theme="dark"] {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --surface: #1e293b;
+            --surface-elevated: #334155;
+            --surface-hover: #475569;
+            --border: rgba(255, 255, 255, 0.1);
+            --border-hover: rgba(255, 255, 255, 0.2);
+            --border-strong: rgba(255, 255, 255, 0.3);
+
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-tertiary: #94a3b8;
+            --text-inverse: #0f172a;
+
+            --accent-primary: #6366f1;
+            --accent-secondary: #22d3ee;
+            --accent-tertiary: #a855f7;
+            --accent-gradient: linear-gradient(135deg, #6366f1 0%, #22d3ee 100%);
+            --accent-gradient-alt: linear-gradient(135deg, #a855f7 0%, #6366f1 100%);
+
+            --success: #34d399;
+            --success-bg: rgba(52, 211, 153, 0.1);
+            --warning: #fbbf24;
+            --warning-bg: rgba(251, 191, 36, 0.1);
+            --error: #f87171;
+            --error-bg: rgba(248, 113, 113, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            margin: 0;
+            font-weight: 600;
+            line-height: 1.3;
+            letter-spacing: -0.02em;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 3.5vw, 3rem);
+            font-weight: 700;
+        }
+
+        h2 {
+            font-size: clamp(1.6rem, 2.6vw, 2.1rem);
+        }
+
+        h3 {
+            font-size: 1.25rem;
+        }
+
+        p {
+            margin: 0;
+            color: var(--text-secondary);
+        }
+
+        a {
+            color: var(--accent-primary);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        a:hover {
+            color: var(--accent-secondary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .section {
+            padding: 60px 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Background system */
+        body {
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.4;
+            background-image:
+                radial-gradient(circle at 1px 1px, var(--border) 1px, transparent 0);
+            background-size: 24px 24px;
+            mix-blend-mode: multiply;
+        }
+
+        :root[data-theme="dark"] body::before {
+            mix-blend-mode: overlay;
+            opacity: 0.2;
+        }
+
+        .bg-canvas {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        :root[data-theme="light"] .bg-canvas {
+            background:
+                radial-gradient(800px circle at 85% 15%, rgba(79, 70, 229, 0.08) 0%, transparent 50%),
+                radial-gradient(600px circle at 15% 85%, rgba(6, 182, 212, 0.06) 0%, transparent 50%),
+                linear-gradient(135deg, #fafbff 0%, #f1f5f9 50%, #e2e8f0 100%);
+        }
+
+        :root[data-theme="dark"] .bg-canvas {
+            background:
+                radial-gradient(800px circle at 85% 15%, rgba(99, 102, 241, 0.12) 0%, transparent 50%),
+                radial-gradient(600px circle at 15% 85%, rgba(34, 211, 238, 0.08) 0%, transparent 50%),
+                linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+        }
+
+        .accent-blob {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.6;
+            animation: floatGentle 20s ease-in-out infinite;
+        }
+
+        .blob-1 {
+            width: 400px;
+            height: 400px;
+            background: var(--accent-gradient);
+            top: -200px;
+            right: -200px;
+        }
+
+        .blob-2 {
+            width: 300px;
+            height: 300px;
+            background: var(--accent-gradient-alt);
+            bottom: -150px;
+            left: -150px;
+            animation-delay: 10s;
+        }
+
+        @keyframes floatGentle {
+            0%, 100% { transform: translate(0,0) scale(1); opacity: 0.4; }
+            33% { transform: translate(30px,-20px) scale(1.1); opacity: 0.6; }
+            66% { transform: translate(-20px,30px) scale(0.9); opacity: 0.5; }
+        }
+
+        /* Header */
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        :root[data-theme="dark"] .site-header {
+            background: rgba(30, 41, 59, 0.95);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .brand {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .nav-btn:hover {
+            color: var(--text-primary);
+            background: var(--surface);
+            border-color: var(--border);
+            transform: translateY(-1px);
+        }
+
+        .nav-btn.active {
+            color: var(--accent-primary);
+            background: var(--surface);
+            border-color: var(--border);
+            font-weight: 600;
+        }
+
+        .theme-toggle {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.2s ease;
+            margin-left: 8px;
+            color: var(--text-primary);
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-1px);
+        }
+
+        /* Project Hero */
+        .project-hero {
+            padding: 70px 0 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .project-hero-inner {
+            display: grid;
+            gap: 32px;
+            grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+        }
+
+        @media (max-width: 900px) {
+            .project-hero-inner {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .project-title {
+            margin-bottom: 16px;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .project-tagline {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .hero-meta {
+            font-size: 0.95rem;
+            color: var(--text-tertiary);
+            margin-bottom: 24px;
+        }
+
+        .project-cta-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border: 1px solid transparent;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .cta-button.primary {
+            background: var(--accent-gradient);
+            color: var(--text-inverse);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .cta-button.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 40px rgba(79, 70, 229, 0.3);
+            color: var(--text-inverse);
+        }
+
+        .cta-button.secondary {
+            background: var(--surface);
+            color: var(--text-primary);
+            border-color: var(--border);
+        }
+
+        .cta-button.secondary:hover {
+            background: var(--surface-hover);
+            border-color: var(--border-hover);
+            transform: translateY(-1px);
+        }
+
+        .project-meta-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 20px 20px 18px;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .project-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0,1fr));
+            gap: 12px 24px;
+            font-size: 0.9rem;
+        }
+
+        .meta-label {
+            font-size: 0.8rem;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .meta-value {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .tech-tag {
+            padding: 4px 9px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            background: linear-gradient(135deg, rgba(79,70,229,0.12), rgba(6,182,212,0.12));
+            color: var(--accent-primary);
+            border: 1px solid rgba(79,70,229,0.25);
+        }
+
+        /* Content sections */
+        .section-header {
+            margin-bottom: 28px;
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: minmax(0, 3fr) minmax(0, 3fr);
+            gap: 32px;
+        }
+
+        @media (max-width: 900px) {
+            .two-col {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 24px;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .card h3 {
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .card p,
+        .card li {
+            font-size: 0.95rem;
+        }
+
+        ul {
+            margin: 12px 0 0 20px;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 6px;
+            color: var(--text-secondary);
+        }
+
+        strong {
+            color: var(--text-primary);
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 20px;
+            text-align: left;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .stat-number {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        /* Impact box */
+        .impact-box {
+            border-radius: var(--radius);
+            border: 1px solid rgba(16,185,129,0.3);
+            background: linear-gradient(135deg, rgba(16,185,129,0.08), rgba(5,150,105,0.05));
+            padding: 20px 24px;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .impact-box h3 {
+            color: var(--success);
+            margin-bottom: 8px;
+        }
+
+        .impact-box ul {
+            margin-top: 10px;
+        }
+
+        /* Contact / CTA */
+        .centered {
+            text-align: center;
+        }
+
+        .section-divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 40px 0;
+        }
+
+        /* Footer */
+        .site-footer {
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            padding: 40px 0 32px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .footer-content {
+            text-align: center;
+        }
+
+        .footer-text {
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive tweaks */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .container {
+                padding: 0 16px;
+            }
+
+            .section {
+                padding: 48px 0;
+            }
+        }
+
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+
+            .accent-blob {
+                animation: none;
+            }
+        }
+
+        .nav-btn:focus-visible,
+        .theme-toggle:focus-visible,
+        .cta-button:focus-visible {
+            outline: 2px solid var(--accent-primary);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Background canvas -->
+    <div class="bg-canvas" aria-hidden="true"></div>
+    <div class="accent-blob blob-1" aria-hidden="true"></div>
+    <div class="accent-blob blob-2" aria-hidden="true"></div>
+
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container">
+            <div class="header-content">
+                <a class="brand" href="index.html">Amy Bray</a>
+                <nav class="nav-actions">
+                    <a class="nav-btn" href="index.html">Home</a>
+                    <a class="nav-btn" href="projects.html">Projects</a>
+                    <a class="nav-btn" href="about.html">About</a>
+                    <a class="nav-btn" href="blog/index.html" target="_blank" rel="noopener">Blog</a>
+                    <a class="nav-btn" href="contact.html">Contact</a>
+                    <button
+                        id="theme-toggle"
+                        class="theme-toggle"
+                        aria-label="Toggle between light and dark themes"
+                        title="Toggle theme"
+                    >
+                        🌙
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Project Hero -->
+    <main>
+        <section class="project-hero">
+            <div class="container">
+                <div class="project-hero-inner">
+                    <div>
+                        <h1 class="project-title">ContingentAI</h1>
+                        <p class="project-tagline">Workforce analytics + Leave compliance for the workers everyone forgets.</p>
+                        <p class="hero-meta">
+                            Built from <strong>$80M+ in contingent workforce operations</strong>, ContingentAI tracks FMLA and PFML eligibility for W-2 contractors—the compliance gap most companies don't know they have.
+                        </p>
+                        <div class="project-cta-group">
+                            <a class="cta-button primary" href="blog/contingentai-build-story.html">
+                                <span>📖 Read the Build Story</span>
+                            </a>
+                            <a class="cta-button secondary" href="#features">
+                                <span>View Features</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <aside class="project-meta-card">
+                        <div class="project-meta-grid">
+                            <div>
+                                <div class="meta-label">Role</div>
+                                <div class="meta-value">Solo Builder • Product Designer</div>
+                            </div>
+                            <div>
+                                <div class="meta-label">Focus</div>
+                                <div class="meta-value">Workforce analytics & compliance</div>
+                            </div>
+                            <div>
+                                <div class="meta-label">Type</div>
+                                <div class="meta-value">Internal tools / Portfolio</div>
+                            </div>
+                            <div>
+                                <div class="meta-label">Built With</div>
+                                <div class="meta-value">Flask & Bootstrap</div>
+                            </div>
+                        </div>
+                        <div class="tech-tags">
+                            <span class="tech-tag">Flask</span>
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">SQLAlchemy</span>
+                            <span class="tech-tag">Bootstrap 5</span>
+                            <span class="tech-tag">JavaScript</span>
+                            <span class="tech-tag">SQLite</span>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </section>
+
+        <!-- Challenge / Solution -->
+        <section class="section">
+            <div class="container two-col">
+                <article class="card">
+                    <div class="section-header">
+                        <h2>The Challenge</h2>
+                    </div>
+                    <p>After managing contractor payroll at Upwork ($80M+) and Velocity Global, I saw the same problem everywhere:</p>
+                    <ul>
+                        <li><strong>Long-term W-2 contractors qualify for FMLA</strong> after 1,250 hours—but companies don't track this</li>
+                        <li><strong>State PFML programs cover W-2 contractors</strong> in WA, CA, MA, NY—but systems assume contractors = ineligible</li>
+                        <li><strong>Leave coordination is chaos:</strong> no central tracking, lost return dates, unclear communication trails</li>
+                        <li><strong>Mixed classifications:</strong> workers with both W-2 and 1099 assignments—only W-2 hours count for eligibility</li>
+                        <li><strong>Manual hour tracking:</strong> spreadsheet hell trying to calculate rolling 12-month totals</li>
+                    </ul>
+                    <p>The compliance risk is real. The operational pain is constant. The tools? They don't exist.</p>
+                </article>
+
+                <article class="card">
+                    <div class="section-header">
+                        <h2>The Solution</h2>
+                    </div>
+                    <p>ContingentAI is a full-stack workforce analytics platform that solves what everyone else ignores:</p>
+                    <ul>
+                        <li><strong>Worker management:</strong> contractors, FTEs, EOR placements—all in one system</li>
+                        <li><strong>Vendor performance:</strong> track fill rates, quality scores, compliance, and spend</li>
+                        <li><strong>Scenario planning:</strong> model headcount changes and cost impacts</li>
+                        <li><strong>Leave tracking (newest):</strong> FMLA/PFML eligibility, return coordination, and communication logs</li>
+                    </ul>
+                    <p>The goal: give People Ops and Finance teams the visibility they've never had over their contingent workforce—especially leave compliance.</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- Impact & Metrics -->
+        <section class="section">
+            <div class="container">
+                <div class="two-col" style="align-items:flex-start;">
+                    <div class="impact-box">
+                        <h3>📈 Real-World Impact</h3>
+                        <p><strong>Built from operational experience managing:</strong></p>
+                        <ul>
+                            <li><strong>$80M+ in annual contractor payroll</strong> (Upwork)</li>
+                            <li><strong>1,000+ contingent workers</strong> across 20+ countries</li>
+                            <li><strong>Multiple EOR providers</strong> with complex classification rules</li>
+                            <li><strong>Post-acquisition integration</strong> coordinating systems for 100+ workers (Velocity Global)</li>
+                            <li><strong>Leave coordination pain</strong> at The Mom Project—now solved</li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h2 style="margin-bottom: 16px;">Key Metrics</h2>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-number">6</div>
+                                <div class="stat-label">New database models for leave tracking</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">5</div>
+                                <div class="stat-label">State policies (Federal + WA/CA/MA/NY)</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">100%</div>
+                                <div class="stat-label">W-2 hour accuracy (filters out 1099)</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">7-day</div>
+                                <div class="stat-label">Return alerts (no more surprises)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features -->
+        <section class="section" id="features">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Core Features</h2>
+                    <p class="section-subtitle" style="color:var(--text-secondary); margin-top:10px;">
+                        Built to solve real operations pain for People Ops, Payroll, and Finance teams.
+                    </p>
+                </div>
+
+                <div class="two-col">
+                    <article class="card">
+                        <h3>📊 Worker Management</h3>
+                        <p style="margin-bottom:8px;">Track contractors, FTEs, and EOR placements in one system.</p>
+                        <ul>
+                            <li>Multi-classification support (W-2 and 1099 per worker)</li>
+                            <li>Department and vendor tracking</li>
+                            <li>Rate and salary history</li>
+                            <li>Status management (active, terminated, on leave)</li>
+                            <li>Bulk import and export</li>
+                        </ul>
+                    </article>
+
+                    <article class="card">
+                        <h3>🤝 Vendor Performance</h3>
+                        <p style="margin-bottom:8px;">Score and compare your staffing agencies and EOR providers.</p>
+                        <ul>
+                            <li>Fill rates and time-to-fill metrics</li>
+                            <li>Quality and compliance scoring</li>
+                            <li>Spend analytics (YTD totals, markup %)</li>
+                            <li>Contract and payment terms tracking</li>
+                            <li>Performance comparison dashboards</li>
+                        </ul>
+                    </article>
+
+                    <article class="card">
+                        <h3>📈 Scenario Planning</h3>
+                        <p style="margin-bottom:8px;">Model workforce changes before you commit.</p>
+                        <ul>
+                            <li>Headcount adjustment modeling (contractors, FTEs, EOR)</li>
+                            <li>Cost impact calculations (monthly & annual)</li>
+                            <li>Quick scenarios (10%, 30%, 50% growth)</li>
+                            <li>Contractor vs. FTE mix analysis</li>
+                            <li>Save and compare scenarios</li>
+                        </ul>
+                    </article>
+
+                    <article class="card">
+                        <h3>🗓️ Leave Tracking (Newest)</h3>
+                        <p style="margin-bottom:8px;">Finally—leave compliance tracking for W-2 contractors.</p>
+                        <ul>
+                            <li><strong>Automatic eligibility tracking</strong> (FMLA: 1,250 hours in 12 months)</li>
+                            <li><strong>Multi-state PFML support</strong> (WA, CA, MA, NY + Federal)</li>
+                            <li><strong>W-2 hour aggregation</strong> (filters out 1099 hours)</li>
+                            <li><strong>Return coordination</strong> (expected date, confirmation, system reactivation)</li>
+                            <li><strong>Communication audit trail</strong> (who was notified, when, about what)</li>
+                            <li><strong>Eligibility alerts</strong> (workers approaching 1,250-hour threshold)</li>
+                            <li><strong>7-day return warnings</strong> (know who's coming back soon)</li>
+                        </ul>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Leave Tracking Deep Dive -->
+        <section class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Leave Tracking: The Feature That Changes Everything</h2>
+                    <p style="color:var(--text-secondary); margin-top:10px;">
+                        This is the compliance gap no one talks about—and the feature that makes ContingentAI unique.
+                    </p>
+                </div>
+
+                <div class="two-col">
+                    <article class="card">
+                        <h3>Why This Matters</h3>
+                        <p>Most workforce platforms assume:</p>
+                        <ul>
+                            <li><strong>Contractors = 1099 = ineligible for leave.</strong> Wrong. Many are W-2.</li>
+                            <li><strong>Contractors = short-term.</strong> Wrong. Many work 12+ months.</li>
+                            <li><strong>Leave tracking = HR/benefits problem.</strong> Wrong. It's a compliance risk.</li>
+                        </ul>
+                        <p>The reality? Companies use EOR providers to hire W-2 contractors for extended periods. These workers qualify for FMLA and state PFML programs—but nobody's tracking it.</p>
+                        <p><strong>Until now.</strong></p>
+                    </article>
+
+                    <article class="card">
+                        <h3>What Makes It Different</h3>
+                        <ul>
+                            <li><strong>Mixed classification support:</strong> Workers can have both W-2 and 1099 assignments—system only counts W-2 hours for eligibility</li>
+                            <li><strong>Rolling 12-month calculations:</strong> Auto-updates as hours are logged</li>
+                            <li><strong>State-specific rules:</strong> Different thresholds and benefits for WA, CA, MA, NY</li>
+                            <li><strong>Return workflow:</strong> Expected date → Confirmation → System reactivation → Returned</li>
+                            <li><strong>Communication logs:</strong> Track who you notified (client, vendor, payroll) and when</li>
+                            <li><strong>Proactive alerts:</strong> Know when workers approach 1,250 hours <em>before</em> they request leave</li>
+                        </ul>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lessons & Next steps -->
+        <section class="section">
+            <div class="container two-col">
+                <article class="card">
+                    <h2>What I Learned</h2>
+                    <ul>
+                        <li><strong>Build for real pain:</strong> Every feature came from operational frustration at Upwork, Velocity Global, or The Mom Project</li>
+                        <li><strong>Database design is critical:</strong> Separating worker classifications from leave balances was the right call—it supports complex scenarios cleanly</li>
+                        <li><strong>State compliance is messy:</strong> Supporting 5 different leave policies (Federal + 4 states) was hard but necessary</li>
+                        <li><strong>Audit trails matter:</strong> Communication logs solve a real ops problem—"who did I tell about this leave?"</li>
+                        <li><strong>Return coordination is underrated:</strong> Expected vs. actual return dates + confirmation workflows are the difference between chaos and control</li>
+                        <li><strong>Bootstrap makes it real:</strong> Polished UI matters for portfolio credibility—this looks like real enterprise software</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h2>What's Next</h2>
+                    <ul>
+                        <li><strong>Automated recalculations:</strong> Nightly jobs to update eligibility as hours change</li>
+                        <li><strong>Email notifications:</strong> Auto-send return reminders and eligibility alerts</li>
+                        <li><strong>Calendar integration:</strong> Export leave dates to Google Calendar or Outlook</li>
+                        <li><strong>Bulk actions:</strong> Approve or process multiple leaves at once</li>
+                        <li><strong>Reports and analytics:</strong> Leave usage by department, average duration, compliance trends</li>
+                        <li><strong>Mobile optimization:</strong> Responsive design for tablets and phones</li>
+                        <li><strong>More states:</strong> Expand beyond WA/CA/MA/NY to all US states with PFML programs</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+
+        <!-- Story CTA -->
+        <section class="section centered">
+            <div class="container">
+                <h2>Want the Full Story?</h2>
+                <p style="max-width:600px;margin:10px auto 24px;color:var(--text-secondary);">
+                    I wrote a deep-dive blog post about building ContingentAI, including the technical decisions, database design, and why this compliance gap exists in the first place.
+                </p>
+                <a class="cta-button primary" href="blog/contingentai-build-story.html">
+                    📖 Read the Build Story
+                </a>
+            </div>
+        </section>
+
+        <hr class="section-divider" />
+
+        <!-- Contact -->
+        <section class="section">
+            <div class="container centered">
+                <h2>Let's Talk Workforce Tech</h2>
+                <p style="max-width:520px;margin:10px auto 20px;color:var(--text-secondary);">
+                    Building HR tech, compliance tools, or workforce analytics? I'd love to talk about the messy reality of contingent workforce management and what actually works in operations.
+                </p>
+                <p>
+                    📧 <strong>Email:</strong> <a href="mailto:amybray0315@gmail.com">amybray0315@gmail.com</a><br />
+                    💼 <strong>LinkedIn:</strong> <a href="https://linkedin.com/in/amybrayphr" target="_blank" rel="noopener">linkedin.com/in/amybrayphr</a>
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <p class="footer-text">© <span id="current-year"></span> Amy Bray. Building tools that solve real operations problems.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Theme + nav script -->
+    <script>
+        (function () {
+            'use strict';
+
+            const root = document.documentElement;
+            const toggleButton = document.getElementById('theme-toggle');
+
+            const getPreferredTheme = () => {
+                const stored = localStorage.getItem('amy-portfolio-theme');
+                if (stored && ['light', 'dark'].includes(stored)) return stored;
+                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            };
+
+            const applyTheme = (theme) => {
+                root.setAttribute('data-theme', theme);
+                localStorage.setItem('amy-portfolio-theme', theme);
+                if (toggleButton) {
+                    toggleButton.textContent = theme === 'dark' ? '☀️' : '🌙';
+                    toggleButton.setAttribute(
+                        'aria-label',
+                        theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'
+                    );
+                }
+            };
+
+            const toggleTheme = () => {
+                const current = root.getAttribute('data-theme');
+                applyTheme(current === 'dark' ? 'light' : 'dark');
+            };
+
+            applyTheme(getPreferredTheme());
+
+            if (toggleButton) {
+                toggleButton.addEventListener('click', toggleTheme);
+            }
+
+            // Active nav state
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navLinks = document.querySelectorAll('.nav-btn');
+            navLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                link.classList.remove('active');
+                if (
+                    href === currentPage ||
+                    (currentPage === '' && href === 'index.html') ||
+                    (href === 'index.html' && (currentPage === 'index.html' || currentPage === ''))
+                ) {
+                    link.classList.add('active');
+                }
+            });
+
+            // Year
+            const yearEl = document.getElementById('current-year');
+            if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+            // Sync with system theme
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+                if (!localStorage.getItem('amy-portfolio-theme')) {
+                    applyTheme(e.matches ? 'dark' : 'light');
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
