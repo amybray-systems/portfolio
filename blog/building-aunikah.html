@@ -1,336 +1,720 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Building Aunikah: When Workers Don't Know if They're W-2 or 1099 | Amy Bray</title>
-  <meta name="description" content="Across marketplaces and EOR programs, I kept seeing the same thing: workers didn’t know who actually employed them or who handled their benefits. So I built a chatbot that figures it out and routes them to the right place.">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building Aunikah: When Workers Don't Know if They're W-2 or 1099</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #8b5cf6;
+            --accent-color: #06b6d4;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --bg-light: #f8fafc;
+            --bg-card: #ffffff;
+            --border-color: #e5e7eb;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
 
-  <style>
-    :root{
-      --bg-primary:#f7fafc; --bg-secondary:#fff; --bg-accent:#edf2f7;
-      --text-primary:#2d3748; --text-secondary:#4a5568; --text-muted:#718096;
-      --border-color:#e2e8f0; --code-bg:#f7fafc;
-      --gradient-1:#667eea; --gradient-2:#764ba2;
-    }
-    [data-theme="dark"]{
-      --bg-primary:#1a202c; --bg-secondary:#2d3748; --bg-accent:#374151;
-      --text-primary:#f7fafc; --text-secondary:#e2e8f0; --text-muted:#a0aec0;
-      --border-color:#4a5568; --code-bg:#2d3748;
-    }
-    *{margin:0;padding:0;box-sizing:border-box}
-    body{
-      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,sans-serif;
-      line-height:1.6; color:var(--text-primary); background:var(--bg-primary);
-      transition:background-color .3s ease,color .3s ease;
-    }
-    .header{background:var(--bg-secondary); border-bottom:1px solid var(--border-color);
-      padding:1rem 0; position:sticky; top:0; z-index:100}
-    .header-content{max-width:800px; margin:0 auto; padding:0 20px; display:flex; justify-content:space-between; align-items:center}
-    .back-link{color:var(--text-secondary); text-decoration:none; font-size:.95rem}
-    .back-link:hover{color:var(--gradient-1)}
-    .theme-toggle{
-      background:none; border:2px solid var(--border-color); border-radius:50%;
-      width:40px; height:40px; display:flex; align-items:center; justify-content:center;
-      cursor:pointer; font-size:1.2rem; transition:.3s
-    }
-    .theme-toggle:hover{border-color:var(--gradient-1); transform:rotate(20deg)}
-    .container{max-width:800px; margin:0 auto; padding:40px 20px; background:var(--bg-secondary)}
-    h1{font-size:2.4rem; margin-bottom:.5rem}
-    h2,h3,h4{margin-top:2rem; margin-bottom:1rem}
-    p{margin-bottom:1rem; color:var(--text-secondary)}
-    .meta{color:var(--text-muted); font-size:.95rem; margin-bottom:2rem}
-    .info-box{background:var(--bg-accent); border-left:4px solid var(--gradient-1); padding:1rem; border-radius:6px; margin:1.5rem 0}
-    .info-box p{margin:0}
-    .inline-badges{display:flex; flex-wrap:wrap; gap:8px; margin:.5rem 0 1rem}
-    .badge{background:var(--bg-accent); border:1px solid var(--border-color); color:var(--text-secondary);
-      padding:4px 10px; border-radius:999px; font-size:.8rem}
-    .stats-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1rem; margin:2rem 0}
-    .stat-card{background:linear-gradient(135deg,var(--gradient-1),var(--gradient-2)); color:#fff; padding:1.2rem; border-radius:8px; text-align:center}
-    .stat-number{font-size:1.8rem; font-weight:700}
-    .stat-label{font-size:.9rem; opacity:.9}
-    .feature-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:1rem; margin:2rem 0}
-    .feature-card{background:var(--bg-accent); border:1px solid var(--border-color); padding:1rem; border-radius:8px}
-    .feature-card h4{margin:0 0 .5rem; color:var(--gradient-1); font-size:1rem}
-    .feature-card p{margin:0; font-size:.9rem; color:var(--text-muted)}
-    pre{background:var(--code-bg); border:1px solid var(--border-color); border-radius:6px; padding:1rem; overflow-x:auto; margin:1rem 0}
-    code{font-family:'Courier New',monospace; font-size:.9rem}
-    ul,ol{margin-left:1.5rem; margin-bottom:1rem}
-    li{margin-bottom:.5rem; color:var(--text-secondary)}
-    .cta-button{display:inline-block; background:linear-gradient(135deg,var(--gradient-1),var(--gradient-2));
-      color:#fff; padding:1rem 2rem; border-radius:8px; text-decoration:none; font-weight:600; margin:2rem auto}
-    .cta-button:hover{filter:brightness(1.05)}
-    figure{margin:1.5rem 0}
-    figcaption{font-size:.9rem; color:var(--text-muted); margin-top:.5rem}
-    hr{margin:50px 0; border:none; border-top:2px solid var(--border-color)}
-    @media (max-width:600px){h1{font-size:2rem}; .stats-grid,.feature-grid{grid-template-columns:1fr}}
-  </style>
+        [data-theme="dark"] {
+            --text-primary: #f9fafb;
+            --text-secondary: #d1d5db;
+            --bg-light: #111827;
+            --bg-card: #1f2937;
+            --border-color: #374151;
+            --shadow: rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-light);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            position: relative;
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 3rem 2rem;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 50%, var(--accent-color) 100%);
+            color: white;
+            border-radius: 1rem;
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3);
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+            pointer-events: none;
+        }
+
+        .back-link {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+            color: white;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            color: white;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
+        }
+
+        .blog-meta {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .content-section {
+            background: var(--bg-card);
+            margin-bottom: 2rem;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 20px var(--shadow);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .content-section:hover {
+            box-shadow: 0 8px 30px var(--shadow);
+            transform: translateY(-2px);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-icon {
+            font-size: 1.2rem;
+        }
+
+        .problem-statement {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 4px solid #f59e0b;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0.5rem;
+            color: #1f2937 !important;
+        }
+
+        .problem-statement *,
+        .problem-statement p,
+        .problem-statement strong,
+        .problem-statement li {
+            color: #1f2937 !important;
+        }
+
+        .solution-highlight {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border-left: 4px solid #10b981;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0.5rem;
+            color: #1f2937 !important;
+        }
+
+        .solution-highlight *,
+        .solution-highlight p,
+        .solution-highlight strong,
+        .solution-highlight li {
+            color: #1f2937 !important;
+        }
+
+        .lessons-learned {
+            background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
+            border-left: 4px solid var(--secondary-color);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0.5rem;
+            color: #1f2937 !important;
+        }
+
+        .lessons-learned *,
+        .lessons-learned p,
+        .lessons-learned strong,
+        .lessons-learned li {
+            color: #1f2937 !important;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            border: 2px solid var(--border-color);
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px var(--shadow);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary-color);
+            box-shadow: 0 8px 25px var(--shadow);
+        }
+
+        .feature-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            text-align: center;
+            border: 2px solid var(--border-color);
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px var(--shadow);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary-color);
+            box-shadow: 0 8px 25px var(--shadow);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: block;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+
+        .quote {
+            font-style: italic;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            text-align: center;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: var(--bg-light);
+            border-radius: 0.5rem;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .cta {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .cta h3 {
+            margin-bottom: 1rem;
+        }
+
+        .cta a {
+            color: white;
+            text-decoration: underline;
+            font-weight: 600;
+        }
+
+        .demo-button {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 1rem 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .demo-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        strong {
+            color: var(--text-primary);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .header .subtitle {
+                font-size: 1rem;
+            }
+            
+            .theme-toggle, .back-link {
+                position: static;
+                margin: 0.5rem;
+                display: inline-flex;
+            }
+            
+            .header {
+                padding: 2rem 1rem;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            .content-section {
+                padding: 1.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <header class="header">
-    <div class="header-content">
-      <a href="index.html" class="back-link">← Back to Blog</a>
-      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-        <span id="themeIcon">🌙</span>
-      </button>
+    <div class="container">
+        <div class="header">
+            <a href="index.html" class="back-link">← Back to Blog</a>
+            <button class="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button>
+            <h1>Building Aunikah</h1>
+            <div class="subtitle">When Workers Don't Know if They're W-2 or 1099</div>
+        </div>
+
+        <div class="blog-meta">
+            Published November 19, 2025 | Amy Bray | People Operations & HR Technology
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">
+                <span class="section-icon">🤔</span>
+                The Problem I Kept Seeing (Over and Over...)
+            </h2>
+            
+            <div class="problem-statement">
+                <strong>The Pattern:</strong> After years at The Mom Project and Upwork, I kept seeing the same painful scenario: people placed through marketplaces or EOR programs literally didn't know who employed them or who to ask about benefits, PTO, or payroll. The marketplace logo was in their inbox, the client name was on their badge, the EOR was on their paystub... and none of it felt clear.
+            </div>
+
+            <p>You know how sometimes you see the same problem at different companies and think, "Surely SOMEONE has solved this by now"?</p>
+
+            <p>That was me with contingent worker confusion. Different business models, same core mess: <strong>people didn't know who actually employed them.</strong></p>
+
+            <p>From the worker's perspective, it makes sense:</p>
+            <ul>
+                <li>Job posting was on the <strong>marketplace</strong> website</li>
+                <li>Interview felt like it was with the <strong>client</strong></li>
+                <li>Onboarding emails came from the <strong>marketplace or EOR</strong></li>
+                <li>They signed documents from an <strong>EOR/staffing partner</strong> they'd never think about again</li>
+                <li>Then they work every day at the <strong>client site</strong> or in the client's Slack</li>
+            </ul>
+
+            <p>So when they need help, they contact the brand they remember. Usually the marketplace.</p>
+
+            <div class="quote">
+                <strong>The conversation (repeated ~100 times):</strong><br><br>
+                Worker: "Hey, what are my benefits?"<br>
+                Me: "Who's on your paystub?"<br>
+                Worker: "Um... Employee Stand?"<br>
+                Me: "They're your employer. Contact them."<br>
+                Worker: "But I work at UnBungle and applied through YOUR website?"<br>
+                Me: [internal screaming]
+            </div>
+
+            <p>The whole W-2 contingent setup IS confusing:</p>
+            <ul>
+                <li>You interview with <strong>Company A</strong> (client)</li>
+                <li>You sign paperwork with <strong>Company B</strong> (EOR)</li>
+                <li>You apply on <strong>Company C's</strong> website (marketplace)</li>
+                <li>You work at Company A every day</li>
+                <li>Company B pays you and handles benefits</li>
+                <li>Company C runs the program and answers emails</li>
+            </ul>
+
+            <p><strong>No wonder everyone was confused.</strong></p>
+
+            <p>And 1099 contractors had their own version:</p>
+            <ul>
+                <li>Some thought they should get benefits from the client or marketplace</li>
+                <li>Others asked client managers how to invoice or handle taxes</li>
+                <li>A few weren't even sure if they were W-2 or 1099 – they just knew they got paid</li>
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">
+                <span class="section-icon">💡</span>
+                The Solution: Meet People Where They Are
+            </h2>
+
+            <div class="solution-highlight">
+                <strong>The Breakthrough:</strong> Instead of making people learn employment law terminology, I built a chatbot that asks observable questions like "Do you receive a paycheck or send invoices?" and "Look at your paystub – is the company name different from where you work?" Then it explains what that means in plain language and routes them correctly.
+            </div>
+
+            <p>So I built <strong>Aunikah</strong> – a chatbot that meets people where they are. You don't need to know the terminology. You just tell it what you want, and it figures out the rest.</p>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>📝 Smart Classification</h4>
+                    <p>The "I'm not sure" flow asks about paychecks vs invoices, then checks if the paystub company differs from where they work. Instant classification without legal jargon.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>🎯 Plain Language Routing</h4>
+                    <p>Once classified, explains: "This is your employer of record. They handle pay, benefits, and PTO" vs "This is your client. They handle your day-to-day work."</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>👥 Manager Mode</h4>
+                    <p>Managers pick a team member's name, and Aunikah provides person-specific info: "Sarah Chen is W-2 through Employee Stand. Benefits include health/dental/vision, 401k with 4% match, 15 days PTO..."</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>🔍 Context-Aware Answers</h4>
+                    <p>Different responses for W-2 vs 1099, client-employed vs EOR-employed. The same question gets the right answer based on employment status.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">
+                <span class="section-icon">🎨</span>
+                The Design Decisions That Mattered
+            </h2>
+
+            <h3>The "I'm Not Sure" Option Changed Everything</h3>
+            <p>Instead of forcing people to choose between "W-2 Contingent" and "1099 Contractor" (terms half don't know), Aunikah asks:</p>
+            
+            <div class="solution-highlight">
+                <strong>"How do you get paid?"</strong><br>
+                💰 I receive a paycheck/paystub<br>
+                📄 I send invoices<br><br>
+                Then: "Look at your paystub. Is the company name different from where you work?"<br><br>
+                <strong>BOOM.</strong> Instant classification. No legal lecture, no jargon quiz – just observable reality.
+            </div>
+
+            <h3>The Paystub Trick is Magic</h3>
+            <p>When people are confused about classification, asking them to check their paystub is magic. It's physical proof they can hold. No ambiguity. That company name is the answer.</p>
+
+            <p>For marketplaces, it's also a gentle way to say "I know you interacted with us, but legally, THIS is who employs you" without making them feel silly.</p>
+
+            <h3>Language Matters So Much</h3>
+            <div class="lessons-learned">
+                <strong>Terminology Challenge:</strong> I kept calling everyone "employees" in the first draft. Then I realized:
+                <ul>
+                    <li>1099 contractors AREN'T employees (that's literally the point)</li>
+                    <li>W-2 contingent workers ARE employees... but of the EOR, not the client</li>
+                    <li>"Worker" feels cold and transactional</li>
+                    <li>"Talent" is overloaded in marketplace branding</li>
+                </ul>
+                <strong>Solution:</strong> I use "team member" when talking about humans on a team, and switch to "employee," "contractor," or "W-2 contingent" only in legal/benefits territory when it actually matters.
+            </div>
+
+            <p>For people who already feel "less than" because they're contingent, language is part of the experience. I didn't want the help tool to also make them feel othered.</p>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">
+                <span class="section-icon">✨</span>
+                Real User Feedback (My Former Team Saved Me)
+            </h2>
+
+            <p>I sent the first version to my former team (shoutout to Abby, Mary, Claudia). They're the best! They actually tested it and gave honest feedback.</p>
+
+            <div class="problem-statement">
+                <strong>The feedback that changed everything:</strong> "The Quick Setup menu is confusing. I didn't know where to click."
+            </div>
+
+            <p>I had built this fancy collapsible menu at the top where you could set your classification. Very efficient. Very... hidden.</p>
+
+            <p>Meanwhile, the whole point is to help people who are ALREADY confused. Making them hunt for a setup menu is the opposite of that.</p>
+
+            <div class="solution-highlight">
+                <strong>The Fix:</strong> Redesigned the whole onboarding to be conversational. Now it walks you through setup step-by-step in the chat itself. It feels like "Let's figure this out together," not "Fill out this form before I'll talk to you."
+            </div>
+
+            <p>This is why you test with real people. I was so deep in building mode I couldn't see the obvious UX issue.</p>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">
+                <span class="section-icon">👨‍💼</span>
+                The Manager Side (aka The Database Trick)
+            </h2>
+
+            <p>One of my favorite features is <strong>manager mode</strong>. Managers often don't remember which contingent worker is W-2 through which EOR vs 1099. Why would they? It's not their job to track that.</p>
+
+            <p>But it IS their job to answer: "Can I approve this PTO?" or "Where should I send them for benefits?" Without context, they guess or forward people around.</p>
+
+            <div class="solution-highlight">
+                <strong>The Solution:</strong> In Aunikah, managers just pick the team member's name from a list. The system "knows" (from the database) whether that person is W-2 or 1099, which EOR employs them, and which client they're at.
+            </div>
+
+            <p>Then when the manager asks "What are Sarah's benefits?" Aunikah responds with <strong>Sarah-specific</strong> info:</p>
+
+            <div class="quote">
+                "Sarah Chen is a W-2 Contingent Worker employed by Employee Stand and working at UnBungle. Benefits include health/dental/vision through Employee Stand's plan, 401(k) with 4% match, and 15 days of PTO..."
+            </div>
+
+            <p>No more "uh, which one is she again?" The system handles it. The manager just has to care and ask.</p>
+
+            <p>In production, this would be an API call to your HRIS. In the demo, it's a JavaScript object. But the concept is the same: <strong>make it easy for managers to support their teams</strong> without memorizing everyone's employment status.</p>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">
+                <span class="section-icon">🎓</span>
+                What I Learned (The Messy Bits)
+            </h2>
+
+            <div class="lessons-learned">
+                <strong>1. Scope creep is real and I almost went global</strong><br><br>
+                At one point: "Ooh, I should add international classifications! W-8BEN forms! VAT!"<br><br>
+                Then I caught myself. This is a DEMO. US-only is fine. The point is to show I understand the problem, not to solve every global employment scenario.<br><br>
+                Sometimes done is better than perfect. (Still learning this one.)
+            </div>
+
+            <div class="lessons-learned">
+                <strong>2. The paystub trick is major</strong><br><br>
+                When people are confused, asking them to look at their paystub is magic. Physical proof they can hold. No ambiguity. That company name IS the answer.<br><br>
+                For marketplaces, it's also a gentle way to say "I know you interacted with us, but legally, THIS is who employs you" without making anyone feel silly.
+            </div>
+
+            <div class="lessons-learned">
+                <strong>3. Personalization makes it feel real</strong><br><br>
+                When Aunikah says "Benefits for Sarah Chen are handled by Employee Stand" instead of "Benefits are handled by their EOR," it feels custom-built. Like the system actually knows them.<br><br>
+                That's what makes demos compelling – it feels like it could actually work in production.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">
+                <span class="section-icon">⚙️</span>
+                Tech Stack (I Kept It Simple)
+            </h2>
+
+            <p>This is a <strong>single HTML file</strong>. Yes, really.</p>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>Frontend</h4>
+                    <p>HTML/CSS/JavaScript (vanilla, no frameworks)</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Data</h4>
+                    <p>JavaScript objects (in production: API calls to HRIS and vendor systems)</p>
+                </div>
+                <div class="feature-card">
+                    <h4>AI Assist</h4>
+                    <p>Claude Sonnet 4 helped design and iterate (the chatbot itself uses pattern matching, not live LLM calls)</p>
+                </div>
+            </div>
+
+            <p>I built this in one weekend after iterating on the concept with Claude. Could I have used React? Sure. Did I need to? Nope.</p>
+
+            <p><strong>Sometimes the simplest solution is the best one.</strong></p>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">
+                <span class="section-icon">📊</span>
+                The Stats (What This Could Do)
+            </h2>
+
+            <p>These are directional, based on patterns I've seen over the years – not a formal study, but a realistic picture of impact if you wire this into actual systems.</p>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number">40-60%</span>
+                    <div class="stat-label">Reduction in HR support tickets about "who do I ask?"</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">100%</span>
+                    <div class="stat-label">Benefit enrollment confusion routed correctly</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">2 min</span>
+                    <div class="stat-label">Average time to get clear, personalized answer</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">
+                <span class="section-icon">🚀</span>
+                What's Next
+            </h2>
+
+            <p>Honestly? I'm proud of this thing. It solves a real problem I saw across 13 years in People Ops and marketplace/EOR programs.</p>
+
+            <p>If I were to take it to production, here's what would need to happen:</p>
+            <ul>
+                <li>Integration with HRIS systems (Workday, BambooHR, etc.)</li>
+                <li>Real EOR/vendor data feeds</li>
+                <li>SSO authentication and role-aware views (team member vs manager vs HR)</li>
+                <li>Actual AI/NLP for better intent detection (currently pattern matching)</li>
+                <li>Company-specific customization (benefits plans, portal links, escalation paths)</li>
+                <li>Analytics dashboard for HR teams (what people are confused about, where they're stuck)</li>
+            </ul>
+
+            <p>But as a portfolio piece? As proof that I understand contingent workforce operations and can <strong>build solutions</strong> instead of just writing docs about them?</p>
+
+            <p><strong>It does exactly what it needs to do.</strong></p>
+        </div>
+
+        <div class="cta">
+            <h3>Try It Yourself</h3>
+            <p>The demo is live. Try the "I'm not sure" flow – it's my favorite part, because it mirrors so many real conversations I've had with people who just wanted a straight answer.</p>
+            <a href="https://amybray-systems.github.io/auniconnect-chatbot/" class="demo-button">Launch Demo →</a>
+            <p style="margin-top: 1.5rem; font-size: 0.9rem;">
+                📧 Email: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5b3a362239293a226b686a6e1b3c363a323775383436">[email&#160;protected]</a><br>
+                💼 LinkedIn: <a href="https://linkedin.com/in/amybrayphr" style="color: white;">linkedin.com/in/amybrayphr</a><br>
+                🖼️ Project Page: <a href="../project-auniconnect.html" style="color: white;">AuniConnect Platform</a>
+            </p>
+            <p style="margin-top: 1rem; font-size: 0.85rem; opacity: 0.8;">
+                <strong>Note:</strong> All company names, EORs, and benefits in the demo are fictional examples. The confusion, emotional labor, and operational pain points are very real.
+            </p>
+        </div>
     </div>
-  </header>
 
-  <main class="container">
-  <h1>Building Aunikah: When Workers Don't Know if They're W-2 or 1099</h1>
-  <div class="meta">By Amy Bray • November 19, 2025 • 8 min read</div>
-
-  <div class="info-box">
-    <p><strong>TL;DR:</strong> After years in marketplaces and EOR programs, I kept seeing the same painful pattern: people didn’t know who actually employed them, or who to ask about benefits, PTO, or payroll issues. The marketplace logo was in their inbox, the client name was on the building, the EOR was on their paystub… and none of it felt clear. So I built a chatbot that does the mental sorting for them and routes questions to the right place.</p>
-  </div>
-
-  <h2>The Problem I Kept Seeing (and Seeing, and Seeing...)</h2>
-  
-  <p>You know how sometimes you see the same problem over and over at different companies, and you're like, "Surely SOMEONE has solved this by now"?</p>
-
-  <p>That was me with contingent worker confusion. At The Mom Project, at Upwork — different business models, same core mess: people placed through a marketplace or staffing/EOR partner literally did not know who employed them or who to ask about benefits.</p>
-
-  <p>From the worker’s point of view, it kind of makes sense:</p>
-  <ul>
-    <li>The job posting was on the <strong>marketplace</strong> website</li>
-    <li>The interview felt like it was with the <strong>client</strong></li>
-    <li>Onboarding emails came from the <strong>marketplace domain or an EOR/staffing partner</strong></li>
-    <li>They signed a stack of documents from an <strong>EOR/staffing partner</strong> they might never think about again</li>
-    <li>Then they go to work every day at the client site or in the client’s Slack</li>
-  </ul>
-
-  <p>So when something goes wrong or they just need a basic answer, they do the most human thing possible: they contact the brand they remember and trust. That’s usually the marketplace.</p>
-
-  <p>The conversation went like this about 100 times:</p>
-
-  <p><strong>Worker:</strong> "Hey, what are my benefits?"<br>
-  <strong>Me (marketplace / talent program rep):</strong> "Who's on your paystub?"<br>
-  <strong>Worker:</strong> "Um... Employee Stand?"<br>
-  <strong>Me:</strong> "Great! They're your employer. Contact them for benefits."<br>
-  <strong>Worker:</strong> "But I work at UnBungle and applied through your marketplace website?"<br>
-  <strong>Me:</strong> <em>[internal screaming]</em></p>
-
-  <p>Some days it was the marketplace being mistaken for the employer. Other days it was the client being mistaken for the employer. Sometimes they didn’t even realize there was a third entity (the EOR) involved at all.</p>
-
-  <p>And I get it! The whole W-2 contingent setup IS confusing:</p>
-  <ul>
-    <li>You interview with Company A (the client)</li>
-    <li>You sign paperwork with Company B (the EOR or staffing agency)</li>
-    <li>You apply on Company C’s website (the marketplace)</li>
-    <li>You work at Company A every day</li>
-    <li>Company B pays you and handles your benefits</li>
-    <li>Company C runs the program and answers your emails</li>
-  </ul>
-
-  <p>No wonder everyone was confused. And 1099 contractors had their own version of the pain:</p>
-  <ul>
-    <li>Some thought they should get benefits from the client or marketplace</li>
-    <li>Others were asking their client manager how to invoice or handle taxes</li>
-    <li>A few weren’t sure if they were W-2 or 1099 at all — they just knew they got paid somehow</li>
-  </ul>
-
-  <p>Internally, this meant a lot of “we’re not actually your employer” conversations, which never feel good. You’re trying to be kind, not make anyone feel stupid, and still redirect them to the right place while your ticket queues climb or inbox fills up.</p>
-
-  <h2>Why Existing Tools Don't Fix This</h2>
-
-  <p>Every company I worked at had HR portals, wikis, FAQs, onboarding docs. None of them solved this problem. Why?</p>
-
-  <p><strong>Because to use them, you have to know what you're looking for.</strong></p>
-
-  <p>If you don't know you're "W-2 contingent through an EOR," you can't search for "EOR benefits." You just know you work at UnBungle and you want to know about your health insurance. Or you know you filled out paperwork through a staffing agency, but all your day-to-day work and conversations happen with the client and the marketplace.</p>
-
-  <p>The mental model mismatch is the whole problem:</p>
-  <ul>
-    <li><strong>Systems</strong> are organized by legal entities and policy types</li>
-    <li><strong>People</strong> are thinking in terms of “who I see on Slack” and “whose logo is in my inbox”</li>
-  </ul>
-
-  <p>So they end up in the wrong portal, asking the wrong team, feeling ignored or bounced around… when really, they just needed a translator for the employment triangle.</p>
-
-  <h2>Enter: Aunikah</h2>
-
-  <p>So I built a chatbot that meets people where they are. You don't need to know the terminology. You just tell it what you want, and it figures out the rest.</p>
-
-  <p>The breakthrough moment was adding the <strong>"I'm not sure"</strong> option.</p>
-
-  <p>Instead of making people choose between "W-2 Contingent" and "1099 Contractor" (terms half of them don't know, and the other half are afraid to get “wrong”), Aunikah asks:</p>
-
-  <p><strong>"How do you get paid?"</strong></p>
-  <ul>
-    <li>💰 I receive a paycheck/paystub</li>
-    <li>📄 I send invoices</li>
-  </ul>
-
-  <p>Then if they say paycheck: <strong>"Look at your paystub. Is the company name different from where you work?"</strong></p>
-
-  <p>BOOM. Instant classification. No legal lecture, no jargon quiz — just observable reality.</p>
-
-  <p>Then it explains what that means in plain language and routes them correctly:</p>
-  <ul>
-    <li>“This is your employer of record. They handle pay, benefits, and PTO.”</li>
-    <li>“This is your client. They handle your day-to-day work.”</li>
-    <li>“The marketplace you applied through runs the program and support, but they’re not your legal employer.”</li>
-  </ul>
-
-  <h2>Real User Feedback (aka My Former Team Saved Me)</h2>
-
-  <p>I sent the first version to my former team (shoutout to Abby, Mary, Claudia). They're the best! They actually tested it and gave me honest feedback.</p>
-
-  <p><strong>The feedback that changed everything:</strong> "The Quick Setup menu is confusing. I didn't know where to click."</p>
-
-  <p>I had built this fancy collapsible menu at the top of the chat where you could set your classification and companies. Very efficient. Very… hidden.</p>
-
-  <p>Meanwhile, the whole point of this thing is to help people who are already confused. Making them hunt for a setup menu is the opposite of that.</p>
-
-  <p>They were totally right. So I redesigned the whole onboarding to be conversational. Now it walks you through setup step-by-step in the chat itself. It feels more like, “Let’s figure this out together,” and less like, “Fill out this form before I’ll talk to you.”</p>
-
-  <p>This is why you test with real people. I was so deep in building mode I couldn't see the obvious UX issue.</p>
-
-  <h3>The Team Member vs. Employee Thing</h3>
-
-  <p>Another thing needed ironed out: terminology matters SO MUCH.</p>
-
-  <p>I kept to referring everyone "employees" in the first draft. Then I realized:</p>
-  <ul>
-    <li>1099 contractors aren't employees (that's literally the whole point)</li>
-    <li>W-2 contingent workers ARE employees... but of the EOR, not the client or the marketplace</li>
-    <li>"Worker" is technically accurate but feels kind of cold and transactional</li>
-    <li>"Talent" is cute but overloaded in marketplace branding</li>
-    <li>"Employee" is legally wrong half the time and confusing the other half</li>
-  </ul>
-
-  <p>So inside the chatbot itself, I use <strong>"team member"</strong> when I’m talking about people as humans on a team, and I switch to "employee," "contractor," or "W-2 contingent" only when we’re in legal/benefits territory and it actually matters.</p>
-
-  <p>It seems small, but for people who already feel “less than” because they’re contingent, language is part of the experience. I didn’t want the tool that’s supposed to help them to also be the thing that makes them feel othered.</p>
-
-  <h2>The Manager Side (aka The Database Trick)</h2>
-
-  <p>One of my favorite features is manager mode. Managers often don't remember which of their contingent workers is W-2 through which EOR vs. 1099. Why would they? It's not their job to track that.</p>
-
-  <p>But it <em>is</em> their job to answer basic questions like “Can I approve this PTO?” or “Where should I send them for a benefits question?” Without context, they end up guessing or forwarding people around.</p>
-
-  <p>So in Aunikah, managers just pick the team member's name from the list. The system "knows" (from the database) whether that person is W-2 or 1099, which EOR employs them, and which client they're at.</p>
-
-  <p>Then when the manager asks "What are Sarah's benefits?" Aunikah responds with Sarah-specific info:</p>
-
-  <p><em>"Sarah Chen is a W-2 Contingent Worker employed by Employee Stand and working at UnBungle. Benefits include health/dental/vision through Employee Stand's plan, 401(k) with 4% match, and 15 days of PTO..."</em></p>
-
-  <p>No more "uh, which one is she again?" The system handles it. The manager just has to care and ask.</p>
-
-  <p>In production, this would be an API call to your HRIS. In the demo, it's just a JavaScript object. But the concept is the same: make it easy for managers to support their teams without having to memorize everyone's employment status or vendor setup.</p>
-
-  <h2>What I Learned (The Messy Bits)</h2>
-
-  <h3>1. Scope creep is real and I almost went global</h3>
-
-  <p>At one point I was like "ooh, I should add international classifications! W-8BEN forms! VAT!"</p>
-
-  <p>Then I caught myself. This is a DEMO. US-only is fine. The point is to show I understand the problem, not to solve every global employment classification scenario.</p>
-
-  <p>Sometimes done is better than perfect. (I'm still learning this one.)</p>
-
-  <h3>2. The paystub trick is major in solving the classification question</h3>
-
-  <p>When people are confused about their classification, asking them to look at their paystub or how they are paid is magic. It's physical proof they can hold in their hands (or open on their phone). No ambiguity. That company name is the answer.</p>
-
-  <p>For marketplaces, it’s also a gentle way to say, “I know you interacted with us a lot, but legally, <em>this</em> is who employs you” without making them feel silly.</p>
-
-  <h3>3. Personalization makes it feel real</h3>
-
-  <p>When Aunikah says "Benefits for Sarah Chen are handled by Employee Stand" instead of "Benefits are handled by their EOR," it feels custom-built. Like the system actually knows them.</p>
-
-  <p>Same for managers: “This is a 1099 contractor; don’t promise PTO” lands differently than a generic HR blurb.</p>
-
-  <p>That's what makes demos compelling—it feels like it could actually work in production.</p>
-
-  <h2>Tech Stack (aka I Kept It Simple)</h2>
-
-  <p>This is a single HTML file. Yes, really.</p>
-  
-  <ul>
-    <li><strong>Frontend:</strong> HTML/CSS/JavaScript (vanilla, no frameworks)</li>
-    <li><strong>Data:</strong> JavaScript objects (in production: API calls to HRIS and vendor systems)</li>
-    <li><strong>AI:</strong> Claude Sonnet 4 (for helping me design and iterate — the chatbot itself uses pattern matching, not live LLM calls)</li>
-  </ul>
-
-  <p>I built this in one weekend after working with Claude to iterate on the concept. Could I have used React? Sure. Did I need to? Nope.</p>
-
-  <p>Sometimes the simplest solution is the best one.</p>
-
-  <h2>The Stats (What This Could Do)</h2>
-
-  <p>These are directional, based on the kinds of tickets and patterns I’ve seen over the years—not a formal study, but a realistic picture of impact if you wire this into your actual systems.</p>
-
-  <div class="stats-grid">
-    <div class="stat-card">
-      <div class="stat-number">40–60%</div>
-      <div class="stat-label">Reduction in HR and marketplace support tickets about “who do I ask?”</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-number">100%</div>
-      <div class="stat-label">Of benefit enrollment confusion routed to the correct employer/EOR</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-number">2 min</div>
-      <div class="stat-label">Average time for a team member to get a clear, personalized answer</div>
-    </div>
-  </div>
-
-  <h2>What's Next</h2>
-
-  <p>Honestly? I'm proud of this thing. It solves a real problem I saw across 13 years in People Ops and marketplace/EOR programs.</p>
-
-  <p>If I were to take it to production, here's what would need to happen:</p>
-  <ul>
-    <li>Integration with HRIS systems (Workday, BambooHR, etc.)</li>
-    <li>Real EOR/vendor data feeds</li>
-    <li>SSO authentication and role-aware views (team member vs manager vs HR)</li>
-    <li>Actual AI/NLP for better intent detection (right now it's pattern matching)</li>
-    <li>Company-specific customization (actual benefits plans, portal links, escalation paths)</li>
-    <li>Analytics dashboard for HR and program teams (what people are confused about, where they’re getting stuck)</li>
-  </ul>
-
-  <p>But as a portfolio piece? As proof that I understand contingent workforce operations and marketplaces, and can build solutions instead of just writing docs about them? It does exactly what it needs to do.</p>
-
-  <h2>Try It Yourself</h2>
-  
-  <p>The demo is live and you can play with it right now. Try the "I'm not sure" flow—it's my favorite part, because it mirrors so many real conversations I’ve had with actual humans who just wanted a straight answer.</p>
-
-  <div style="text-align:center">
-    <a href="https://amybray-systems.github.io/auniconnect-chatbot/" class="cta-button">Launch Demo →</a>
-  </div>
-
-  <h3>Links</h3>
-  <ul>
-    <li>🖼️ <strong>Project Page:</strong> <a href="../project-auniconnect.html">AuniConnect Platform</a></li>
-    <li>💼 <strong>LinkedIn:</strong> <a href="https://linkedin.com/in/amybrayphr">linkedin.com/in/amybrayphr</a></li>
-  </ul>
-
-  <hr />
-
-  <h2>Want to Chat?</h2>
-  <p>Questions about Aunikah, marketplaces, or building people-ops tools? I love talking about this stuff.</p>
-  <p>📧 <strong>Email:</strong> amybray0315@gmail.com<br>
-     💼 <strong>LinkedIn:</strong> <a href="https://linkedin.com/in/amybrayphr">linkedin.com/in/amybrayphr</a></p>
-
-  <p style="font-size:.9em; color:var(--text-muted); margin-top:30px;">
-    <strong>Note:</strong> All company names, EORs, and benefits in the demo are fictional examples for demonstration purposes. The confusion, emotional labor, and operational pain points are very real.
-  </p>
-</main>
-
-
-  <script>
-    // Theme toggle
-    const themeToggle=document.getElementById('themeToggle');
-    const themeIcon=document.getElementById('themeIcon');
-    const html=document.documentElement;
-    const saved=localStorage.getItem('theme')||'light';
-    html.setAttribute('data-theme',saved); themeIcon.textContent=saved==='light'?'🌙':'☀️';
-    themeToggle.addEventListener('click',()=>{
-      const cur=html.getAttribute('data-theme'); const next=cur==='light'?'dark':'light';
-      html.setAttribute('data-theme',next); localStorage.setItem('theme',next);
-      themeIcon.textContent=next==='light'?'🌙':'☀️';
-    });
-  </script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        // Theme toggle functionality
+        function toggleTheme() {
+            const html = document.documentElement;
+            const button = document.querySelector('.theme-toggle');
+            const currentTheme = html.getAttribute('data-theme');
+            
+            if (currentTheme === 'dark') {
+                html.removeAttribute('data-theme');
+                button.innerHTML = '🌙 Dark Mode';
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                button.innerHTML = '☀️ Light Mode';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme');
+        const button = document.querySelector('.theme-toggle');
+        
+        if (savedTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            button.innerHTML = '☀️ Light Mode';
+        } else {
+            button.innerHTML = '🌙 Dark Mode';
+        }
+
+        // Smooth scroll
+        document.documentElement.style.scrollBehavior = 'smooth';
+    </script>
 </body>
 </html>
