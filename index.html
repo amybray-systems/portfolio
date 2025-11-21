@@ -88,54 +88,55 @@
             --error: #f87171;
             --error-bg: rgba(248, 113, 113, 0.1);
         }
-/* Recent blog posts */
-.section-blog .blog-grid {
-    display: grid;
-    gap: 24px;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-}
 
-.blog-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 20px 22px;
-    box-shadow: var(--shadow-soft);
-    transition: all 0.25s ease;
-}
+        /* Recent blog posts */
+        .section-blog .blog-grid {
+            display: grid;
+            gap: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        }
 
-.blog-card:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-medium);
-    border-color: var(--border-hover);
-}
+        .blog-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px 22px;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.25s ease;
+        }
 
-.blog-card h3 {
-    font-size: 1.1rem;
-    margin-bottom: 8px;
-    color: var(--text-primary);
-}
+        .blog-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-medium);
+            border-color: var(--border-hover);
+        }
 
-.blog-card h3 a {
-    color: inherit;
-    text-decoration: none;
-}
+        .blog-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
 
-.blog-card h3 a:hover {
-    color: var(--accent-primary);
-}
+        .blog-card h3 a {
+            color: inherit;
+            text-decoration: none;
+        }
 
-.blog-meta {
-    font-size: 0.85rem;
-    color: var(--text-tertiary);
-    margin-bottom: 10px;
-}
+        .blog-card h3 a:hover {
+            color: var(--accent-primary);
+        }
 
-.blog-excerpt {
-    font-size: 0.95rem;
-    color: var(--text-secondary);
-    line-height: 1.6;
-}
+        .blog-meta {
+            font-size: 0.85rem;
+            color: var(--text-tertiary);
+            margin-bottom: 10px;
+        }
+
+        .blog-excerpt {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
 
         /* Base Styles */
         * {
@@ -462,150 +463,205 @@
             color: var(--text-primary);
         }
 
-      /* Cards */
-.featured-grid {
-    display: grid;
-    gap: 32px;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-}
+        /* Cards */
+        .featured-grid {
+            display: grid;
+            gap: 32px;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        }
 
-.featured-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 24px;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
+        .featured-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
 
-    /* NEW: make heights consistent and align footer */
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
+        .featured-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--accent-gradient);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
 
-.featured-card::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: var(--accent-gradient);
-    transform: scaleX(0);
-    transition: transform 0.3s ease;
-}
+        .featured-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-medium);
+            border-color: var(--border-hover);
+        }
 
-.featured-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-medium);
-    border-color: var(--border-hover);
-}
+        .featured-card:hover::before {
+            transform: scaleX(1);
+        }
 
-.featured-card:hover::before {
-    transform: scaleX(1);
-}
+        .featured-card.primary {
+            border-color: var(--accent-primary);
+            background: linear-gradient(135deg, var(--surface) 0%, rgba(79, 70, 229, 0.02) 100%);
+        }
 
-.featured-card.primary {
-    border-color: var(--accent-primary);
-    background: linear-gradient(135deg, var(--surface) 0%, rgba(79, 70, 229, 0.02) 100%);
-}
+        .card-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
 
-.card-header {
-    display: flex;
-    align-items: flex-start;
-    gap: 16px;
-    margin-bottom: 16px;
-}
+        .card-icon {
+            font-size: 2rem;
+            line-height: 1;
+            flex-shrink: 0;
+        }
 
-.card-icon {
-    font-size: 2rem;
-    line-height: 1;
-    flex-shrink: 0;
-}
+        .card-meta h3 {
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
 
-.card-meta h3 {
-    color: var(--text-primary);
-    margin-bottom: 4px;
-}
+        .card-tag {
+            display: inline-block;
+            padding: 4px 8px;
+            background: var(--surface-hover);
+            color: var(--text-tertiary);
+            font-size: 0.8rem;
+            font-weight: 500;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
 
-.card-tag {
-    display: inline-block;
-    padding: 4px 8px;
-    background: var(--surface-hover);
-    color: var(--text-tertiary);
-    font-size: 0.8rem;
-    font-weight: 500;
-    border-radius: 4px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
+        .card-footer {
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
 
-/* UPDATED: footer pinned to bottom */
-.card-footer {
-    margin-top: auto;              /* push footer to bottom of card */
-    padding-top: 20px;
-    border-top: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 16px;
-}
+        .card-link {
+            color: var(--accent-primary);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
 
-.card-link {
-    color: var(--accent-primary);
-    font-weight: 600;
-    font-size: 0.95rem;
-}
+        .tech-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
 
-.tech-tags {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-}
+        .tech-tag {
+            padding: 4px 8px;
+            background: var(--accent-gradient);
+            color: var(--text-inverse);
+            font-size: 0.75rem;
+            font-weight: 500;
+            border-radius: 4px;
+        }
 
-.tech-tag {
-    padding: 4px 8px;
-    background: var(--accent-gradient);
-    color: var(--text-inverse);
-    font-size: 0.75rem;
-    font-weight: 500;
-    border-radius: 4px;
-}
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
 
-.section-header {
-    text-align: center;
-    margin-bottom: 60px;
-}
+        .section-subtitle {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            margin-top: 16px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
 
-.section-subtitle {
-    font-size: 1.125rem;
-    color: var(--text-secondary);
-    margin-top: 16px;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-}
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            margin: 40px 0;
+        }
 
-/* Footer */
-.site-footer {
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-    padding: 60px 0 40px;
-    position: relative;
-    z-index: 2;
-}
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
 
-.footer-content {
-    text-align: center;
-}
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-soft);
+            border-color: var(--border-hover);
+        }
 
-.footer-text {
-    color: var(--text-tertiary);
-    font-size: 0.9rem;
-}
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: block;
+            margin-bottom: 8px;
+        }
 
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Availability Badge */
+        .availability {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: var(--success-bg);
+            border: 1px solid var(--success);
+            border-radius: 999px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-top: 32px;
+        }
+
+        :root[data-theme="dark"] .availability {
+            background: var(--success-bg);
+            border-color: var(--success);
+        }
+
+        /* Footer */
+        .site-footer {
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            padding: 60px 0 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .footer-content {
+            text-align: center;
+        }
+
+        .footer-text {
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+        }
 
         /* Responsive */
         @media (max-width: 768px) {
@@ -644,6 +700,10 @@
 
             .container {
                 padding: 0 16px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
             }
         }
 
@@ -708,19 +768,54 @@
                     <div class="hero-badge">
                         <span class="badge-text">✨ People Ops Systems & HR Tech</span>
                     </div>
-                    <h1>HR systems that match how people actually work.</h1>
+                    <h1>Building AI-powered workforce systems that scale and match how people actually work.</h1>
                     <p class="hero-subtitle">
                         I design and document HRIS, payroll, and engagement tools for distributed teams — with a focus on contingent work, EOR programs, and AI-powered support. Less confusion, fewer escalations, cleaner data.
                     </p>
+                    
+                    <!-- Stats Grid -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <span class="stat-number">$80M+</span>
+                            <span class="stat-label">Annual Payroll Operations Managed</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">1,000+</span>
+                            <span class="stat-label">Contractors Scaled & Supported</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">20+</span>
+                            <span class="stat-label">Countries & Jurisdictions</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">3</span>
+                            <span class="stat-label">Major System Migrations Led</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">13+</span>
+                            <span class="stat-label">Years in People Operations</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">10+</span>
+                            <span class="stat-label">EOR & Vendor Partners</span>
+                        </div>
+                    </div>
+
                     <div class="cta-group">
-                        <a class="cta-button primary" href="projects.html">
-                            <span>Explore Projects</span>
-                            <span>→</span>
-                        </a>
-                        <a class="cta-button secondary" href="contact.html">
+                        <a class="cta-button primary" href="/cdn-cgi/l/email-protection#e98884908b9b8890d9dad8dca98e84888085c78a8684">
                             <span>Get in Touch</span>
                         </a>
+                        <a class="cta-button secondary" href="https://linkedin.com/in/amybrayphr" target="_blank">
+                            <span>LinkedIn Profile</span>
+                        </a>
+                        <a class="cta-button secondary" href="projects.html">
+                            <span>View Projects</span>
+                        </a>
                     </div>
+                    
+                    <p class="availability">
+                        🟢 Currently seeking senior People Operations, HRIS Leadership, or Workforce Systems roles (remote preferred)
+                    </p>
                 </div>
             </div>
         </section>
@@ -730,34 +825,55 @@
             <div class="container">
                 <div class="section-header">
                     <h2>Featured Solutions</h2>
-                    <p class="section-subtitle">Prototypes and tools built from 13+ years in People Ops & global contingent programs.</p>
+                    <p class="section-subtitle">Prototypes and tools built from real operational pain points - each one solving problems I experienced firsthand in managing large-scale contingent programs.</p>
                 </div>
                 
                 <div class="featured-grid">
-                    <!-- FinOps Suite Featured Project -->
-		<article class="featured-card primary">
-		<div class="card-header">
-			<div class="card-icon">📊</div>
-			<div class="card-meta">
-			<h3>Financial Operations Suite</h3>
-			<span class="card-tag">Payroll & Vendor Analytics</span>
-			</div>
-			</div>
-				<p>
-				Streamlit-based toolkit that turns messy vendor and payroll exports into clean,
-				dashboard-ready data. Built from $80M+ in payroll operations experience to automate
-				GSV tracking, margin views, and “what happened this quarter?” analysis.
-				</p>
-			<div class="card-footer">
-				<a href="project-finops-suite.html" class="card-link">View Case Study →</a>
-				<div class="tech-tags">
-				<span class="tech-tag">Python</span>
-				<span class="tech-tag">Streamlit</span>
-				<span class="tech-tag">Pandas</span>
-			</div>
-		</div>
-		</article>
-                    <!-- AuniConnect Featured Project -->
+                    <!-- ContingentAI -->
+                    <article class="featured-card primary">
+                        <div class="card-header">
+                            <div class="card-icon">📊</div>
+                            <div class="card-meta">
+                                <h3>ContingentAI</h3>
+                                <span class="card-tag">NEW - Workforce Analytics</span>
+                            </div>
+                        </div>
+                        <p>
+                            Comprehensive workforce analytics platform for managing contingent operations at scale. Built from managing 1,000+ contractors across 20+ countries at Upwork. Features advanced leave tracking, vendor management, scenario planning, and real-time analytics for programs managing $50M+ in annual workforce spend.
+                        </p>
+                        <div class="card-footer">
+                            <a href="project-contingentai.html" class="card-link">View Project →</a>
+                            <div class="tech-tags">
+                                <span class="tech-tag">Python</span>
+                                <span class="tech-tag">Streamlit</span>
+                                <span class="tech-tag">Analytics</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- FinOps Suite -->
+                    <article class="featured-card">
+                        <div class="card-header">
+                            <div class="card-icon">💰</div>
+                            <div class="card-meta">
+                                <h3>Financial Operations Suite</h3>
+                                <span class="card-tag">Payroll & Vendor Analytics</span>
+                            </div>
+                        </div>
+                        <p>
+                            Streamlit-based toolkit that turns messy vendor and payroll exports into clean, dashboard-ready data. Data Pipeline Pro transforms 15+ vendor formats into billing-ready outputs. GSV Tracker Pro provides instant MoM/QoQ/YoY growth insights. Reduces "what happened this quarter?" analysis from 3 hours to 15 minutes.
+                        </p>
+                        <div class="card-footer">
+                            <a href="project-finops-suite.html" class="card-link">View Case Study →</a>
+                            <div class="tech-tags">
+                                <span class="tech-tag">Python</span>
+                                <span class="tech-tag">Streamlit</span>
+                                <span class="tech-tag">Pandas</span>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <!-- AuniConnect -->
                     <article class="featured-card">
                         <div class="card-header">
                             <div class="card-icon">🔄</div>
@@ -767,7 +883,7 @@
                             </div>
                         </div>
                         <p>
-                            A Flask-based engagement app with the Aunikah HR chatbot at the center. It answers policy questions based on employment type and employer of record, supports kudos & recognition, and gives admins tools to manage distributed teams.
+                            A Flask-based engagement platform solving the operational gaps I experienced at The Mom Project. Features the Aunikah chatbot (routes W-2 vs 1099 classification questions), Renewal Radar (predictive retention alerts), recognition systems, and manager enablement tools. Built to shift operations from reactive to proactive.
                         </p>
                         <div class="card-footer">
                             <a href="https://amybray-systems.github.io/auniconnect-chatbot/" class="card-link" target="_blank" rel="noopener">Talk to Aunikah →</a>
@@ -779,7 +895,7 @@
                         </div>
                     </article>
 
-                    <!-- VMSFlex Pay Featured Project -->
+                    <!-- VMSFlex Pay -->
                     <article class="featured-card">
                         <div class="card-header">
                             <div class="card-icon">⏱️</div>
@@ -789,7 +905,7 @@
                             </div>
                         </div>
                         <p>
-                            A browser-based overtime and pay calculator designed for multi-VMS environments. It standardizes upload formats, applies location-specific rules, and helps reduce manual review time by 2–3 hours per pay period.
+                            Browser-based overtime calculator that eliminates 2-3 hours of manual payroll processing per pay period. Intelligently detects CSV formats from multiple VMS platforms, applies location-specific overtime rules (CA, CO, NV, AK, Federal), and enforces California compliance with daily breakdown requirements.
                         </p>
                         <div class="card-footer">
                             <a href="vmsflex-demo.html" class="card-link" target="_blank" rel="noopener">Try Demo →</a>
@@ -803,47 +919,44 @@
                 </div>
             </div>
         </section>
-		<!-- Recent Blog Posts -->
-<section class="section section-blog">
-  <div class="container">
-    <div class="section-header">
-      <h2>Recent Writing</h2>
-      <p class="section-subtitle">
-        Short case studies behind the builds – classification, payroll, and HR games.
-      </p>
-    </div>
 
-    <div class="blog-grid">
-      <article class="blog-card">
-        <h3><a href="blog/building-aunikah.html">Building Aunikah: When Workers Don't Know if They're W-2 or 1099</a></h3>
-        <p class="blog-meta">November 2025 • Contingent workforce · Chatbots</p>
-        <p class="blog-excerpt">
-          How I turned years of “who is my actual employer?” escalations into a
-          conversational classifier that routes people to the right benefits and payroll support.
-        </p>
-      </article>
+        <!-- Recent Blog Posts -->
+        <section class="section section-blog">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Recent Writing</h2>
+                    <p class="section-subtitle">
+                        Short case studies behind the builds – classification, payroll, and HR games.
+                    </p>
+                </div>
 
-      <article class="blog-card">
-        <h3><a href="blog/building-vmsflex-pay.html">Building VMSFlex Pay: Solving the Multi-VMS Payroll Problem</a></h3>
-        <p class="blog-meta">October 2025 • Payroll · Automation</p>
-        <p class="blog-excerpt">
-          The story behind a browser-based calculator that handles overtime rules across
-          multiple VMS exports without blowing up Finance’s weekend.
-        </p>
-      </article>
+                <div class="blog-grid">
+                    <article class="blog-card">
+                        <h3><a href="blog/building-aunikah.html">Building Aunikah: When Workers Don't Know if They're W-2 or 1099</a></h3>
+                        <p class="blog-meta">November 2025 • Contingent workforce · Chatbots</p>
+                        <p class="blog-excerpt">
+                            How I turned years of "who is my actual employer?" escalations into a conversational classifier that routes people to the right benefits and payroll support.
+                        </p>
+                    </article>
 
-      <article class="blog-card">
-        <h3><a href="blog/hr-games-creation.html">HR Games: Turning Compliance Into Play</a></h3>
-        <p class="blog-meta">October 2025 • Learning · Gamification</p>
-        <p class="blog-excerpt">
-          Why I started building mini-games like Acronym Attack, Escape the Office, and
-          HR Simulator to help HR teams learn faster (and have more fun doing it).
-        </p>
-      </article>
-    </div>
-  </div>
-</section>
+                    <article class="blog-card">
+                        <h3><a href="blog/finops-suite-story.html">Building the Financial Operations Suite I Wished I Had</a></h3>
+                        <p class="blog-meta">October 2025 • Financial Operations · Automation</p>
+                        <p class="blog-excerpt">
+                            After managing $80M+ in payroll and spending hours on manual transformations, I built the automated suite that turns hours into minutes.
+                        </p>
+                    </article>
 
+                    <article class="blog-card">
+                        <h3><a href="blog/building-vmsflex-pay.html">Building VMSFlex Pay: Solving the Multi-VMS Payroll Problem</a></h3>
+                        <p class="blog-meta">October 2025 • Payroll · Automation</p>
+                        <p class="blog-excerpt">
+                            The story behind a browser-based calculator that handles overtime rules across multiple VMS exports without blowing up Finance's weekend.
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </section>
     </main>
 
     <!-- Footer -->
@@ -856,7 +969,7 @@
     </footer>
 
     <!-- JavaScript -->
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         (function() {
             'use strict';
 
