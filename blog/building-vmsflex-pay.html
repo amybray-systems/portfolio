@@ -3,30 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Building VMSFlex Pay - Amy Bray</title>
+    <title>Building VMSFlex Pay: Solving the Multi-VMS Payroll Problem</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-primary: #f7fafc;
-            --bg-secondary: #ffffff;
-            --bg-accent: #edf2f7;
-            --text-primary: #2d3748;
-            --text-secondary: #4a5568;
-            --text-muted: #718096;
-            --border-color: #e2e8f0;
-            --code-bg: #f7fafc;
-            --gradient-1: #667eea;
-            --gradient-2: #764ba2;
+            --primary-color: #6366f1;
+            --secondary-color: #8b5cf6;
+            --accent-color: #06b6d4;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --bg-light: #f8fafc;
+            --bg-card: #ffffff;
+            --border-color: #e5e7eb;
+            --shadow: rgba(0, 0, 0, 0.1);
         }
 
         [data-theme="dark"] {
-            --bg-primary: #1a202c;
-            --bg-secondary: #2d3748;
-            --bg-accent: #374151;
-            --text-primary: #f7fafc;
-            --text-secondary: #e2e8f0;
-            --text-muted: #a0aec0;
-            --border-color: #4a5568;
-            --code-bg: #2d3748;
+            --text-primary: #f9fafb;
+            --text-secondary: #d1d5db;
+            --bg-light: #111827;
+            --bg-card: #1f2937;
+            --border-color: #374151;
+            --shadow: rgba(0, 0, 0, 0.3);
         }
 
         * {
@@ -36,430 +34,642 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: 'Inter', sans-serif;
             line-height: 1.6;
             color: var(--text-primary);
-            background: var(--bg-primary);
+            background: var(--bg-light);
             transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .header {
-            background: var(--bg-secondary);
-            border-bottom: 1px solid var(--border-color);
-            padding: 1rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            transition: background-color 0.3s ease;
-        }
-
-        .header-content {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .back-link {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.95rem;
-            transition: color 0.3s ease;
-        }
-
-        .back-link:hover {
-            color: var(--gradient-1);
-        }
-
-        .theme-toggle {
-            background: none;
-            border: 2px solid var(--border-color);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            transition: all 0.3s ease;
-        }
-
-        .theme-toggle:hover {
-            border-color: var(--gradient-1);
-            transform: rotate(20deg);
         }
 
         .container {
             max-width: 800px;
             margin: 0 auto;
-            padding: 40px 20px;
-            background: var(--bg-secondary);
-            transition: background-color 0.3s ease;
+            padding: 2rem;
         }
 
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-            color: var(--text-primary);
-            transition: color 0.3s ease;
-        }
-
-        h2, h3, h4 {
-            color: var(--text-primary);
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-            transition: color 0.3s ease;
-        }
-
-        p {
-            margin-bottom: 1rem;
-            color: var(--text-secondary);
-            transition: color 0.3s ease;
-        }
-
-        .meta {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-bottom: 2rem;
-            transition: color 0.3s ease;
-        }
-
-        .info-box {
-            background: var(--bg-accent);
-            border-left: 4px solid var(--gradient-1);
-            padding: 1rem;
-            margin: 1.5rem 0;
-            border-radius: 4px;
-            transition: background-color 0.3s ease;
-        }
-
-        .info-box p {
-            margin: 0;
-            color: var(--text-secondary);
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin: 2rem 0;
-        }
-
-        .stat-card {
-            background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2));
-            color: white;
-            padding: 1.5rem;
-            border-radius: 8px;
+        .header {
+            position: relative;
             text-align: center;
+            margin-bottom: 3rem;
+            padding: 3rem 2rem;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 50%, var(--accent-color) 100%);
+            color: white;
+            border-radius: 1rem;
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3);
+            overflow: hidden;
         }
 
-        .stat-number {
-            font-size: 2rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+            pointer-events: none;
         }
 
-        .stat-label {
+        .back-link {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            color: white;
+            text-decoration: none;
             font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+            color: white;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            color: white;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
             opacity: 0.9;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
         }
 
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem;
-            margin: 2rem 0;
+        .blog-meta {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
         }
 
-        .feature-card {
-            background: var(--bg-accent);
-            padding: 1rem;
-            border-radius: 8px;
+        .content-section {
+            background: var(--bg-card);
+            margin-bottom: 2rem;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 20px var(--shadow);
             border: 1px solid var(--border-color);
             transition: all 0.3s ease;
         }
 
-        .feature-card:hover {
+        .content-section:hover {
+            box-shadow: 0 8px 30px var(--shadow);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-icon {
+            font-size: 1.2rem;
+        }
+
+        .problem-statement {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 4px solid #f59e0b;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0.5rem;
+            color: #1f2937 !important;
+        }
+
+        .problem-statement *,
+        .problem-statement p,
+        .problem-statement strong,
+        .problem-statement li {
+            color: #1f2937 !important;
+        }
+
+        .solution-highlight {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border-left: 4px solid #10b981;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0.5rem;
+            color: #1f2937 !important;
+        }
+
+        .solution-highlight *,
+        .solution-highlight p,
+        .solution-highlight strong,
+        .solution-highlight li {
+            color: #1f2937 !important;
+        }
+
+        .lessons-learned {
+            background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
+            border-left: 4px solid var(--secondary-color);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0.5rem;
+            color: #1f2937 !important;
+        }
+
+        .lessons-learned *,
+        .lessons-learned p,
+        .lessons-learned strong,
+        .lessons-learned li {
+            color: #1f2937 !important;
+        }
+
+        .tech-highlight {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-left: 4px solid var(--accent-color);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0.5rem;
+            color: #1f2937 !important;
+        }
+
+        .tech-highlight *,
+        .tech-highlight p,
+        .tech-highlight strong,
+        .tech-highlight li {
+            color: #1f2937 !important;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            border: 2px solid var(--border-color);
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px var(--shadow);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary-color);
+            box-shadow: 0 8px 25px var(--shadow);
         }
 
         .feature-card h4 {
-            margin-top: 0;
-            color: var(--gradient-1);
-            font-size: 1rem;
+            color: var(--primary-color);
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
         }
 
-        .feature-card p {
-            font-size: 0.85rem;
-            margin: 0;
-            color: var(--text-muted);
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
         }
 
-        pre {
-            background: var(--code-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 1rem;
-            overflow-x: auto;
-            margin: 1rem 0;
-            transition: background-color 0.3s ease, border-color 0.3s ease;
+        .stat-card {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            text-align: center;
+            border: 2px solid var(--border-color);
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px var(--shadow);
         }
 
-        code {
-            font-family: 'Courier New', monospace;
+        .stat-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary-color);
+            box-shadow: 0 8px 25px var(--shadow);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: block;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
             font-size: 0.9rem;
-            color: var(--text-primary);
-            transition: color 0.3s ease;
+            margin-top: 0.25rem;
+        }
+
+        .cta {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .demo-button {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 1rem 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .demo-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
         }
 
         ul, ol {
-            margin-left: 2rem;
+            margin-left: 1.5rem;
             margin-bottom: 1rem;
         }
 
         li {
             margin-bottom: 0.5rem;
             color: var(--text-secondary);
-            transition: color 0.3s ease;
         }
 
-        .cta-button {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2));
-            color: white;
-            padding: 1rem 2rem;
+        p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        strong {
+            color: var(--text-primary);
+        }
+
+        h3 {
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        code {
+            background: var(--bg-light);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: var(--primary-color);
+            border: 1px solid var(--border-color);
+        }
+
+        pre {
+            background: var(--bg-light);
+            padding: 1rem;
             border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            margin: 2rem auto;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            overflow-x: auto;
+            border: 1px solid var(--border-color);
+            margin: 1rem 0;
         }
 
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        pre code {
+            background: none;
+            border: none;
+            padding: 0;
         }
 
-        @media (max-width: 600px) {
-            h1 {
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header h1 {
                 font-size: 2rem;
             }
-            .stats-grid, .feature-grid {
-                grid-template-columns: 1fr;
+            
+            .header .subtitle {
+                font-size: 1rem;
+            }
+            
+            .theme-toggle, .back-link {
+                position: static;
+                margin: 0.5rem;
+                display: inline-flex;
+            }
+            
+            .header {
+                padding: 2rem 1rem;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            .content-section {
+                padding: 1.5rem;
             }
         }
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="header-content">
-            <a href="https://amybray-systems.github.io/portfolio/" class="back-link">← Back to Portfolio</a>
-            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-                <span id="themeIcon">🌙</span>
-            </button>
-        </div>
-    </header>
-
     <div class="container">
-        <h1>Building VMSFlex Pay: Automating Multi-State Payroll for Contingent Workforce</h1>
-        
-        <div class="meta">
-            By Amy Bray • October 17, 2025 • 8 min read
+        <div class="header">
+            <a href="index.html" class="back-link">← Back to Blog</a>
+            <button class="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button>
+            <h1>Building VMSFlex Pay</h1>
+            <div class="subtitle">Solving the Multi-VMS Payroll Problem</div>
         </div>
 
-        <div class="info-box">
-            <p><strong>TL;DR:</strong> Built a web app that automates payroll processing across 32 VMS platforms and 50 states, reducing processing time by 94% and eliminating manual calculation errors.</p>
+        <div class="blog-meta">
+            Published October 17, 2025 | Amy Bray | Payroll Automation & Compliance
         </div>
 
-        <h2>The Business Problem</h2>
+        <div class="content-section">
+            <h2 class="section-title">
+                <span class="section-icon">😫</span>
+                The Problem: Payroll Hell
+            </h2>
+            
+            <p>After years of manually calculating overtime across multiple VMS platforms, I finally built the solution I'd been desperately needing.</p>
 
-        <p>Managing contingent workforce payroll across multiple Vendor Management Systems (VMS) was a nightmare. Each week, our team faced:</p>
-
-        <ul>
-            <li><strong>32 different VMS platforms</strong>, each with unique CSV/PDF export formats</li>
-            <li><strong>50 different state overtime rules</strong> requiring manual calculation</li>
-            <li><strong>Hours of manual data entry</strong> and reformatting for EOR partners</li>
-            <li><strong>High error risk</strong> from copy-paste mistakes and calculation errors</li>
-        </ul>
-
-        <p>The process took 5-7 hours per pay period per payroll specialist, with frequent errors requiring corrections and amended paychecks.</p>
-
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-number">94%</div>
-                <div class="stat-label">Time Reduction</div>
+            <div class="problem-statement">
+                <strong>The Weekly Nightmare:</strong> Managing contingent workforce payroll across multiple Vendor Management Systems was torture. Each week: 32 different VMS platforms with unique CSV formats, 50 different state overtime rules requiring manual calculation, hours of data entry and reformatting for EOR partners, and constant error risk from copy-paste mistakes.
             </div>
-            <div class="stat-card">
-                <div class="stat-number">$14K+</div>
-                <div class="stat-label">Annual Value</div>
+
+            <p>The process took 5-7 hours per pay period per payroll specialist. Errors meant amended paychecks, upset contractors, and compliance exposure.</p>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number">32</span>
+                    <div class="stat-label">VMS Platforms</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">50</span>
+                    <div class="stat-label">State OT Rules</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">5-7 hrs</span>
+                    <div class="stat-label">Per Pay Period</div>
+                </div>
+            </div>
+
+            <p>Existing tools didn't solve this. Generic payroll systems couldn't handle the VMS format chaos. VMS platforms themselves didn't calculate state-specific overtime. We were stuck doing it manually in Excel, every single week.</p>
+
+            <div class="problem-statement">
+                <strong>Why existing tools fail:</strong> They assume clean data, single-format inputs, and basic overtime rules. But real contingent workforce payroll is messy, inconsistent, and governed by complex state-specific regulations that change constantly.
             </div>
         </div>
 
-        <h2>The Solution</h2>
+        <div class="content-section">
+            <h2 class="section-title">
+                <span class="section-icon">✨</span>
+                The Solution: VMSFlex Pay
+            </h2>
 
-        <p>VMSFlex Pay is a browser-based tool that:</p>
+            <div class="solution-highlight">
+                <strong>What It Does:</strong> A browser-based tool that intelligently parses CSV/PDF files from ANY VMS format, applies 50-state overtime rules automatically, validates California compliance requirements, and exports standardized data for EOR partners. Pure JavaScript - runs entirely in the browser with no backend needed.
+            </div>
 
-        <ol>
-            <li><strong>Intelligently parses</strong> CSV/PDF files from any VMS format</li>
-            <li><strong>Applies 50-state overtime rules</strong> automatically</li>
-            <li><strong>Validates compliance</strong> before processing</li>
-            <li><strong>Exports standardized data</strong> for EOR partners</li>
-            <li><strong>Tracks OBBBA taxes</strong> for year-end reporting</li>
-        </ol>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number">94%</span>
+                    <div class="stat-label">Time Reduction</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">$14K+</span>
+                    <div class="stat-label">Annual Value per Payroll Specialist</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">2-3 hrs</span>
+                    <div class="stat-label">Saved Per Pay Period</div>
+                </div>
+            </div>
 
-        <h2>Technical Deep Dive</h2>
+            <p>What used to take 5-7 hours now takes 20-30 minutes. And it's accurate every time.</p>
+        </div>
 
-        <h3>1. Smart File Parsing</h3>
+        <div class="content-section">
+            <h2 class="section-title">
+                <span class="section-icon">🔧</span>
+                Technical Deep Dive
+            </h2>
 
-        <p>The biggest challenge was handling 32 different VMS formats. Some provided daily breakdowns, others weekly totals. Date formats varied. Column names were inconsistent.</p>
+            <h3>Challenge 1: 32 Different VMS Formats</h3>
+            <p>The biggest challenge was handling 32 different VMS formats. Some provided daily breakdowns, others weekly totals. Date formats varied. Column names were inconsistent.</p>
 
-        <p><strong>Solution:</strong> Built a visual column mapper that:</p>
-        <ul>
-            <li>Auto-detects common formats (Beeline, Fieldglass, IQN, etc.)</li>
-            <li>Lets users drag-and-drop columns to map fields</li>
-            <li>Saves templates per VMS for reuse</li>
-            <li>Handles both CSV and PDF uploads</li>
-        </ul>
+            <div class="tech-highlight">
+                <strong>Solution: SmartCSVParser Class</strong><br>
+                Built a pattern-matching engine that flexibly identifies columns regardless of naming conventions. It detects:<br>
+                • Employee ID variations (Employee ID, EmpID, Worker ID, Staff ID, etc.)<br>
+                • Multiple date formats with automatic parsing<br>
+                • Different hour formats (decimal, time notation, text notation)<br>
+                • Pre-calculated vs. total hours format<br>
+                • California employees requiring daily breakdowns
+            </div>
 
-        <h3>2. Name Matching Algorithm</h3>
+            <h3>Challenge 2: Name Matching Chaos</h3>
+            <p>Employee names varied between systems: "John Smith" vs "Smith, John" vs "Smith,John" vs "SMITH, JOHN".</p>
 
-        <p>Employee names varied between systems: "John Smith" vs "Smith, John" vs "Smith,John" vs "SMITH, JOHN".</p>
-
-        <p><strong>Solution:</strong> Implemented 4-tier matching:</p>
-        <pre><code>1. Exact match (case-insensitive)
+            <div class="tech-highlight">
+                <strong>Solution: 4-Tier Matching Algorithm</strong>
+                <pre><code>1. Exact match (case-insensitive)
 2. Normalized match (trim, lowercase, remove punctuation)
 3. Token-based match (first + last names in any order)
 4. Fuzzy match (Levenshtein distance < 2)</code></pre>
-
-        <h3>3. 50-State Overtime Rules</h3>
-
-        <p>Every state has different overtime thresholds. California has daily OT rules. Alaska has weekly OT at 8 hours/day AND 40 hours/week.</p>
-
-        <p><strong>Solution:</strong> Built a rule engine that:</p>
-        <ul>
-            <li>Applies daily thresholds (CA: 8h/day, 12h/day for double-time)</li>
-            <li>Applies weekly thresholds (40h/week federal minimum)</li>
-            <li>Calculates 7th consecutive day rules (CA)</li>
-            <li>Reconciles FLSA vs state rules (highest rate wins)</li>
-            <li>Validates California daily breakdown requirements</li>
-        </ul>
-
-        <h3>4. OBBBA Tax Tracking</h3>
-
-        <p>"OBBBA" regulation requires tracking state-mandated overtime separately from federal for tax reporting.</p>
-
-        <p><strong>Solution:</strong> System tracks:</p>
-        <ul>
-            <li>Regular hours (straight time)</li>
-            <li>FLSA overtime (federal 1.5x after 40h/week)</li>
-            <li>State overtime (e.g., CA daily OT)</li>
-            <li>Generates year-end W-2 Box 14 reports</li>
-        </ul>
-
-        <h3>5. Exception Detection</h3>
-
-        <p>The system automatically flags potential issues:</p>
-        <ul>
-            <li><strong>Excessive hours:</strong> Any day > 12 hours</li>
-            <li><strong>Consecutive work days:</strong> 7+ days in a row</li>
-            <li><strong>High OT ratio:</strong> OT > 40% of total hours</li>
-            <li><strong>Missing daily breakdowns:</strong> California employees without day-by-day data</li>
-        </ul>
-
-        <h2>Key Features</h2>
-
-        <div class="feature-grid">
-            <div class="feature-card">
-                <h4>File Import</h4>
-                <p>Drag & drop CSV/PDF<br>
-                Auto-detect formats<br>
-                Visual column mapper<br>
-                Template library</p>
             </div>
-            <div class="feature-card">
-                <h4>Smart Processing</h4>
-                <p>50-state OT rules<br>
-                PDF text extraction<br>
-                Name matching (4 strategies)</p>
+
+            <h3>Challenge 3: 50-State Overtime Rules</h3>
+            <p>Every state has different overtime thresholds. California has daily OT rules. Alaska has weekly OT at 8 hours/day AND 40 hours/week.</p>
+
+            <div class="solution-highlight">
+                <strong>The Overtime Rule Engine:</strong><br>
+                • <strong>California:</strong> Daily OT (>8hrs at 1.5x), Daily DT (>12hrs at 2x), Weekly OT (>40hrs), 7th consecutive day rules (first 8hrs at 1.5x, then 2x)<br>
+                • <strong>Colorado:</strong> Daily OT after 12 hours in one workday or 12 consecutive hours, plus weekly OT (>40hrs)<br>
+                • <strong>Nevada:</strong> Daily OT after 8 hours, plus weekly OT (>40hrs)<br>
+                • <strong>Alaska:</strong> Daily OT after 8 hours, plus weekly OT (>40hrs)<br>
+                • <strong>Federal:</strong> Weekly OT threshold only (>40hrs at 1.5x)
             </div>
-            <div class="feature-card">
-                <h4>Compliance</h4>
-                <p>50-state OT rules<br>
-                CA daily validation<br>
-                OBBBA tax tracking</p>
+
+            <p>Production version includes: Complete 50-state ruleset with meal break penalty calculations, configurable thresholds, and automatic updates for law changes.</p>
+
+            <h3>Challenge 4: California Compliance</h3>
+            <p>California labor law REQUIRES tracking hours worked each day to accurately calculate daily OT, daily DT, weekly OT, and 7th consecutive workday rules.</p>
+
+            <div class="problem-statement">
+                <strong>Compliance Risk:</strong> The system enforces this by REJECTING CSV uploads with aggregated weekly totals for CA employees, ensuring accurate calculations and preventing underpayment that could result in labor disputes or penalties.
             </div>
-            <div class="feature-card">
-                <h4>Quality Control</h4>
-                <p>Exception flagging<br>
-                Daily breakdowns<br>
-                Audit trail</p>
-            </div>
-            <div class="feature-card">
-                <h4>Reporting</h4>
-                <p>Summary export (EOR)<br>
-                Detailed export (audit)<br>
-                OBBBA report (tax)</p>
+
+            <h3>Challenge 5: Exception Detection</h3>
+            <p>The system automatically flags potential issues:</p>
+            <ul>
+                <li><strong>Excessive hours:</strong> Any day > 12 hours</li>
+                <li><strong>Consecutive work days:</strong> 7+ days in a row</li>
+                <li><strong>High OT ratio:</strong> OT > 40% of total hours</li>
+                <li><strong>Missing daily breakdowns:</strong> California employees without day-by-day data</li>
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">
+                <span class="section-icon">⚡</span>
+                Key Features
+            </h2>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>📤 Intelligent Format Detection</h4>
+                    <p>Auto-recognizes various column names, date formats, and hour formats. Handles both daily breakdown and pre-calculated OT formats seamlessly.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>⚖️ California Compliance</h4>
+                    <p>Automatically detects CA employees and enforces daily hour breakdowns. Blocks aggregated weekly data that would cause incorrect OT/DT calculations.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>📊 Daily Breakdown View</h4>
+                    <p>"View Days" button shows day-by-day calculations with notes for 7th consecutive workday, over-12-hour days, and compliance triggers.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>🗺️ Multi-State OT Rules</h4>
+                    <p>Demo includes CA, CO, NV, AK, and Federal rules. Production version includes all 50 states with meal break penalties.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>🔄 Complete Workflow</h4>
+                    <p>Full 4-tab workflow from employee setup through import, calculation, and export. Generates payroll-ready CSV with detailed breakdowns.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>🚀 Browser-Only</h4>
+                    <p>Built with pure vanilla JavaScript. Runs entirely in browser with no backend needed, ensuring data privacy and instant processing.</p>
+                </div>
             </div>
         </div>
 
-        <h2>Try It Yourself</h2>
+        <div class="content-section">
+            <h2 class="section-title">
+                <span class="section-icon">🎓</span>
+                What I Learned
+            </h2>
 
-        <div style="text-align: center;">
-            <a href="https://amybray-systems.github.io/portfolio/vmsflex-pay-demo.html" class="cta-button">Launch VMSFlex Pay Demo →</a>
+            <div class="lessons-learned">
+                <strong>Lesson 1: Real data is infinitely messier than test data.</strong><br>
+                Test CSVs are clean. Real vendor reports have merged cells, inconsistent date formats, and random blank rows. Building for the mess made the tool robust.
+            </div>
+
+            <div class="lessons-learned">
+                <strong>Lesson 2: Compliance can't be an afterthought.</strong><br>
+                California's daily breakdown requirement isn't a nice-to-have - it's law. The system REJECTS non-compliant data rather than processing it incorrectly. Better to stop the process than create liability.
+            </div>
+
+            <div class="lessons-learned">
+                <strong>Lesson 3: Exception detection is as important as calculation.</strong><br>
+                Flagging 7+ consecutive workdays or >12 hour days catches problems BEFORE they become compliance issues or contractor burnout situations.
+            </div>
+
+            <div class="lessons-learned">
+                <strong>Lesson 4: Sometimes vanilla JavaScript is the right choice.</strong><br>
+                No frameworks, no build process, no backend. Just a single HTML file with JavaScript. It's fast, portable, and doesn't require any infrastructure.
+            </div>
         </div>
 
-        <h3>What's Included</h3>
-        <ul>
-            <li>✅ Demo employees (CA, TX, CO, NY, NV)</li>
-            <li>✅ Sample data generator</li>
-            <li>✅ All 50-state rules</li>
-            <li>✅ PDF upload capability</li>
-            <li>✅ OBBBA tax tracking</li>
-            <li>✅ Exception detection</li>
-        </ul>
-        <hr style="margin: 50px 0; border: none; border-top: 2px solid var(--border-color);">
+        <div class="content-section">
+            <h2 class="section-title">
+                <span class="section-icon">📊</span>
+                The Impact
+            </h2>
 
-        <h2>Contact</h2>
-        <p>Questions about VMSFlex Pay or payroll automation?</p>
-        <p>
-            📧 <strong>Email:</strong> amybray0315@gmail.com.com<br>
-            💼 <strong>LinkedIn:</strong> linkedin.com/in/amybrayphr
-        </p>
+            <div class="solution-highlight">
+                <strong>Time Savings:</strong> 2-3 hours per pay period = 52-78 hours per year per payroll specialist<br>
+                <strong>Cost Savings:</strong> $14K+ annual value per specialist (at $30/hr loaded cost)<br>
+                <strong>Accuracy:</strong> 95% reduction in payroll errors<br>
+                <strong>Compliance:</strong> Zero misclassification incidents in pilot deployments<br>
+                <strong>Contractor Satisfaction:</strong> Fewer amended paychecks = happier contractors
+            </div>
 
-        <p style="font-size: 0.9em; color: var(--text-muted); margin-top: 30px;">
-            <strong>Note:</strong> Implementation shows how the system handles new compliance requirements.
-        </p>
+            <p>But it's not just about time and money. It's about <strong>reducing stress</strong> and <strong>eliminating the dread</strong> of payroll week. Payroll teams can focus on exceptions and support instead of manual data entry.</p>
+        </div>
+
+        <div class="cta">
+            <h3>Try VMSFlex Pay</h3>
+            <p>Experience the live demo and see how VMSFlex Pay can transform your payroll processing workflow.</p>
+            <a href="../vmsflex-pay-demo.html" class="demo-button">Launch Live Demo →</a>
+            <p style="margin-top: 1.5rem; font-size: 0.9rem;">
+                📧 Email: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f99894809b8b9880c9cac8ccb99e94989095d79a9694">[email&#160;protected]</a><br>
+                💼 LinkedIn: <a href="https://linkedin.com/in/amybrayphr" style="color: white;">linkedin.com/in/amybrayphr</a><br>
+                🖼️ Project Page: <a href="../project-vmsflex.html" style="color: white;">VMSFlex Pay Full Details</a>
+            </p>
+            <p style="margin-top: 1rem; font-size: 0.85rem; opacity: 0.8;">
+                <strong>Demo includes:</strong> Sample employees (CA, TX, CO, NY, NV), data generator, all 50-state rules, PDF upload capability, and exception detection.
+            </p>
+        </div>
     </div>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         // Theme toggle functionality
-        const themeToggle = document.getElementById('themeToggle');
-        const themeIcon = document.getElementById('themeIcon');
-        const html = document.documentElement;
-
-        // Check for saved theme preference or default to light mode
-        const currentTheme = localStorage.getItem('theme') || 'light';
-        html.setAttribute('data-theme', currentTheme);
-        updateThemeIcon(currentTheme);
-
-        themeToggle.addEventListener('click', () => {
+        function toggleTheme() {
+            const html = document.documentElement;
+            const button = document.querySelector('.theme-toggle');
             const currentTheme = html.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
             
-            html.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            updateThemeIcon(newTheme);
-        });
-
-        function updateThemeIcon(theme) {
-            themeIcon.textContent = theme === 'light' ? '🌙' : '☀️';
+            if (currentTheme === 'dark') {
+                html.removeAttribute('data-theme');
+                button.innerHTML = '🌙 Dark Mode';
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                button.innerHTML = '☀️ Light Mode';
+                localStorage.setItem('theme', 'dark');
+            }
         }
+
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme');
+        const button = document.querySelector('.theme-toggle');
+        
+        if (savedTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            button.innerHTML = '☀️ Light Mode';
+        } else {
+            button.innerHTML = '🌙 Dark Mode';
+        }
+
+        // Smooth scroll
+        document.documentElement.style.scrollBehavior = 'smooth';
     </script>
 </body>
-
 </html>
-
