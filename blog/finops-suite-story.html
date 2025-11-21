@@ -1,249 +1,722 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Building the Financial Operations Suite I Wished I Had | Amy Bray</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building the Financial Operations Suite I Wished I Had</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #8b5cf6;
+            --accent-color: #06b6d4;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --bg-light: #f8fafc;
+            --bg-card: #ffffff;
+            --border-color: #e5e7eb;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
 
-  <!-- Canonical -->
-  <link rel="canonical" href="https://amybray-systems.github.io/portfolio/blog/finops-suite-story.html" />
+        [data-theme="dark"] {
+            --text-primary: #f9fafb;
+            --text-secondary: #d1d5db;
+            --bg-light: #111827;
+            --bg-card: #1f2937;
+            --border-color: #374151;
+            --shadow: rgba(0, 0, 0, 0.3);
+        }
 
-  <!-- Meta description -->
-  <meta name="description" content="From managing $80M+ in payroll to building beta tools that turn hours into minutes. Real operations pain → practical Python solutions." />
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  <!-- Open Graph -->
-  <meta property="og:title" content="Building the Financial Operations Suite I Wished I Had" />
-  <meta property="og:description" content="From managing $80M+ in payroll to building beta tools that turn hours into minutes. Real operations pain → practical Python solutions." />
-  <meta property="og:type" content="article" />
-  <meta property="og:url" content="https://amybray-systems.github.io/portfolio/blog/finops-suite-story.html" />
-  <meta property="og:image" content="https://amybray-systems.github.io/portfolio/assets/finops/og_finops_dashboard.png" />
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-light);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
 
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Building the Financial Operations Suite I Wished I Had" />
-  <meta name="twitter:description" content="From managing $80M+ in payroll to building beta tools that turn hours into minutes." />
-  <meta name="twitter:image" content="https://amybray-systems.github.io/portfolio/assets/finops/og_finops_dashboard.png" />
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
 
-  <!-- Article schema -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "headline": "Building the Financial Operations Suite I Wished I Had",
-    "author": {"@type": "Person", "name": "Amy Bray"},
-    "datePublished": "2025-10-27",
-    "dateModified": "2025-10-28",
-    "description": "From managing $80M+ in payroll to building beta tools that turn hours into minutes. Real operations pain → practical Python solutions.",
-    "mainEntityOfPage": "https://amybray-systems.github.io/portfolio/blog/finops-suite-story.html",
-    "image": "https://amybray-systems.github.io/portfolio/assets/finops/og_finops_dashboard.png"
-  }
-  </script>
+        .header {
+            position: relative;
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 3rem 2rem;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 50%, var(--accent-color) 100%);
+            color: white;
+            border-radius: 1rem;
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3);
+            overflow: hidden;
+        }
 
-  <style>
-    :root { --bg-primary:#f7fafc; --bg-secondary:#ffffff; --bg-accent:#edf2f7; --text-primary:#2d3748; --text-secondary:#4a5568; --text-muted:#718096; --border-color:#e2e8f0; --code-bg:#f7fafc; --gradient-1:#667eea; --gradient-2:#764ba2; }
-    [data-theme="dark"] { --bg-primary:#0f1623; --bg-secondary:#141b2b; --bg-accent:#1c2540; --text-primary:#eef2ff; --text-secondary:#cbd5e1; --text-muted:#94a3b8; --border-color:#24324a; --code-bg:#0f1a2b; }
-    *{margin:0;padding:0;box-sizing:border-box}
-    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,sans-serif;line-height:1.65;color:var(--text-primary);background:var(--bg-primary);transition:background-color .3s,color .3s}
-    .header{background:var(--bg-secondary);border-bottom:1px solid var(--border-color);padding:1rem 0;position:sticky;top:0;z-index:100}
-    .header-content{max-width:840px;margin:0 auto;padding:0 20px;display:flex;justify-content:space-between;align-items:center}
-    .back-link{color:var(--text-secondary);text-decoration:none;font-size:.95rem;transition:color .3s}
-    .back-link:hover{color:var(--gradient-1)}
-    .theme-toggle{background:none;border:2px solid var(--border-color);border-radius:50%;width:40px;height:40px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.2rem;transition:all .3s}
-    .theme-toggle:hover{border-color:var(--gradient-1);transform:rotate(20deg)}
-    .container{max-width:840px;margin:0 auto;background:var(--bg-secondary);padding:44px 20px}
-    h1{font-size:2.35rem;margin-bottom:.35rem}
-    h2,h3,h4{margin-top:2rem;margin-bottom:1rem}
-    p{margin-bottom:1rem;color:var(--text-secondary)}
-    .meta{color:var(--text-muted);font-size:.95rem;margin-bottom:1.25rem}
-    .badge{display:inline-flex;align-items:center;gap:.5rem;background:var(--bg-accent);border:1px solid var(--border-color);color:var(--text-primary);padding:.35rem .6rem;border-radius:999px;font-size:.85rem;font-weight:600}
-    .highlight-box{background:var(--bg-accent);border-left:4px solid var(--gradient-1);padding:1.2rem 1.4rem;margin:1.25rem 0;border-radius:8px}
-    .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin:1.5rem 0}
-    .stat-card{background:linear-gradient(135deg,var(--gradient-1),var(--gradient-2));color:#fff;padding:1.25rem;border-radius:10px;text-align:center}
-    .stat-number{font-size:1.6rem;font-weight:800;margin-bottom:.25rem}
-    .stat-label{font-size:.9rem;opacity:.95}
-    .tech-stack{display:flex;flex-wrap:wrap;gap:.5rem;margin:1.2rem 0}
-    .tech-badge{background:var(--bg-accent);color:var(--text-primary);padding:.35rem .7rem;border-radius:16px;font-size:.85rem;border:1px solid var(--border-color)}
-    ul{margin-left:1.25rem;margin-bottom:1rem}
-    li{color:var(--text-secondary);margin-bottom:.45rem}
-    code{background:var(--code-bg);padding:.2rem .4rem;border-radius:4px;border:1px solid var(--border-color);font-size:.9em;font-family:ui-monospace,Menlo,Consolas,monospace}
-    blockquote{border-left:4px solid var(--gradient-1);padding-left:1.1rem;margin:1.25rem 0;color:var(--text-secondary);font-style:italic}
-    .toc{background:var(--bg-accent);border:1px solid var(--border-color);border-radius:8px;padding:1rem;margin:1.25rem 0}
-    .cta-button{display:inline-block;background:linear-gradient(135deg,var(--gradient-1),var(--gradient-2));color:white;padding:1rem 1.5rem;border-radius:10px;text-decoration:none;font-weight:700;transition:transform .2s,box-shadow .2s}
-    .cta-button:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(102,126,234,.3)}
-    .footer-note{font-size:.9em;color:var(--text-muted);margin-top:30px}
-    hr{margin:40px 0;border:none;border-top:2px solid var(--border-color)}
-    .end-nav{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
-    .end-nav a{color:var(--gradient-1);text-decoration:none}
-  </style>
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+            pointer-events: none;
+        }
+
+        .back-link {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+            color: white;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            color: white;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
+        }
+
+        .blog-meta {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .content-section {
+            background: var(--bg-card);
+            margin-bottom: 2rem;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 20px var(--shadow);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .content-section:hover {
+            box-shadow: 0 8px 30px var(--shadow);
+            transform: translateY(-2px);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-icon {
+            font-size: 1.2rem;
+        }
+
+        .problem-statement {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 4px solid #f59e0b;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0.5rem;
+            color: #1f2937 !important;
+        }
+
+        .problem-statement *,
+        .problem-statement p,
+        .problem-statement strong,
+        .problem-statement li {
+            color: #1f2937 !important;
+        }
+
+        .solution-highlight {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border-left: 4px solid #10b981;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0.5rem;
+            color: #1f2937 !important;
+        }
+
+        .solution-highlight *,
+        .solution-highlight p,
+        .solution-highlight strong,
+        .solution-highlight li {
+            color: #1f2937 !important;
+        }
+
+        .lessons-learned {
+            background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
+            border-left: 4px solid var(--secondary-color);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0.5rem;
+            color: #1f2937 !important;
+        }
+
+        .lessons-learned *,
+        .lessons-learned p,
+        .lessons-learned strong,
+        .lessons-learned li {
+            color: #1f2937 !important;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            border: 2px solid var(--border-color);
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px var(--shadow);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary-color);
+            box-shadow: 0 8px 25px var(--shadow);
+        }
+
+        .feature-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            text-align: center;
+            border: 2px solid var(--border-color);
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px var(--shadow);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary-color);
+            box-shadow: 0 8px 25px var(--shadow);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: block;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin: 1.5rem 0;
+        }
+
+        .tech-badge {
+            background: var(--bg-light);
+            color: var(--primary-color);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 2px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .tech-badge:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .quote {
+            font-style: italic;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            text-align: center;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: var(--bg-light);
+            border-radius: 0.5rem;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .cta {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .cta h3 {
+            margin-bottom: 1rem;
+        }
+
+        .cta a {
+            color: white;
+            text-decoration: underline;
+            font-weight: 600;
+        }
+
+        .demo-button {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 1rem 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .demo-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        strong {
+            color: var(--text-primary);
+        }
+
+        h3 {
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .header .subtitle {
+                font-size: 1rem;
+            }
+            
+            .theme-toggle, .back-link {
+                position: static;
+                margin: 0.5rem;
+                display: inline-flex;
+            }
+            
+            .header {
+                padding: 2rem 1rem;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            .content-section {
+                padding: 1.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <header class="header">
-    <div class="header-content">
-      <a href="https://amybray-systems.github.io/portfolio/index.html" class="back-link">← Back to Portfolio</a>
-      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme"><span id="themeIcon">🌙</span></button>
+    <div class="container">
+        <div class="header">
+            <a href="index.html" class="back-link">← Back to Blog</a>
+            <button class="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button>
+            <h1>Building the Financial Operations Suite</h1>
+            <div class="subtitle">I Wished I Had</div>
+        </div>
+
+        <div class="blog-meta">
+            Published October 27, 2025 | Amy Bray | Financial Operations & Automation
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">
+                <span class="section-icon">💡</span>
+                Why I Built This (The Real Version)
+            </h2>
+            
+            <p>I love structure, but my Tuesdays did not. The work was important—people's paychecks depended on it—but the way we did the work felt brittle. Fifteen report formats. A dozen small judgement calls. Late-day math when your brain wants tea and a walk.</p>
+
+            <div class="problem-statement">
+                <strong>The Breaking Point:</strong> The night I found a 27% YoY trend after three hours of Excel pivots, I felt equal parts proud and annoyed. Proud because: cool insight. Annoyed because: why was it so hard to see what was already there? That was the moment I decided I didn't want to be the hero with a spreadsheet cape anymore. I wanted the system to be the hero.
+            </div>
+
+            <p>After managing $80M+ in payroll operations, I'd spent enough evenings lost in Excel archaeology. The data was there. The insights were there. But getting to them felt like solving a puzzle every single time.</p>
+
+            <div class="quote">
+                "What's our month-over-month growth by department?"<br>
+                "Give me 30 minutes and a pivot table..."
+            </div>
+
+            <p>That 30-second question shouldn't take 30 minutes to answer. So I built the tools I'd been wishing for.</p>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">
+                <span class="section-icon">🚀</span>
+                What I Built: Two Tools, One Goal
+            </h2>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number">2</span>
+                    <div class="stat-label">Integrated Tools</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">$80M+</span>
+                    <div class="stat-label">Real Ops Experience</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">Hours→Min</span>
+                    <div class="stat-label">Time Transformation</div>
+                </div>
+            </div>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>🔄 Data Pipeline Pro</h4>
+                    <p><strong>Problem:</strong> 15 vendor formats → 1 billing format. Manual transformation = hours wasted, errors guaranteed.</p>
+                    <p><strong>Solution:</strong> Ingests Excel/CSV, validates everything, transforms intelligently, exports clean data. Upload → Process → Export. Done.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>📊 GSV Tracker Pro</h4>
+                    <p><strong>Problem:</strong> "How's growth looking?" shouldn't require 3 hours of custom analysis.</p>
+                    <p><strong>Solution:</strong> Instant MoM/QoQ/YoY metrics, department performance at a glance, trend detection, and interactive charts ready for exec decks.</p>
+                </div>
+            </div>
+
+            <div class="solution-highlight">
+                <strong>The Goal:</strong> Tiny, opinionated tools tuned for ops reality. Not a "universal data platform" that needs weeks of configuration. Just tools that work.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">
+                <span class="section-icon">🔧</span>
+                Data Pipeline Pro: The Details
+            </h2>
+
+            <h3>What It Does</h3>
+            <ul>
+                <li><strong>Ingests anything:</strong> Excel, CSV, multiple sheets—handles them all</li>
+                <li><strong>Validates automatically:</strong> Catches duplicates, missing fields, totals drift</li>
+                <li><strong>Transforms intelligently:</strong> Column mapping, derived fields, standard types</li>
+                <li><strong>Exports clean data:</strong> Billing format, payment format, executive rollups</li>
+            </ul>
+
+            <div class="solution-highlight">
+                <strong>Real-time, not batch.</strong> Upload → process → see results. No job queues, no waiting.
+            </div>
+
+            <h3>Why Validation Matters</h3>
+            <p>Bad data in = bad insights out. The pipeline automatically checks for:</p>
+            <ul>
+                <li>Null values and their impact</li>
+                <li>Duplicate entries that would cause billing errors</li>
+                <li>Missing required columns</li>
+                <li>Rate/hour outliers that need review</li>
+            </ul>
+
+            <p>That little "Errors (3)" badge next to the upload? <strong>Instant trust.</strong> You know exactly what's wrong before it becomes a problem downstream.</p>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">
+                <span class="section-icon">📈</span>
+                GSV Tracker Pro: The Details
+            </h2>
+
+            <h3>What It Does</h3>
+            <ul>
+                <li><strong>MoM/QoQ/YoY in one view:</strong> No more rebuilding pivot tables</li>
+                <li><strong>Department performance:</strong> Which teams are driving growth? See it instantly</li>
+                <li><strong>Trend detection:</strong> Spot spikes and dips automatically</li>
+                <li><strong>Interactive charts:</strong> Plotly visualizations that drop straight into decks</li>
+            </ul>
+
+            <div class="solution-highlight">
+                <strong>The analysis that took 3 hours?</strong> Now takes 30 seconds. And you can do it at 9:37 PM in dark mode because you're human.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">
+                <span class="section-icon">⚙️</span>
+                The Tech Stack (and Why)
+            </h2>
+
+            <div class="tech-stack">
+                <span class="tech-badge">Python 3.11</span>
+                <span class="tech-badge">Streamlit</span>
+                <span class="tech-badge">Pandas</span>
+                <span class="tech-badge">NumPy</span>
+                <span class="tech-badge">Plotly</span>
+                <span class="tech-badge">OpenPyXL</span>
+            </div>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>Why Python?</h4>
+                    <p>Fast to prototype, powerful for data transformation. Python + Pandas is the gold standard for operations data.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>Why Streamlit?</h4>
+                    <p>Wanted something usable, not just a Jupyter notebook. Streamlit = prototype to live demo in hours, not weeks. Plus file uploads, charts, and dark mode out of the box.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>Why Plotly?</h4>
+                    <p>Because Excel charts in 2025 are sad. Plotly gives interactive, presentation-ready visualizations that actually help people understand data.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">
+                <span class="section-icon">🎯</span>
+                Key Design Decisions
+            </h2>
+
+            <div class="lessons-learned">
+                <strong>1. Real-time, not batch</strong><br>
+                Every upload triggers immediate processing. You see results as soon as data loads. This mirrors how I actually wanted to work—upload, verify, export. Done.
+            </div>
+
+            <div class="lessons-learned">
+                <strong>2. Data validation first</strong><br>
+                Checks for nulls, duplicates, missing columns, and rate/hour outliers. Catch issues BEFORE they become problems downstream.
+            </div>
+
+            <div class="lessons-learned">
+                <strong>3. Dark mode is a requirement</strong><br>
+                Finance folks (hi, it's me) work late. A persisted toggle keeps eyes happy. Not optional.
+            </div>
+
+            <div class="lessons-learned">
+                <strong>4. Export everything</strong><br>
+                If Finance can't download it, it doesn't exist. Every view can export. Because sometimes they just want the spreadsheet.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">
+                <span class="section-icon">🎓</span>
+                What I Learned (The Messy Middle)
+            </h2>
+
+            <div class="problem-statement">
+                <strong>My first parser was too clever.</strong> It handled 12 edge cases and broke on the 13th. Simpler rules with clear errors won.
+            </div>
+
+            <div class="problem-statement">
+                <strong>I underestimated dates.</strong> Week ending vs. pay period vs. service dates—humans improvise; code shouldn't. Added strict validation + friendly messages.
+            </div>
+
+            <div class="problem-statement">
+                <strong>I over-designed the charts.</strong> Managers wanted three numbers and a line. I kept the pretty stuff, but defaulted to fast and obvious.
+            </div>
+
+            <h3>Key Lessons</h3>
+            <ul>
+                <li><strong>Build for the pain, not the theory.</strong> Two specific tools for two specific pain points I lived with weekly. That specificity is why they work.</li>
+                <li><strong>Fast iteration beats perfect planning.</strong> Streamlit let me prototype in a weekend. Got feedback from colleagues, iterated. Weeks later, battle-tested.</li>
+                <li><strong>Real data is messier than you think.</strong> Test data is clean. Real vendor reports have merged cells, inconsistent dates, random blank rows. Building for the mess made it robust.</li>
+                <li><strong>Visual feedback is mandatory.</strong> Users trust systems that SHOW them what's happening. Progress bars, validation summaries, preview tables—essential, not nice-to-have.</li>
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">
+                <span class="section-icon">📊</span>
+                The Impact
+            </h2>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number">2-3 hrs</span>
+                    <div class="stat-label">Reduced to 10-15 min</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">Real-time</span>
+                    <div class="stat-label">Leadership Metrics</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">95%</span>
+                    <div class="stat-label">Error Reduction</div>
+                </div>
+            </div>
+
+            <div class="solution-highlight">
+                <strong>It's not just about saving time.</strong> It's about enabling better decisions by making data accessible when you need it. Validation catches 4:30 PM Friday mistakes. Real-time metrics mean leadership doesn't wait until Tuesday for answers. And you surface hidden growth patterns you never would have spotted manually.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">
+                <span class="section-icon">🔮</span>
+                What's Next
+            </h2>
+
+            <h3>Short Term</h3>
+            <ul>
+                <li>Custom metric builder (let users define their own KPIs)</li>
+                <li>Scheduled reports (daily/weekly/monthly summaries)</li>
+                <li>Multi-currency support for global operations</li>
+            </ul>
+
+            <h3>Long Term</h3>
+            <ul>
+                <li>SQL backend for history + bigger files</li>
+                <li>Team workspaces with annotations</li>
+                <li>Predictive analytics (forecast growth based on trends)</li>
+            </ul>
+
+            <div class="quote">
+                "The best tools are built by people who've felt the pain firsthand."
+            </div>
+        </div>
+
+        <div class="cta">
+            <h3>Try It Yourself</h3>
+            <p>Curious about the full technical details and live demos?</p>
+            <a href="../project-finops-suite.html" class="demo-button">View Full Project Details →</a>
+            <p style="margin-top: 1.5rem; font-size: 0.9rem;">
+                📧 Email: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e6878b9f8494879fd6d5d7d3a6818b878f8ac885898b">[email&#160;protected]</a><br>
+                💼 LinkedIn: <a href="https://linkedin.com/in/amybrayphr" style="color: white;">linkedin.com/in/amybrayphr</a>
+            </p>
+            <p style="margin-top: 1rem; font-size: 0.85rem; opacity: 0.8;">
+                <strong>Note:</strong> This suite is a portfolio demonstration built from real operations experience. Demo data only; no production PII.
+            </p>
+        </div>
     </div>
-  </header>
 
-  <main class="container">
-    <div class="badge">Status: <strong>Beta</strong> <span style="opacity:.7">(demo dataset)</span></div>
-    <h1>Building the Financial Operations Suite I Wished I Had</h1>
-    <p class="meta">Amy Bray • October 27, 2025 • ~9 min read</p>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        // Theme toggle functionality
+        function toggleTheme() {
+            const html = document.documentElement;
+            const button = document.querySelector('.theme-toggle');
+            const currentTheme = html.getAttribute('data-theme');
+            
+            if (currentTheme === 'dark') {
+                html.removeAttribute('data-theme');
+                button.innerHTML = '🌙 Dark Mode';
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                button.innerHTML = '☀️ Light Mode';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
 
-    <div class="highlight-box">
-      <p><strong>TL;DR:</strong> After managing $80M+ in payroll ops and losing too many evenings to Excel archaeology, I built the pragmatic, <em>beta</em> suite I always wanted: <strong>Data Pipeline Pro</strong> (clean vendor files) and <strong>GSV Tracker Pro</strong> (instant MoM/QoQ/YoY). It’s production‑shaped, demo‑data powered, and honest about the messy parts.</p>
-    </div>
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme');
+        const button = document.querySelector('.theme-toggle');
+        
+        if (savedTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            button.innerHTML = '☀️ Light Mode';
+        } else {
+            button.innerHTML = '🌙 Dark Mode';
+        }
 
-    <!-- Real story intro -->
-    <section aria-label="Why I built it (the real version)">
-      <h2>Why I Built It (the real version)</h2>
-      <p>I love structure, but my Tuesdays did not. The work was important—people’s paychecks depended on it—but the <em>way</em> we did the work felt brittle. Fifteen report formats. A dozen small judgement calls. Late‑day math when your brain wants tea and a walk.</p>
-      <p>The night I found a 27% YoY trend after three hours of pivots, I felt equal parts proud and annoyed. Proud because: cool insight. Annoyed because: why was it so hard to see what was already there? That was the moment I decided I didn’t want to be the hero with a spreadsheet cape anymore. I wanted the system to be the hero.</p>
-    </section>
-
-    <nav class="toc" aria-label="Table of contents">
-      <strong>Jump to:</strong>
-      <ul>
-        <li><a href="#problem">The Problem</a></li>
-        <li><a href="#aha">The Aha</a></li>
-        <li><a href="#what-i-built">What I Built</a></li>
-        <li><a href="#stack">The Tech Stack</a></li>
-        <li><a href="#design">Key Design Decisions</a></li>
-        <li><a href="#impact">The Impact</a></li>
-        <li><a href="#next">What’s Next</a></li>
-      </ul>
-    </nav>
-
-    <h2 id="problem">The Problem: Death by Excel</h2>
-    <p>Typical Tuesday in ops: download vendor report → reformat 15 columns → find a duplicate → recalc totals → export to billing → repeat next week. Multiply by a dozen vendors and a few years. You get the picture.</p>
-    <blockquote>“What’s our month‑over‑month growth by department?” — “Give me 30 minutes and a pivot table…”</blockquote>
-    <p>The data was <em>there</em>, but getting insights felt like archaeology.</p>
-
-    <h2 id="aha">The “Aha” Moment</h2>
-    <p>Finding a <strong>27% YoY growth</strong> signal after a three‑hour analysis was the last straw. That should’ve been a 30‑second check, not a quarterly project. So I built the tools I wanted: tiny, opinionated, and tuned for ops reality.</p>
-
-    <h2 id="what-i-built">What I Built: Two Tools, One Goal</h2>
-    <div class="stats-grid">
-      <div class="stat-card"><div class="stat-number">2</div><div class="stat-label">Integrated Tools</div></div>
-      <div class="stat-card"><div class="stat-number">$80M+</div><div class="stat-label">Ops Experience</div></div>
-      <div class="stat-card"><div class="stat-number">Hours→Min</div><div class="stat-label">Time Savings</div></div>
-    </div>
-
-    <h3>🔄 Data Pipeline Pro</h3>
-    <p><strong>Solves:</strong> 15 vendor formats into one billing‑ready output.</p>
-    <ul>
-      <li><strong>Ingests:</strong> Excel/CSV, multiple sheets</li>
-      <li><strong>Validates:</strong> duplicates, missing fields, totals drift</li>
-      <li><strong>Transforms:</strong> column mapping, derived fields, standard types</li>
-      <li><strong>Exports:</strong> billing, payments, exec rollups</li>
-    </ul>
-
-    <h3>📊 GSV Tracker Pro</h3>
-    <p><strong>Solves:</strong> instant answers to “How’s growth?” without rebuilding pivot tables.</p>
-    <ul>
-      <li>MoM/QoQ/YoY in one view</li>
-      <li>Department performance at a glance</li>
-      <li>Trend detection for spikes/dips</li>
-      <li>Interactive charts (Plotly) that drop straight into decks</li>
-    </ul>
-
-    <h2 id="stack">The Tech Stack (and Why)</h2>
-    <div class="tech-stack">
-      <span class="tech-badge">Python 3.11</span>
-      <span class="tech-badge">Streamlit</span>
-      <span class="tech-badge">Pandas</span>
-      <span class="tech-badge">NumPy</span>
-      <span class="tech-badge">Plotly</span>
-      <span class="tech-badge">OpenPyXL</span>
-    </div>
-    <p><strong>Python + Pandas:</strong> fast to iterate, strong for gnarly transformations.</p>
-    <p><strong>Streamlit:</strong> demo‑ready UI without yak‑shaving a front‑end.</p>
-    <p><strong>Plotly:</strong> interactive visuals managers actually understand.</p>
-
-    <h2 id="design">Key Design Decisions</h2>
-    <p class="meta">(a.k.a. lessons I wish I’d learned sooner)</p>
-    <h3>1) Real‑time, not batch</h3>
-    <p>Upload → process → see results. No job queues, no waiting.</p>
-    <h3>2) Validation first</h3>
-    <p>“Bad data in = bad insights out.” Checks for nulls, dups, missing columns, and rate/hour outliers.</p>
-    <h3>3) Dark mode is a requirement</h3>
-    <p>Finance folks (hi, it’s me) work late. A persisted toggle keeps eyes happy.</p>
-    <h3>4) Export everything</h3>
-    <p>If Finance can’t download it, it doesn’t exist. Every view can export.</p>
-
-    <!-- The messy middle -->
-    <section aria-label="The messy middle">
-      <h2>The Messy Middle</h2>
-      <ul>
-        <li><strong>My first parser was too clever.</strong> It handled 12 edge cases and broke on the 13th. Simpler rules with clear errors won.</li>
-        <li><strong>I underestimated dates.</strong> Week ending vs. pay period vs. service dates—humans improvise; code shouldn’t. I added strict validation + friendly messages.</li>
-        <li><strong>I over‑designed the charts.</strong> Managers wanted three numbers and a line. I kept the pretty stuff, but defaulted to fast and obvious.</li>
-      </ul>
-    </section>
-
-    <!-- Tiny delights -->
-    <section aria-label="Tiny delights">
-      <h2>Tiny Delights</h2>
-      <ul>
-        <li>That little <em>“Errors (3)”</em> badge next to the upload? Instant trust.</li>
-        <li>Dark mode at 9:37 PM. Necessary. Humane.</li>
-        <li>Export buttons everywhere. Because if Finance can’t download it, it doesn’t exist.</li>
-      </ul>
-    </section>
-
-    <h2 id="impact">The Impact</h2>
-    <div class="highlight-box">
-      <p><strong>⏱️ Time:</strong> 2–3 hrs → 10–15 mins • <strong>📊 Decisions:</strong> real‑time metrics • <strong>✅ Errors:</strong> validation catches 4:30‑PM mistakes • <strong>💡 Insights:</strong> surfaced hidden YoY growth (e.g., 27%).</p>
-    </div>
-    <p>It’s not just speed—it’s trust. You can make decisions because the data pipeline is predictable and visible.</p>
-
-    <h2 id="next">What’s Next</h2>
-    <ul>
-      <li>Custom metric builder (pick your own KPIs)</li>
-      <li>Scheduled reports (daily/weekly/monthly)</li>
-      <li>Multi‑currency support</li>
-      <li>SQL backend for history + bigger files</li>
-      <li>Team workspaces with annotations</li>
-    </ul>
-
-    <h2>Try It</h2>
-    <div style="text-align:center;margin:2rem 0 2.5rem">
-      <a href="../project-finops-suite.html" class="cta-button">View Full Project Details →</a>
-    </div>
-
-    <hr />
-
-    <section aria-label="Contact">
-      <h2>Questions? Let’s Talk</h2>
-      <p>Messy vendor files? Need a faster pipeline? Or just want to nerd out about ops + Python?</p>
-      <p>📧 <strong>Email:</strong> amybray0315@gmail.com<br />
-         💼 <strong>LinkedIn:</strong> linkedin.com/in/amybrayphr
-      </p>
-      <p class="footer-note"><strong>Note:</strong> Portfolio demonstration. Demo data only; no production PII.</p>
-    </section>
-
-    <hr />
-
-    <nav class="end-nav" aria-label="More posts">
-      <a href="../project-finops-suite.html">← Project page</a>
-      <a href="../blog/index.html">Blog index →</a>
-    </nav>
-  </main>
-
-  <script>
-    const themeToggle = document.getElementById('themeToggle');
-    const themeIcon = document.getElementById('themeIcon');
-    const html = document.documentElement;
-    const currentTheme = localStorage.getItem('theme') || 'light';
-    html.setAttribute('data-theme', currentTheme);
-    themeIcon.textContent = currentTheme === 'light' ? '🌙' : '☀️';
-    themeToggle.addEventListener('click', () => {
-      const current = html.getAttribute('data-theme');
-      const next = current === 'light' ? 'dark' : 'light';
-      html.setAttribute('data-theme', next);
-      localStorage.setItem('theme', next);
-      themeIcon.textContent = next === 'light' ? '🌙' : '☀️';
-    });
-  </script>
+        // Smooth scroll
+        document.documentElement.style.scrollBehavior = 'smooth';
+    </script>
 </body>
 </html>
-
