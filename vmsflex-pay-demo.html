@@ -292,27 +292,6 @@
             font-size: 0.9em;
         }
         
-        .obbba-highlight {
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-            border: 2px solid #f59e0b;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-        .obbba-highlight h3 {
-            color: #92400e;
-            margin-bottom: 10px;
-        }
-        .obbba-badge {
-            background: #f59e0b;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 0.75em;
-            font-weight: 600;
-            margin-left: 10px;
-        }
-        
         @media (max-width: 768px) {
             .mapper-container {
                 grid-template-columns: 1fr;
@@ -330,7 +309,7 @@
     <div class="container">
         <header>
             <h1>VMSFlex Pay</h1>
-            <p>Multi-VMS Payroll Calculator with 50-State Compliance & OBBBA Tax Tracking</p>
+            <p>Multi-VMS Payroll Calculator with 50-State Compliance</p>
             <div class="demo-badge">✨ Enhanced Demo - Now with PDF Support!</div>
         </header>
 
@@ -349,18 +328,8 @@
                 <h2>Overtime Rules Engine</h2>
                 <div class="alert alert-info">
                     <strong>📊 All 50 States Supported:</strong> This system includes overtime rules for all U.S. states, including special provisions for daily OT (CA, AK, CO, NV) and unique thresholds (KS 46hrs, MN 48hrs).
-                </div>
-                <div class="obbba-highlight">
-                    <h3>🇺🇸 OBBBA Compliance (2025)<span class="obbba-badge">NEW</span></h3>
-                    <p><strong>One Big Beautiful Bill Act:</strong> New federal law allows workers to deduct FLSA-mandated overtime premium from their taxable income at year-end. This tool tracks which overtime qualifies:</p>
-                    <ul style="margin: 10px 0 10px 20px; line-height: 1.8;">
-                        <li><strong>FLSA-Qualifying OT:</strong> Hours worked over 40/week (federal threshold) - Premium is tax deductible up to $12,500/$25,000</li>
-                        <li><strong>Non-Qualifying OT:</strong> State daily OT that doesn't exceed 40 hrs/week (e.g., CA employee works 10hrs Mon, 6hrs Tue-Thu = 34hrs total) - NOT tax deductible</li>
-                    </ul>
-                    <p style="margin-top: 10px; font-size: 0.9em; color: #92400e;"><strong>Important:</strong> Overtime is still subject to normal withholding during payroll. The deduction is claimed on the employee's tax return. Employers must report the qualified premium separately on W-2 Box 14. PTO/Sick time is excluded from OT calculations but included in gross pay.</p>
-                </div>
             </div>
-
+		</div>
             <div class="section">
                 <h2>Employee Management</h2>
                 <div class="form-group">
@@ -585,7 +554,7 @@
             <div class="section">
                 <h2>Calculate Payroll</h2>
                 <div class="alert alert-info">
-                    Calculates <strong>Total Gross Pay</strong> with separate tracking of FLSA-qualifying overtime for OBBBA tax reporting.
+                    Calculates <strong>Total Gross Pay</strong> based on state-specific overtime rules.
                 </div>
                 <div class="form-group">
                     <label>Pay Period Start</label>
@@ -606,21 +575,9 @@
                 <h2>Payroll Results</h2>
                 <div class="stats" id="resultStats"></div>
 
-                <div class="obbba-highlight" id="obbbaSummary" style="display: none;">
-                    <h3>🇺🇸 OBBBA Tax Summary (2025)</h3>
-                    <p><strong>Total FLSA-Qualifying Premium Pay:</strong> <span id="totalFlsaOT">$0.00</span></p>
-                    <p style="font-size: 0.9em; margin-top: 10px; line-height: 1.6;">
-                        <strong>What this represents:</strong> The 0.5x premium portion of overtime hours worked beyond 40/week (FLSA threshold). This overtime was subject to normal tax withholding during payroll.<br>
-                        <strong>W-2 Reporting:</strong> Report this amount separately in Box 14 as "FLSA OT Premium" so employees can claim the deduction on their tax return.<br>
-                        <strong>Employee Tax Benefit:</strong> Workers can deduct this from taxable income (up to $12,500 individual / $25,000 joint filing) when filing their Form 1040.<br>
-                        <strong>Note:</strong> This is a year-end tax deduction, not a payroll withholding exemption. Employees who want less tax withheld during the year must file a new W-4.
-                    </p>
-                </div>
-
                 <div style="margin: 20px 0;">
                     <button class="btn btn-success" id="exportBtn">Export Summary CSV</button>
                     <button class="btn btn-success" id="exportDetailBtn">Export Detailed CSV</button>
-                    <button class="btn btn-warning" id="exportObbbaBtn">Export OBBBA Report</button>
                 </div>
 
                 <table id="resultsTable">
@@ -1887,5 +1844,4 @@
         document.getElementById('periodEnd').valueAsDate = today;
     </script>
 </body>
-
 </html>
