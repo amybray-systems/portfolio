@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About — Amy Bray</title>
-    <meta name="description" content="Learn about Amy Bray's background in HR technology, AI solutions, and global workforce programs.">
+    <meta name="description" content="13 years building the operational backbone for contingent workforce programs at scale. EOR platforms, VMS systems, and multi-vendor coordination expertise.">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        /* Professional Design System - Same as other pages */
+        /* Professional Design System - Same as index.html */
         :root {
             --radius: 16px;
             --radius-large: 24px;
@@ -115,8 +115,11 @@
             line-height: 1.2;
         }
         h3 { 
-            font-size: 1.25rem; 
+            font-size: 1.5rem; 
             line-height: 1.3;
+        }
+        h4 {
+            font-size: 1.125rem;
         }
 
         p {
@@ -134,137 +137,55 @@
             color: var(--accent-secondary);
         }
 
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
         /* Layout */
         .container {
+            width: 100%;
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 24px;
         }
 
-        .section {
-            padding: 80px 0;
-            position: relative;
-            z-index: 2;
-        }
-		
-			/* Add this rule right after */
-		.hero + .section {
-			padding-top: 24px;
-		}
-
-        /* Background System */
-        body {
-            position: relative;
-            overflow-x: hidden;
+        .content-container {
+            max-width: 800px;
+            margin: 0 auto;
         }
 
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 1;
-            opacity: 0.4;
-            background-image: 
-                radial-gradient(circle at 1px 1px, var(--border) 1px, transparent 0);
-            background-size: 24px 24px;
-            mix-blend-mode: multiply;
-        }
-
-        :root[data-theme="dark"] body::before {
-            mix-blend-mode: overlay;
-            opacity: 0.2;
-        }
-
-        .bg-canvas {
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
-            background: var(--bg-primary);
-        }
-
-        :root[data-theme="light"] .bg-canvas {
-            background: 
-                radial-gradient(800px circle at 85% 15%, rgba(79, 70, 229, 0.08) 0%, transparent 50%),
-                radial-gradient(600px circle at 15% 85%, rgba(6, 182, 212, 0.06) 0%, transparent 50%),
-                linear-gradient(135deg, #fafbff 0%, #f1f5f9 50%, #e2e8f0 100%);
-        }
-
-        :root[data-theme="dark"] .bg-canvas {
-            background: 
-                radial-gradient(800px circle at 85% 15%, rgba(99, 102, 241, 0.12) 0%, transparent 50%),
-                radial-gradient(600px circle at 15% 85%, rgba(34, 211, 238, 0.08) 0%, transparent 50%),
-                linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
-        }
-
-        .accent-blob {
-            position: fixed;
-            pointer-events: none;
-            z-index: 0;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.6;
-            animation: floatGentle 20s ease-in-out infinite;
-        }
-
-        .blob-1 {
-            width: 400px;
-            height: 400px;
-            background: var(--accent-gradient);
-            top: -200px;
-            right: -200px;
-            animation-delay: 0s;
-        }
-
-        .blob-2 {
-            width: 300px;
-            height: 300px;
-            background: var(--accent-gradient-alt);
-            bottom: -150px;
-            left: -150px;
-            animation-delay: 10s;
-        }
-
-        @keyframes floatGentle {
-            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.4; }
-            33% { transform: translate(30px, -20px) scale(1.1); opacity: 0.6; }
-            66% { transform: translate(-20px, 30px) scale(0.9); opacity: 0.5; }
-        }
-
-        /* Header */
+        /* Navigation - Same as index */
         .site-header {
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
+            background: var(--surface);
             border-bottom: 1px solid var(--border);
-            transition: all 0.3s ease;
-        }
-
-        :root[data-theme="dark"] .site-header {
-            background: rgba(30, 41, 59, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
         }
 
         .header-content {
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            padding: 16px 0;
-            position: relative;
-            z-index: 2;
+            align-items: center;
+            height: 72px;
         }
 
-        .brand {
-            font-size: 1.5rem;
-            font-weight: 700;
+        .logo-link {
+            font-size: 1.125rem;
+            font-weight: 600;
             color: var(--text-primary);
-            text-decoration: none;
-            letter-spacing: -0.02em;
+            transition: color 0.2s ease;
         }
 
-        .nav-actions {
+        .logo-link:hover {
+            color: var(--accent-primary);
+        }
+
+        .site-nav {
             display: flex;
             align-items: center;
             gap: 8px;
@@ -272,293 +193,246 @@
 
         .nav-btn {
             padding: 8px 16px;
-            border-radius: 8px;
-            font-weight: 500;
-            font-size: 0.95rem;
+            border: none;
+            background: transparent;
             color: var(--text-secondary);
+            font-size: 0.9375rem;
+            font-weight: 500;
+            border-radius: var(--radius);
+            cursor: pointer;
             transition: all 0.2s ease;
-            border: 1px solid transparent;
         }
 
         .nav-btn:hover {
+            background: var(--surface-hover);
             color: var(--text-primary);
-            background: var(--surface);
-            border-color: var(--border);
-            transform: translateY(-1px);
         }
 
         .nav-btn.active {
-            color: var(--accent-primary);
-            background: var(--surface);
-            border-color: var(--border);
-            font-weight: 600;
+            background: var(--accent-primary);
+            color: var(--text-inverse);
         }
 
         .theme-toggle {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 8px;
+            padding: 8px 12px;
+            border: none;
+            background: transparent;
+            font-size: 1.25rem;
             cursor: pointer;
-            font-size: 1.2rem;
+            border-radius: var(--radius);
             transition: all 0.2s ease;
-            margin-left: 8px;
-            color: var(--text-primary);
         }
 
         .theme-toggle:hover {
-            border-color: var(--border-hover);
-            transform: translateY(-1px);
+            background: var(--surface-hover);
         }
 
-        /* Hero Section */
-        .hero {
-            padding: 80px 0 120px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .hero-content {
-            max-width: 800px;
+        /* About Hero */
+        .about-hero {
             text-align: center;
-            margin: 0 auto;
+            padding: 80px 0 60px;
         }
 
-        .hero-badge {
-            display: inline-block;
-            margin-bottom: 24px;
-        }
-
-        .badge-text {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 999px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-        }
-
-        .hero h1 {
-            margin-bottom: 24px;
+        .about-hero h1 {
+            margin-bottom: 16px;
             background: var(--accent-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
-        .hero-subtitle {
+        .tagline {
             font-size: 1.25rem;
             color: var(--text-secondary);
-            margin-bottom: 40px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            line-height: 1.6;
+            max-width: 700px;
+            margin: 0 auto;
         }
 
-        /* About Content Styles */
-        .about-grid {
-            display: grid;
-            gap: 60px;
-            grid-template-columns: 1fr 1fr;
-            align-items: start;
+        /* About Sections */
+        .about-section {
+            padding: 60px 0;
         }
 
-        .about-text {
-            font-size: 1.125rem;
+        .about-section h2 {
+            margin-bottom: 32px;
+            color: var(--text-primary);
+        }
+
+        .about-section p {
+            font-size: 1.0625rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        .about-section p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Experience Items */
+        .experience-item {
+            margin-bottom: 48px;
+            padding: 32px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-large);
+        }
+
+        .experience-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .experience-item h3 {
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .dates {
+            color: var(--text-tertiary);
+            font-size: 0.9375rem;
+            margin-bottom: 20px;
+        }
+
+        .experience-item ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .experience-item li {
+            padding-left: 24px;
+            position: relative;
+            margin-bottom: 12px;
+            color: var(--text-secondary);
             line-height: 1.7;
         }
 
-        .about-text p {
-            margin-bottom: 1.5rem;
-        }
-
-        .skills-section {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 32px;
-        }
-
-        .skills-grid {
-            display: grid;
-            gap: 32px;
-            grid-template-columns: 1fr 1fr;
-        }
-
-        .skill-category h4 {
-            color: var(--text-primary);
-            margin-bottom: 16px;
-            font-size: 1.1rem;
-        }
-
-        .skills-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .skill-item {
-            padding: 8px 12px;
-            background: var(--surface-hover);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            transition: all 0.2s ease;
-        }
-
-        .skill-item:hover {
-            background: var(--accent-gradient);
-            color: var(--text-inverse);
-            border-color: transparent;
-        }
-
-        .experience-timeline {
-            position: relative;
-            padding-left: 2rem;
-        }
-
-        .experience-timeline::before {
-            content: "";
+        .experience-item li:before {
+            content: "•";
             position: absolute;
-            left: 0.5rem;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: var(--accent-gradient);
-        }
-
-        .experience-item {
-            position: relative;
-            margin-bottom: 2rem;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 24px;
-            margin-left: 1rem;
-        }
-
-        .experience-item::before {
-            content: "";
-            position: absolute;
-            left: -1.75rem;
-            top: 1.5rem;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: var(--accent-gradient);
-            border: 2px solid var(--surface);
-        }
-
-        .experience-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .experience-title {
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .experience-date {
-            color: var(--text-tertiary);
-            font-size: 0.9rem;
-        }
-
-        .experience-company {
+            left: 0;
             color: var(--accent-primary);
-            font-weight: 500;
-            margin-bottom: 12px;
+            font-weight: bold;
+            font-size: 1.2rem;
         }
 
-        .principles-grid {
+        /* Expertise Areas */
+        .expertise-areas {
             display: grid;
             gap: 24px;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         }
 
-        .principle {
+        .area {
+            padding: 24px;
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 24px;
-            transition: all 0.3s ease;
         }
 
-        .principle:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-medium);
-            border-color: var(--border-hover);
-        }
-
-        .principle h4 {
-            color: var(--text-primary);
+        .area h4 {
+            color: var(--accent-primary);
             margin-bottom: 12px;
+        }
+
+        .area p {
+            font-size: 0.9375rem;
+            line-height: 1.6;
+        }
+
+        /* Building Section */
+        .building-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .building-list li {
+            padding-left: 24px;
+            position: relative;
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .building-list li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--accent-primary);
+            font-weight: bold;
+        }
+
+        .building-list strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* Current Section - Highlight Box */
+        .current-box {
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent-primary);
+            border-radius: var(--radius);
+            padding: 32px;
+            margin-bottom: 32px;
+        }
+
+        .current-box p {
+            margin-bottom: 16px;
+        }
+
+        .current-box ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .current-box li {
+            padding-left: 24px;
+            position: relative;
+            margin-bottom: 10px;
+            color: var(--text-secondary);
+        }
+
+        .current-box li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        /* Contact Section */
+        .contact-links {
             display: flex;
-            align-items: center;
-            gap: 8px;
+            gap: 24px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 24px;
         }
 
-        .principle p {
-            color: var(--text-tertiary);
-            font-size: 0.95rem;
-        }
-
-        .cta-button {
+        .contact-link {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 16px 32px;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            border: 1px solid transparent;
+            padding: 12px 24px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-weight: 500;
+            transition: all 0.2s ease;
         }
 
-        .cta-button.primary {
-            background: var(--accent-gradient);
-            color: var(--text-inverse);
-            box-shadow: var(--shadow-medium);
-        }
-
-        .cta-button.primary:hover {
+        .contact-link:hover {
+            border-color: var(--border-hover);
             transform: translateY(-2px);
-            box-shadow: 0 16px 48px rgba(79, 70, 229, 0.3);
-            color: var(--text-inverse);
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-
-        .section-subtitle {
-            font-size: 1.125rem;
-            color: var(--text-secondary);
-            margin-top: 16px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+            box-shadow: var(--shadow-soft);
         }
 
         /* Footer */
         .site-footer {
             background: var(--surface);
             border-top: 1px solid var(--border);
-            padding: 60px 0 40px;
-            position: relative;
-            z-index: 2;
+            padding: 40px 0;
+            margin-top: 80px;
         }
 
         .footer-content {
@@ -567,117 +441,42 @@
 
         .footer-text {
             color: var(--text-tertiary);
-            font-size: 0.9rem;
+            font-size: 0.9375rem;
         }
 
         /* Responsive */
-        @media (max-width: 1024px) {
-            .about-grid {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-
-            .skills-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .principles-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
         @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 16px;
-                padding: 20px 0;
+            .about-hero {
+                padding: 60px 0 40px;
             }
 
-            .nav-actions {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            .hero {
-                padding: 60px 0 80px;
-            }
-
-            .hero-subtitle {
-                font-size: 1.1rem;
-            }
-
-            .section {
-                padding: 60px 0;
-            }
-
-            .container {
-                padding: 0 16px;
-            }
-
-            .experience-timeline {
-                padding-left: 0;
-            }
-
-            .experience-timeline::before {
-                display: none;
+            .about-section {
+                padding: 40px 0;
             }
 
             .experience-item {
-                margin-left: 0;
+                padding: 24px;
             }
 
-            .experience-item::before {
-                display: none;
+            .expertise-areas {
+                grid-template-columns: 1fr;
             }
-        }
-
-        /* Accessibility */
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-            
-            .accent-blob {
-                animation: none;
-            }
-        }
-
-        .nav-btn:focus-visible,
-        .theme-toggle:focus-visible,
-        .cta-button:focus-visible {
-            outline: 2px solid var(--accent-primary);
-            outline-offset: 2px;
         }
     </style>
 </head>
 <body>
-    <!-- Professional background system -->
-    <div class="bg-canvas" aria-hidden="true"></div>
-    <div class="accent-blob blob-1" aria-hidden="true"></div>
-    <div class="accent-blob blob-2" aria-hidden="true"></div>
-
     <!-- Header -->
     <header class="site-header">
         <div class="container">
             <div class="header-content">
-                <a class="brand" href="index.html">Amy Bray</a>
-                
-                <nav class="nav-actions">
-                    <a class="nav-btn" href="index.html">Home</a>
-                    <a class="nav-btn" href="projects.html">Projects</a>
-                    <a class="nav-btn active" href="about.html">About</a>
-					<a href="blog/index.html" target="_blank">Blog</a>
-                    <a class="nav-btn" href="contact.html">Contact</a>
-                    <button
-                        id="theme-toggle"
-                        class="theme-toggle"
-                        aria-label="Toggle between light and dark themes"
-                        title="Toggle theme"
-                    >
-                        🌙
-                    </button>
+                <a href="index.html" class="logo-link">Amy Bray</a>
+                <nav class="site-nav">
+                    <a href="index.html" class="nav-btn">Home</a>
+                    <a href="projects.html" class="nav-btn">Projects</a>
+                    <a href="about.html" class="nav-btn active">About</a>
+                    <a href="blog.html" class="nav-btn">Blog</a>
+                    <a href="contact.html" class="nav-btn">Contact</a>
+                    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">🌙</button>
                 </nav>
             </div>
         </div>
@@ -685,174 +484,143 @@
 
     <!-- Main Content -->
     <main>
-        <!-- Hero Section -->
-        <section class="hero">
+        <!-- Hero -->
+        <section class="about-hero">
             <div class="container">
-                <div class="hero-content">
-                    <div class="hero-badge">
-                        <span class="badge-text">👋 Nice to meet you</span>
-                    </div>
-                    <h1>Building technology that works for people</h1>
-                    <p class="hero-subtitle">
-                        I'm Amy Bray, an HR technology specialist who believes the best systems are the ones that make work more human, not less. Every solution I build starts with understanding real user needs.
-                    </p>
+                <h1>About Amy</h1>
+                <p class="tagline">13 years building the operational backbone for contingent workforce programs at scale</p>
+            </div>
+        </section>
+
+        <!-- My Background -->
+        <section class="about-section">
+            <div class="content-container">
+                <h2>My Background</h2>
+                <p>
+                    I've spent my career in the trenches of contingent workforce operations—the complex world of EOR platforms, VMS systems, multi-vendor payroll coordination, and compliance across 70+ jurisdictions—responsibilities not common among traditional HR.
+                </p>
+                <p>
+                    I didn't start out as a "builder." I started as the person trying to make impossible systems work together. After years of duct-taping spreadsheets, writing the same documentation over and over, and manually reconciling payroll across multiple vendors, I realized: I could build better tools myself.
+                </p>
+                <p>
+                    So I did. This portfolio showcases those tools—solutions to real problems I've lived.
+                </p>
+            </div>
+        </section>
+
+        <!-- Professional Experience -->
+        <section class="about-section">
+            <div class="content-container">
+                <h2>Professional Experience</h2>
+                
+                
+                <div class="experience-item">
+                    <h3>The Mom Project | Manager, Talent Engagement & Customer Operations</h3>
+                    <p class="dates">January 2022 – March 2025</p>
+                    <ul>
+                        <li>Implemented and administered Bullhorn ATS, achieving Super Admin certification through self-directed learning</li>
+                        <li>Led 3 platform migrations (Google Sheets → Smartsheet → Zendesk → Bullhorn), reducing manual work by 40%</li>
+                        <li>Coordinated operations across 4 EOR relationships (Cognos, Magnit, MomPay, Workspend) and multiple VMS systems (including Beeline, Fieldglass, VNDLY)</li>
+                        <li>Supported 500-800 active contractors concurrently across 20+ enterprise clients</li>
+                        <li>Initiated Salesforce integration project to consolidate talent data across platforms</li>
+                    </ul>
+                </div>
+                
+                <div class="experience-item">
+                    <h3>Velocity Global (now Pebl) | Payroll Operations Specialist</h3>
+                    <p class="dates">October 2021 – January 2022</p>
+                    <ul>
+                        <li>Led post-acquisition payroll system integration for 800+ multi-state employees with zero missed pay cycles</li>
+                        <li>Established first in-house US payroll operations following company's acquisition of iWorkGlobal</li>
+                        <li>Coordinated with Finance, HR, and IT teams on data migration, tax mapping, and system configuration</li>
+                    </ul>
+                </div>
+                
+                <div class="experience-item">
+                    <h3>Upwork | Sr. Payroll Program Specialist (Upwork Payroll Program Manager)</h3>
+                    <p class="dates">August 2012 – October 2021 (9+ years)</p>
+                    <ul>
+                        <li>Scaled W-2 contractor program from 100 to 1,000+ workers across all 50 states and 20+ countries over 9 years</li>
+                        <li>Managed multi-vendor EOR operations across 70+ jurisdictions</li>
+                        <li>Served as technical SME for EOR platform integration, partnering with engineering team on system design</li>
+                        <li>Built invoice tracking system with automated forecasting achieving 0.11% variance</li>
+                        <li>Program became operational foundation for Upwork's Lifted enterprise staffing service</li>
+                        <li>Led UAT for system updates, authored test scripts, coordinated QA testing cycles</li>
+                    </ul>
                 </div>
             </div>
         </section>
 
-        <!-- All Content in ONE section wrapper - NO huge gaps -->
-        <section class="section">
-            <div class="container">
-                <!-- About Content -->
-                <div class="about-grid" style="margin-bottom: 60px;">
-                    <div class="about-text">
-                        <h2 style="color: var(--text-primary); margin-bottom: 24px;">My Story</h2>
-                        <p>My journey into HR technology started with a simple observation: most workplace systems feel like they were designed for robots, not humans. After years of watching talented people struggle with clunky interfaces and inefficient processes, I decided to do something about it.</p>
-                        
-                        <p>Today, I specialize in building HR technology solutions that actually solve real problems. Whether it's an AI assistant that handles routine questions, a data integration that eliminates manual entry, or analytics that reveal hidden insights, my focus is always on creating systems that make people's work lives better.</p>
-                        
-                        <p>I believe the best technology is invisible – it just works, seamlessly supporting people so they can focus on what matters most. That's the standard I hold myself to with every project.</p>
-                        
-                        <div style="margin-top: 32px;">
-                            <a href="contact.html" class="cta-button primary">
-                                <span>Let's Work Together</span>
-                                <span>→</span>
-                            </a>
-                        </div>
+        <!-- What I Specialize In -->
+        <section class="about-section">
+            <div class="content-container">
+                <h2>What I Specialize In</h2>
+                <div class="expertise-areas">
+                    <div class="area">
+                        <h4>Contingent Workforce Operations</h4>
+                        <p>Scaling contractor programs from 100 to 1,000+ workers, managing multi-vendor EOR coordination, ensuring compliance across complex jurisdictions</p>
                     </div>
-
-                    <div class="skills-section">
-                        <h3 style="color: var(--text-primary); margin-bottom: 24px;">What I Bring</h3>
-                        <div class="skills-grid">
-                            <div class="skill-category">
-                                <h4>Technical Skills</h4>
-                                <div class="skills-list">
-                                    <span class="skill-item">Python & Flask Development</span>
-                                    <span class="skill-item">JavaScript & React</span>
-                                    <span class="skill-item">SQL & Data Analysis</span>
-                                    <span class="skill-item">AI/ML Integration</span>
-                                    <span class="skill-item">API Design & Integration</span>
-                                    <span class="skill-item">Streamlit Applications</span>
-                                </div>
-                            </div>
-                            
-                            <div class="skill-category">
-                                <h4>HR Expertise</h4>
-                                <div class="skills-list">
-                                    <span class="skill-item">HRIS Implementation</span>
-                                    <span class="skill-item">Payroll Systems</span>
-                                    <span class="skill-item">Global Compliance</span>
-                                    <span class="skill-item">Employee Engagement</span>
-                                    <span class="skill-item">Process Automation</span>
-                                    <span class="skill-item">Data Privacy & Security</span>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="area">
+                        <h4>HRIS Implementation & Administration</h4>
+                        <p>Bullhorn (Super Admin), ADP, Salesforce (in progress), system migrations, workflow automation, data validation</p>
+                    </div>
+                    <div class="area">
+                        <h4>Multi-System Integration</h4>
+                        <p>Orchestrating EOR platforms, VMS systems, payroll tools, and HRIS to work seamlessly together—solving the "how do we make these talk to each other" problems</p>
                     </div>
                 </div>
+            </div>
+        </section>
 
-                <!-- Experience Timeline -->
-                <div style="margin-bottom: 60px;">
-                    <div class="section-header">
-<h2>Professional Journey</h2>
-<p class="section-subtitle">Key experiences that shaped my approach to HR technology</p>
-</div>
-<div class="experience-timeline">
-    <div class="experience-item">
-        <div class="experience-meta">
-            <span class="experience-title">Independent HR Technology Developer</span>
-            <span class="experience-date">2025 - Present</span>
-        </div>
-        <div class="experience-company">Independent</div>
-        <p>Building automation tools for HR operations, including VMSFlex Pay (multi-state payroll automation reducing processing time by 94%) and AuniConnect (AI-powered HR assistant). Creating solutions to problems encountered throughout my career in HR operations.</p>
-    </div>
-    
-    <div class="experience-item">
-        <div class="experience-meta">
-            <span class="experience-title">Manager, Customer Operations (Talent Engagement)</span>
-            <span class="experience-date">2022 - 2025</span>
-        </div>
-        <div class="experience-company">The Mom Project</div>
-        <p>Managed talent operations across 32 VMS platforms, processing multi-state compliance for contingent workforce. Navigated complex data formats, 50-state overtime rules, and integration challenges. This role revealed the critical gap between what HR systems promise and what operations teams actually need.</p>
-    </div>
-    
-    <div class="experience-item">
-        <div class="experience-meta">
-            <span class="experience-title">Payroll Migration Specialist</span>
-            <span class="experience-date">Oct 2021 - Jan 2022</span>
-        </div>
-        <div class="experience-company">Velocity Global</div>
-        <p>Led setup of Velocity Global's first US payroll, migrating from legacy provider to new platform with zero missed pay cycles. Mapped taxes, configurations, and payment methods while coordinating across operations and IT teams. Created comprehensive runbooks enabling seamless handoff to steady-state team.</p>
-    </div>
-    
-    <div class="experience-item">
-        <div class="experience-meta">
-            <span class="experience-title">Payroll Program Manager (Sr Payroll Specialist)</span>
-            <span class="experience-date">2012 - 2021</span>
-        </div>
-        <div class="experience-company">Upwork (formerly oDesk)</div>
-        <p>Mastered proprietary backend systems supporting global workforce payroll operations over 9 years. Managed payroll processing, compliance, and system implementations for a distributed workforce across multiple countries. Built foundation for understanding scalable HR technology and complex operational workflows.</p>
-    </div>
-</div>
+        <!-- Why I Build -->
+        <section class="about-section">
+            <div class="content-container">
+                <h2>Why I Build</h2>
+                <p>
+                    Every tool in this portfolio solves a problem I personally faced:
+                </p>
+                <ul class="building-list">
+                    <li><strong>AuniConnect chatbot:</strong> Because distributed workers kept escalating basic policy questions that could be answered instantly with the right routing system</li>
+                    <li><strong>Financial Operations Suite:</strong> Because vendor payroll exports were never in the format Finance needed, requiring hours of manual reformatting every pay cycle</li>
+                    <li><strong>ContingentAI:</strong> Because tracking FMLA/PFML leave for contractors across state lines was a compliance nightmare that most HRIS platforms completely ignore</li>
+                </ul>
+                <p>
+                    I'm not a theoretical builder—I build what I need, what my teams needed, what would have saved me hours of manual work.
+                </p>
+            </div>
+        </section>
+
+        <!-- What I'm Doing Now -->
+        <section class="about-section">
+            <div class="content-container">
+                <h2>What I'm Doing Now</h2>
+                <div class="current-box">
+                    <p>
+                        Pursuing Salesforce Administrator and Agentforce Specialist certifications to add AI-powered automation to contingent workforce operations.
+                    </p>
+                    <p><strong>I'm open to full-time roles and consulting projects in:</strong></p>
+                    <ul>
+                        <li>Contingent workforce systems implementation</li>
+                        <li>EOR platform coordination and vendor management</li>
+                        <li>Bullhorn ATS implementation and administration</li>
+                        <li>Multi-system integration and workflow automation</li>
+                        <li>HRIS implementation for staffing/recruiting firms</li>
+                    </ul>
                 </div>
+            </div>
+        </section>
 
-                <!-- Philosophy / Principles -->
-                <div style="margin-bottom: 60px;">
-                    <div class="section-header">
-                        <h2>My Approach</h2>
-                        <p class="section-subtitle">The principles that guide every project I work on</p>
-                    </div>
-
-                    <div class="principles-grid">
-                        <div class="principle">
-                            <h4>
-                                <span>🎯</span>
-                                User-Centered Design
-                            </h4>
-                            <p>Every solution starts with understanding the real people who will use it. I spend time with users to understand their pain points, workflows, and goals before writing a single line of code.</p>
-                        </div>
-
-                        <div class="principle">
-                            <h4>
-                                <span>🔒</span>
-                                Privacy by Design
-                            </h4>
-                            <p>With sensitive HR data, privacy isn't an afterthought – it's built into every system from day one. I implement robust security measures while keeping user experience seamless.</p>
-                        </div>
-
-                        <div class="principle">
-                            <h4>
-                                <span>⚡</span>
-                                Performance First
-                            </h4>
-                            <p>People's time is valuable. I build systems that are fast, reliable, and scale efficiently. No one should wait for technology – technology should adapt to people's pace.</p>
-                        </div>
-
-                        <div class="principle">
-                            <h4>
-                                <span>🔄</span>
-                                Continuous Improvement
-                            </h4>
-                            <p>The best systems evolve with their users. I build in feedback loops and analytics to continuously optimize performance and user satisfaction over time.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CTA Section -->
-                <div style="background: var(--surface); border-radius: var(--radius-large); padding: 80px 24px;">
-                    <div style="text-align: center; max-width: 600px; margin: 0 auto;">
-                        <h2 style="margin-bottom: 16px; color: var(--text-primary);">Ready to work together?</h2>
-                        <p style="margin-bottom: 32px; font-size: 1.1rem;">I'm always interested in challenging projects that make a real difference for people. Let's discuss how we can solve your HR technology challenges.</p>
-                        <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
-                            <a href="contact.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 16px 32px; background: var(--accent-gradient); color: var(--text-inverse); border-radius: 12px; font-weight: 600; font-size: 1.1rem; text-decoration: none; transition: all 0.3s ease; box-shadow: var(--shadow-medium);">
-                                <span>Get In Touch</span>
-                                <span>→</span>
-                            </a>
-                            <a href="projects.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 16px 32px; background: var(--surface); color: var(--text-primary); border: 1px solid var(--border); border-radius: 12px; font-weight: 600; font-size: 1.1rem; text-decoration: none; transition: all 0.3s ease;">
-                                <span>View My Work</span>
-                            </a>
-                        </div>
-                    </div>
+        <!-- Contact -->
+        <section class="about-section">
+            <div class="content-container">
+                <h2 style="text-align: center;">Let's Connect</h2>
+                <div class="contact-links">
+                    <a href="https://www.linkedin.com/in/amybrayphr/" target="_blank" class="contact-link">
+                        <span>LinkedIn</span>
+                    </a>
+                    <a href="contact.html" class="contact-link">
+                        <span>Contact Me</span>
+                    </a>
                 </div>
             </div>
         </section>
@@ -862,7 +630,7 @@
     <footer class="site-footer">
         <div class="container">
             <div class="footer-content">
-                <p class="footer-text">© <span id="current-year"></span> Amy Bray. Crafted with precision and purpose.</p>
+                <p class="footer-text">© <span id="current-year"></span> Amy Bray.</p>
             </div>
         </div>
     </footer>
@@ -924,8 +692,7 @@
                 const href = link.getAttribute('href');
                 link.classList.remove('active');
                 
-                if (href === currentPage || 
-                    (href === 'about.html' && currentPage === 'about.html')) {
+                if (href === currentPage || href.replace('.html', '') === currentPage.replace('.html', '')) {
                     link.classList.add('active');
                 }
             });
@@ -941,4 +708,3 @@
     </script>
 </body>
 </html>
-
