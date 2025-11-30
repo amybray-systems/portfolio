@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amy Bray — HR Technology & AI Solutions</title>
-    <meta name="description" content="People Ops & HRIS Solutions | AI + Engagement | Global Workforce Programs">
+    <title>Amy Bray — Contingent Workforce Systems Specialist</title>
+    <meta name="description" content="13 years building contingent workforce operations at scale. EOR platforms, VMS systems, multi-vendor coordination, and compliance frameworks.">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -89,55 +89,6 @@
             --error-bg: rgba(248, 113, 113, 0.1);
         }
 
-        /* Recent blog posts */
-        .section-blog .blog-grid {
-            display: grid;
-            gap: 24px;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        }
-
-        .blog-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 20px 22px;
-            box-shadow: var(--shadow-soft);
-            transition: all 0.25s ease;
-        }
-
-        .blog-card:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-medium);
-            border-color: var(--border-hover);
-        }
-
-        .blog-card h3 {
-            font-size: 1.1rem;
-            margin-bottom: 8px;
-            color: var(--text-primary);
-        }
-
-        .blog-card h3 a {
-            color: inherit;
-            text-decoration: none;
-        }
-
-        .blog-card h3 a:hover {
-            color: var(--accent-primary);
-        }
-
-        .blog-meta {
-            font-size: 0.85rem;
-            color: var(--text-tertiary);
-            margin-bottom: 10px;
-        }
-
-        .blog-excerpt {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            line-height: 1.6;
-        }
-
         /* Base Styles */
         * {
             box-sizing: border-box;
@@ -192,137 +143,50 @@
             color: var(--accent-secondary);
         }
 
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
         /* Layout */
         .container {
+            width: 100%;
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 24px;
         }
 
-        .section {
-            padding: 80px 0;
-            position: relative;
-            z-index: 2;
-        }
-
-        /* Tighten gap between hero and first section */
-        .hero + .section {
-            padding-top: 0;
-        }
-
-        /* Background System */
-        body {
-            position: relative;
-            overflow-x: hidden;
-        }
-
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 1;
-            opacity: 0.4;
-            background-image: 
-                radial-gradient(circle at 1px 1px, var(--border) 1px, transparent 0);
-            background-size: 24px 24px;
-            mix-blend-mode: multiply;
-        }
-
-        :root[data-theme="dark"] body::before {
-            mix-blend-mode: overlay;
-            opacity: 0.2;
-        }
-
-        .bg-canvas {
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
-            background: var(--bg-primary);
-        }
-
-        :root[data-theme="light"] .bg-canvas {
-            background: 
-                radial-gradient(800px circle at 85% 15%, rgba(79, 70, 229, 0.08) 0%, transparent 50%),
-                radial-gradient(600px circle at 15% 85%, rgba(6, 182, 212, 0.06) 0%, transparent 50%),
-                linear-gradient(135deg, #fafbff 0%, #f1f5f9 50%, #e2e8f0 100%);
-        }
-
-        :root[data-theme="dark"] .bg-canvas {
-            background: 
-                radial-gradient(800px circle at 85% 15%, rgba(99, 102, 241, 0.12) 0%, transparent 50%),
-                radial-gradient(600px circle at 15% 85%, rgba(34, 211, 238, 0.08) 0%, transparent 50%),
-                linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
-        }
-
-        .accent-blob {
-            position: fixed;
-            pointer-events: none;
-            z-index: 0;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.6;
-            animation: floatGentle 20s ease-in-out infinite;
-        }
-
-        .blob-1 {
-            width: 400px;
-            height: 400px;
-            background: var(--accent-gradient);
-            top: -200px;
-            right: -200px;
-            animation-delay: 0s;
-        }
-
-        .blob-2 {
-            width: 300px;
-            height: 300px;
-            background: var(--accent-gradient-alt);
-            bottom: -150px;
-            left: -150px;
-            animation-delay: 10s;
-        }
-
-        @keyframes floatGentle {
-            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.4; }
-            33% { transform: translate(30px, -20px) scale(1.1); opacity: 0.6; }
-            66% { transform: translate(-20px, 30px) scale(0.9); opacity: 0.5; }
-        }
-
-        /* Header */
+        /* Navigation */
         .site-header {
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
+            background: var(--surface);
             border-bottom: 1px solid var(--border);
-            transition: all 0.3s ease;
-        }
-
-        :root[data-theme="dark"] .site-header {
-            background: rgba(30, 41, 59, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
         }
 
         .header-content {
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            padding: 16px 0;
-            position: relative;
-            z-index: 2;
+            align-items: center;
+            height: 72px;
         }
 
-        .brand {
-            font-size: 1.5rem;
-            font-weight: 700;
+        .logo-link {
+            font-size: 1.125rem;
+            font-weight: 600;
             color: var(--text-primary);
-            text-decoration: none;
-            letter-spacing: -0.02em;
+            transition: color 0.2s ease;
         }
 
-        .nav-actions {
+        .logo-link:hover {
+            color: var(--accent-primary);
+        }
+
+        .site-nav {
             display: flex;
             align-items: center;
             gap: 8px;
@@ -330,77 +194,52 @@
 
         .nav-btn {
             padding: 8px 16px;
-            border-radius: 8px;
-            font-weight: 500;
-            font-size: 0.95rem;
+            border: none;
+            background: transparent;
             color: var(--text-secondary);
+            font-size: 0.9375rem;
+            font-weight: 500;
+            border-radius: var(--radius);
+            cursor: pointer;
             transition: all 0.2s ease;
-            border: 1px solid transparent;
         }
 
         .nav-btn:hover {
+            background: var(--surface-hover);
             color: var(--text-primary);
-            background: var(--surface);
-            border-color: var(--border);
-            transform: translateY(-1px);
         }
 
         .nav-btn.active {
-            color: var(--accent-primary);
-            background: var(--surface);
-            border-color: var(--border);
-            font-weight: 600;
+            background: var(--accent-primary);
+            color: var(--text-inverse);
         }
 
         .theme-toggle {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 8px;
+            padding: 8px 12px;
+            border: none;
+            background: transparent;
+            font-size: 1.25rem;
             cursor: pointer;
-            font-size: 1.2rem;
+            border-radius: var(--radius);
             transition: all 0.2s ease;
-            margin-left: 8px;
-            color: var(--text-primary);
         }
 
         .theme-toggle:hover {
-            border-color: var(--border-hover);
-            transform: translateY(-1px);
+            background: var(--surface-hover);
         }
 
         /* Hero Section */
-        .hero {
-            padding: 80px 0 120px;
-            position: relative;
-            z-index: 2;
+        .hero-section {
+            padding: 80px 0 60px;
         }
 
         .hero-content {
-            max-width: 800px;
             text-align: center;
+            max-width: 900px;
             margin: 0 auto;
         }
 
-        .hero-badge {
-            display: inline-block;
-            margin-bottom: 24px;
-        }
-
-        .badge-text {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 999px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-        }
-
-        .hero h1 {
+        .hero-content h1 {
             margin-bottom: 24px;
             background: var(--accent-gradient);
             -webkit-background-clip: text;
@@ -408,180 +247,22 @@
             background-clip: text;
         }
 
-        .hero-subtitle {
+        .hero-intro {
             font-size: 1.25rem;
+            line-height: 1.6;
             color: var(--text-secondary);
-            margin-bottom: 40px;
-            max-width: 650px;
+            margin-bottom: 16px;
+            max-width: 800px;
             margin-left: auto;
             margin-right: auto;
-            line-height: 1.6;
         }
 
-        .cta-group {
-            display: flex;
-            gap: 16px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .cta-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 16px 32px;
-            border-radius: 12px;
-            font-weight: 600;
+        .hero-tagline {
             font-size: 1.1rem;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            border: 1px solid transparent;
-        }
-
-        .cta-button.primary {
-            background: var(--accent-gradient);
-            color: var(--text-inverse);
-            box-shadow: var(--shadow-medium);
-        }
-
-        .cta-button.primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 16px 48px rgba(79, 70, 229, 0.3);
-            color: var(--text-inverse);
-        }
-
-        .cta-button.secondary {
-            background: var(--surface);
-            color: var(--text-primary);
-            border-color: var(--border);
-        }
-
-        .cta-button.secondary:hover {
-            background: var(--surface-hover);
-            border-color: var(--border-hover);
-            transform: translateY(-1px);
-            color: var(--text-primary);
-        }
-
-        /* Cards */
-        .featured-grid {
-            display: grid;
-            gap: 32px;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-        }
-
-        .featured-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 24px;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-
-        .featured-card::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: var(--accent-gradient);
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
-        }
-
-        .featured-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-medium);
-            border-color: var(--border-hover);
-        }
-
-        .featured-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .featured-card.primary {
-            border-color: var(--accent-primary);
-            background: linear-gradient(135deg, var(--surface) 0%, rgba(79, 70, 229, 0.02) 100%);
-        }
-
-        .card-header {
-            display: flex;
-            align-items: flex-start;
-            gap: 16px;
-            margin-bottom: 16px;
-        }
-
-        .card-icon {
-            font-size: 2rem;
-            line-height: 1;
-            flex-shrink: 0;
-        }
-
-        .card-meta h3 {
-            color: var(--text-primary);
-            margin-bottom: 4px;
-        }
-
-        .card-tag {
-            display: inline-block;
-            padding: 4px 8px;
-            background: var(--surface-hover);
+            line-height: 1.5;
             color: var(--text-tertiary);
-            font-size: 0.8rem;
-            font-weight: 500;
-            border-radius: 4px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .card-footer {
-            margin-top: auto;
-            padding-top: 20px;
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 16px;
-        }
-
-        .card-link {
-            color: var(--accent-primary);
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-
-        .tech-tags {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .tech-tag {
-            padding: 4px 8px;
-            background: var(--accent-gradient);
-            color: var(--text-inverse);
-            font-size: 0.75rem;
-            font-weight: 500;
-            border-radius: 4px;
-        }
-
-        .section-header {
-            text-align: center;
             margin-bottom: 60px;
-        }
-
-        .section-subtitle {
-            font-size: 1.125rem;
-            color: var(--text-secondary);
-            margin-top: 16px;
-            max-width: 600px;
+            max-width: 750px;
             margin-left: auto;
             margin-right: auto;
         }
@@ -589,23 +270,26 @@
         /* Stats Grid */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 24px;
-            margin: 40px 0;
+            margin: 60px 0;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .stat-card {
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 24px;
+            padding: 32px 24px;
             text-align: center;
             transition: all 0.3s ease;
         }
 
         .stat-card:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-soft);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-medium);
             border-color: var(--border-hover);
         }
 
@@ -616,42 +300,313 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            display: block;
             margin-bottom: 8px;
+            display: block;
         }
 
         .stat-label {
             font-size: 0.9rem;
             color: var(--text-secondary);
+            line-height: 1.4;
         }
 
-        /* Availability Badge */
-        .availability {
+        /* Expertise Section */
+        .expertise-section {
+            margin: 60px 0;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-large);
+            padding: 48px;
+        }
+
+        .expertise-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .expertise-header h2 {
+            margin-bottom: 12px;
+        }
+
+        .expertise-header p {
+            color: var(--text-tertiary);
+        }
+
+        .expertise-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 48px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .expertise-column h4 {
+            color: var(--accent-primary);
+            margin-bottom: 16px;
+            font-size: 1.1rem;
+        }
+
+        .expertise-column ul {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .expertise-column li {
+            padding-left: 24px;
+            position: relative;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .expertise-column li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--accent-primary);
+            font-weight: bold;
+        }
+
+        /* Current Focus Banner */
+        .current-focus {
+            margin-top: 40px;
+            padding: 24px;
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+            border-left: 4px solid var(--accent-primary);
+            border-radius: var(--radius);
+        }
+
+        .current-focus strong {
+            color: var(--accent-primary);
+            font-weight: 600;
+        }
+
+        .current-focus p {
+            margin: 0;
+            color: var(--text-primary);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 48px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 12px 20px;
-            background: var(--success-bg);
-            border: 1px solid var(--success);
-            border-radius: 999px;
-            font-size: 0.95rem;
-            font-weight: 500;
-            color: var(--text-primary);
-            margin-top: 32px;
+            padding: 14px 32px;
+            background: var(--accent-gradient);
+            color: var(--text-inverse);
+            font-weight: 600;
+            font-size: 1rem;
+            border-radius: var(--radius);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
         }
 
-        :root[data-theme="dark"] .availability {
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+            color: var(--text-inverse);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 32px;
+            background: var(--surface);
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 1rem;
+            border-radius: var(--radius);
+            border: 2px solid var(--border-strong);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-soft);
+        }
+
+        /* Sections */
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .section-header h2 {
+            margin-bottom: 16px;
+        }
+
+        .section-subtitle {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Featured Cards */
+        .featured-grid {
+            display: grid;
+            gap: 32px;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+        }
+
+        .featured-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-large);
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+        }
+
+        .featured-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-medium);
+            border-color: var(--border-hover);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            line-height: 1;
+        }
+
+        .card-meta h3 {
+            margin-bottom: 6px;
+            color: var(--text-primary);
+        }
+
+        .card-tag {
+            display: inline-block;
+            padding: 4px 12px;
             background: var(--success-bg);
-            border-color: var(--success);
+            color: var(--success);
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .featured-card > p {
+            flex-grow: 1;
+            margin-bottom: 24px;
+            line-height: 1.7;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .card-link {
+            font-weight: 600;
+            color: var(--accent-primary);
+            transition: all 0.2s ease;
+        }
+
+        .card-link:hover {
+            color: var(--accent-secondary);
+            transform: translateX(4px);
+        }
+
+        .tech-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tech-tag {
+            padding: 4px 12px;
+            background: var(--surface-hover);
+            color: var(--text-tertiary);
+            font-size: 0.75rem;
+            font-weight: 500;
+            border-radius: 8px;
+        }
+
+        /* Blog Grid */
+        .blog-grid {
+            display: grid;
+            gap: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        }
+
+        .blog-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px 22px;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.25s ease;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-medium);
+            border-color: var(--border-hover);
+        }
+
+        .blog-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .blog-card h3 a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .blog-card h3 a:hover {
+            color: var(--accent-primary);
+        }
+
+        .blog-meta {
+            font-size: 0.85rem;
+            color: var(--text-tertiary);
+            margin-bottom: 10px;
+        }
+
+        .blog-excerpt {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
         }
 
         /* Footer */
         .site-footer {
             background: var(--surface);
             border-top: 1px solid var(--border);
-            padding: 60px 0 40px;
-            position: relative;
-            z-index: 2;
+            padding: 40px 0;
         }
 
         .footer-content {
@@ -660,100 +615,58 @@
 
         .footer-text {
             color: var(--text-tertiary);
-            font-size: 0.9rem;
+            font-size: 0.9375rem;
         }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 16px;
-                padding: 20px 0;
+            .hero-section {
+                padding: 60px 0 40px;
             }
 
-            .nav-actions {
-                flex-wrap: wrap;
-                justify-content: center;
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
 
-            .hero {
-                padding: 60px 0 80px;
+            .expertise-section {
+                padding: 32px 24px;
             }
 
-            .hero-subtitle {
-                font-size: 1.1rem;
-            }
-
-            .cta-group {
-                flex-direction: column;
-                align-items: center;
+            .expertise-grid {
+                grid-template-columns: 1fr;
+                gap: 32px;
             }
 
             .featured-grid {
                 grid-template-columns: 1fr;
-                gap: 24px;
             }
 
-            .section {
-                padding: 60px 0;
+            .action-buttons {
+                flex-direction: column;
+                align-items: stretch;
             }
 
-            .container {
-                padding: 0 16px;
+            .btn-primary,
+            .btn-secondary {
+                width: 100%;
+                justify-content: center;
             }
-
-            .stats-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
-        /* Accessibility */
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-            
-            .accent-blob {
-                animation: none;
-            }
-        }
-
-        .nav-btn:focus-visible,
-        .theme-toggle:focus-visible,
-        .cta-button:focus-visible {
-            outline: 2px solid var(--accent-primary);
-            outline-offset: 2px;
         }
     </style>
 </head>
 <body>
-    <!-- Background system -->
-    <div class="bg-canvas" aria-hidden="true"></div>
-    <div class="accent-blob blob-1" aria-hidden="true"></div>
-    <div class="accent-blob blob-2" aria-hidden="true"></div>
-
     <!-- Header -->
     <header class="site-header">
         <div class="container">
             <div class="header-content">
-                <a class="brand" href="index.html">Amy Bray</a>
-                
-                <nav class="nav-actions">
-                    <a class="nav-btn active" href="index.html">Home</a>
-                    <a class="nav-btn" href="projects.html">Projects</a>
-                    <a class="nav-btn" href="about.html">About</a>
-                    <a class="nav-btn" href="blog/index.html" target="_blank">Blog</a>
-                    <a class="nav-btn" href="contact.html">Contact</a>
-                    <button
-                        id="theme-toggle"
-                        class="theme-toggle"
-                        aria-label="Toggle between light and dark themes"
-                        title="Toggle theme"
-                    >
-                        🌙
-                    </button>
+                <a href="index.html" class="logo-link">Amy Bray</a>
+                <nav class="site-nav">
+                    <a href="index.html" class="nav-btn active">Home</a>
+                    <a href="projects.html" class="nav-btn">Projects</a>
+                    <a href="about.html" class="nav-btn">About</a>
+                    <a href="blog.html" class="nav-btn">Blog</a>
+                    <a href="contact.html" class="nav-btn">Contact</a>
+                    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">🌙</button>
                 </nav>
             </div>
         </div>
@@ -762,117 +675,107 @@
     <!-- Main Content -->
     <main>
         <!-- Hero Section -->
-        <section class="hero">
+        <section class="hero-section">
             <div class="container">
                 <div class="hero-content">
-                    <div class="hero-badge">
-                        <span class="badge-text">✨ People Ops Systems & HR Tech</span>
-                    </div>
                     <h1>Building AI-powered workforce systems that scale and match how people actually work.</h1>
-                    <p class="hero-subtitle">
-                        I design and document HRIS, payroll, and engagement tools for distributed teams — with a focus on contingent work, EOR programs, and AI-powered support. Less confusion, fewer escalations, cleaner data.
+                    
+                    <p class="hero-intro">
+                        13 years building and running contingent workforce operations at scale. I specialize in the operational backbone most HR people never touch: EOR platforms, VMS systems, multi-vendor payroll coordination, and compliance frameworks across complex jurisdictions.
                     </p>
                     
+                    <p class="hero-tagline">
+                        This portfolio showcases the tools I've built to solve real problems I've lived—from policy chatbots to payroll calculators that save Finance 3 hours per cycle.
+                    </p>
+
                     <!-- Stats Grid -->
                     <div class="stats-grid">
                         <div class="stat-card">
-                            <span class="stat-number">$80M+</span>
-                            <span class="stat-label">Annual Payroll Operations Managed</span>
+                            <span class="stat-number">100→1,000+</span>
+                            <div class="stat-label">Contractors Growth in 5 Years</div>
                         </div>
                         <div class="stat-card">
-                            <span class="stat-number">1,000+</span>
-                            <span class="stat-label">Contractors Scaled & Supported</span>
+                            <span class="stat-number">50 States</span>
+                            <div class="stat-label">+ 20 Countries Contracts Managed</div>
                         </div>
                         <div class="stat-card">
-                            <span class="stat-number">20+</span>
-                            <span class="stat-label">Countries & Jurisdictions</span>
+                            <span class="stat-number">0</span>
+                            <div class="stat-label">Missed Pay Cyles (Post-Acquisition)</div>
                         </div>
                         <div class="stat-card">
                             <span class="stat-number">3</span>
-                            <span class="stat-label">Major System Migrations Led</span>
+                            <div class="stat-label">Major System Migrations Led</div>
                         </div>
                         <div class="stat-card">
                             <span class="stat-number">13+</span>
-                            <span class="stat-label">Years in People Operations</span>
+                            <div class="stat-label">Years in People Operations</div>
                         </div>
                         <div class="stat-card">
-                            <span class="stat-number">10+</span>
-                            <span class="stat-label">EOR & Vendor Partners</span>
+                            <span class="stat-number">Multi-</span>
+                            <div class="stat-label">Vendor EOR Operations</div>
                         </div>
                     </div>
 
-                    <div class="cta-group">
-                        <a class="cta-button primary" href="/cdn-cgi/l/email-protection#e98884908b9b8890d9dad8dca98e84888085c78a8684">
-                            <span>Get in Touch</span>
-                        </a>
-                        <a class="cta-button secondary" href="https://linkedin.com/in/amybrayphr" target="_blank">
-                            <span>LinkedIn Profile</span>
-                        </a>
-                        <a class="cta-button secondary" href="projects.html">
-                            <span>View Projects</span>
-                        </a>
+                    <!-- Expertise Section -->
+                    <div class="expertise-section">
+                        <div class="expertise-header">
+                            <h2>Core Expertise</h2>
+                            <p>Specialized skills built from 13 years in contingent workforce operations</p>
+                        </div>
+                        
+                        <div class="expertise-grid">
+                            <div class="expertise-column">
+                                <h4>Operations</h4>
+                                <ul>
+                                    <li>Contingent workforce at scale (100 to 1,000+ workers)</li>
+                                    <li>Multi-state payroll compliance (50 states + 20 countries)</li>
+                                    <li>HRIS integration & workflow automation</li>
+                                </ul>
+                            </div>
+                            <div class="expertise-column">
+                                <h4>Platforms</h4>
+                                <ul>
+                                    <li>EOR: Including Magnit, Workspend, iWorkGlobal/Velocity Global (now Pebl)</li>
+                                    <li>VMS: Beeline, Fieldglass, VNDLY</li>
+                                    <li>ATS: Bullhorn (Super Admin)</li>
+                                </ul>
+                            </div>
+                            <div class="expertise-column">
+                                <h4>Technical Stack</h4>
+                                <ul>
+                                    <li>Bullhorn, ADP, Salesforce (in progress)</li>
+                                    <li>Python, Streamlit, Flask</li>
+                                    <li>HTML/CSS, SQLite</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="current-focus">
+                            <p><strong>Current focus:</strong> Pursuing Salesforce Administrator & Agentforce Specialist certifications—adding AI automation to workforce operations.</p>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="action-buttons">
+                            <a href="contact.html" class="btn-primary">Get in Touch</a>
+                            <a href="https://www.linkedin.com/in/amybrayphr/" target="_blank" rel="noopener" class="btn-secondary">LinkedIn Profile</a>
+                            <a href="about.html" class="btn-secondary">About Me</a>
+                        </div>
                     </div>
-                    
-                    <p class="availability">
-                        🟢 Currently seeking senior People Operations, HRIS Leadership, or Workforce Systems roles (remote preferred)
-                    </p>
                 </div>
             </div>
         </section>
 
-        <!-- Featured Work -->
+        <!-- Featured Solutions -->
         <section class="section">
             <div class="container">
                 <div class="section-header">
                     <h2>Featured Solutions</h2>
-                    <p class="section-subtitle">Prototypes and tools built from real operational pain points - each one solving problems I experienced firsthand in managing large-scale contingent programs.</p>
+                    <p class="section-subtitle">
+                        Prototypes and tools built from 13+ years in People Ops & global contingent programs.
+                    </p>
                 </div>
-                
-                <div class="featured-grid">
-                    <!-- ContingentAI -->
-                    <article class="featured-card primary">
-                        <div class="card-header">
-                            <div class="card-icon">📊</div>
-                            <div class="card-meta">
-                                <h3>ContingentAI</h3>
-                                <span class="card-tag">NEW - Workforce Analytics</span>
-                            </div>
-                        </div>
-                        <p>
-                            Comprehensive workforce analytics platform for managing contingent operations at scale. Built from managing 1,000+ contractors across 20+ countries at Upwork. Features advanced leave tracking, vendor management, scenario planning, and real-time analytics for programs managing $50M+ in annual workforce spend.
-                        </p>
-                        <div class="card-footer">
-                            <a href="project-contingentai.html" class="card-link">View Project →</a>
-                            <div class="tech-tags">
-                                <span class="tech-tag">Python</span>
-                                <span class="tech-tag">Streamlit</span>
-                                <span class="tech-tag">Analytics</span>
-                            </div>
-                        </div>
-                    </article>
 
-                    <!-- FinOps Suite -->
-                    <article class="featured-card">
-                        <div class="card-header">
-                            <div class="card-icon">💰</div>
-                            <div class="card-meta">
-                                <h3>Financial Operations Suite</h3>
-                                <span class="card-tag">Payroll & Vendor Analytics</span>
-                            </div>
-                        </div>
-                        <p>
-                            Streamlit-based toolkit that turns messy vendor and payroll exports into clean, dashboard-ready data. Data Pipeline Pro transforms 15+ vendor formats into billing-ready outputs. GSV Tracker Pro provides instant MoM/QoQ/YoY growth insights. Reduces "what happened this quarter?" analysis from 3 hours to 15 minutes.
-                        </p>
-                        <div class="card-footer">
-                            <a href="project-finops-suite.html" class="card-link">View Case Study →</a>
-                            <div class="tech-tags">
-                                <span class="tech-tag">Python</span>
-                                <span class="tech-tag">Streamlit</span>
-                                <span class="tech-tag">Pandas</span>
-                            </div>
-                        </div>
-                    </article>
-                    
+                <div class="featured-grid">
                     <!-- AuniConnect -->
                     <article class="featured-card">
                         <div class="card-header">
@@ -883,36 +786,58 @@
                             </div>
                         </div>
                         <p>
-                            A Flask-based engagement platform solving the operational gaps I experienced at The Mom Project. Features the Aunikah chatbot (routes W-2 vs 1099 classification questions), Renewal Radar (predictive retention alerts), recognition systems, and manager enablement tools. Built to shift operations from reactive to proactive.
+                            AI-powered engagement platform that answers basic talent questions before escalation, provides manager coaching tips, and creates space for kudos and team recognition—reducing HR tickets by 40%+. Built for distributed teams of 500+ workers where self-service support is critical.
                         </p>
                         <div class="card-footer">
-                            <a href="https://amybray-systems.github.io/auniconnect-chatbot/" class="card-link" target="_blank" rel="noopener">Talk to Aunikah →</a>
+                            <a href="project-auniconnect.html" class="card-link">View Case Study →</a>
                             <div class="tech-tags">
                                 <span class="tech-tag">Flask</span>
-                                <span class="tech-tag">JavaScript</span>
-                                <span class="tech-tag">HR Chatbot</span>
+                                <span class="tech-tag">OpenAI API</span>
+                                <span class="tech-tag">Python</span>
                             </div>
                         </div>
                     </article>
 
-                    <!-- VMSFlex Pay -->
+                    <!-- Financial Operations Suite -->
                     <article class="featured-card">
                         <div class="card-header">
-                            <div class="card-icon">⏱️</div>
+                            <div class="card-icon">📊</div>
                             <div class="card-meta">
-                                <h3>VMSFlex Pay – Smart Payroll Calculator</h3>
-                                <span class="card-tag">Payroll Automation</span>
+                                <h3>Financial Operations Suite</h3>
+                                <span class="card-tag">Payroll & Vendor Analytics</span>
                             </div>
                         </div>
                         <p>
-                            Browser-based overtime calculator that eliminates 2-3 hours of manual payroll processing per pay period. Intelligently detects CSV formats from multiple VMS platforms, applies location-specific overtime rules (CA, CO, NV, AK, Federal), and enforces California compliance with daily breakdown requirements.
+                            Streamlit-based toolkit that turns messy vendor and payroll exports into clean, dashboard-ready data. Data Pipeline Pro transforms 15+ vendor formats into billing-ready outputs. GSV Tracker Pro provides instant MoM/QoQ/YoY growth insights. Reduces quarterly analysis from 3 hours to 15 minutes.
                         </p>
                         <div class="card-footer">
-                            <a href="vmsflex-demo.html" class="card-link" target="_blank" rel="noopener">Try Demo →</a>
+                            <a href="project-finops-suite.html" class="card-link">View Case Study →</a>
                             <div class="tech-tags">
-                                <span class="tech-tag">JavaScript</span>
-                                <span class="tech-tag">HTML/CSS</span>
-                                <span class="tech-tag">Payroll</span>
+                                <span class="tech-tag">Python</span>
+                                <span class="tech-tag">Streamlit</span>
+                                <span class="tech-tag">Pandas</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- ContingentAI -->
+                    <article class="featured-card">
+                        <div class="card-header">
+                            <div class="card-icon">📈</div>
+                            <div class="card-meta">
+                                <h3>ContingentAI</h3>
+                                <span class="card-tag">Workforce Analytics</span>
+                            </div>
+                        </div>
+                        <p>
+                            Workforce analytics platform with FMLA/PFML leave compliance tracking for W-2 contractors. Tracks eligibility across state lines, automates notifications, and provides compliance dashboards—solving the leave tracking nightmare for contingent workforces that most HRIS platforms ignore.
+                        </p>
+                        <div class="card-footer">
+                            <a href="project-contingentai.html" class="card-link">View Case Study →</a>
+                            <div class="tech-tags">
+                                <span class="tech-tag">Python</span>
+                                <span class="tech-tag">Analytics</span>
+                                <span class="tech-tag">Compliance</span>
                             </div>
                         </div>
                     </article>
@@ -926,7 +851,7 @@
                 <div class="section-header">
                     <h2>Recent Writing</h2>
                     <p class="section-subtitle">
-                        Short case studies behind the builds – classification, payroll, and HR games.
+                        Short case studies behind the builds—classification, payroll, and HR games.
                     </p>
                 </div>
 
@@ -943,7 +868,7 @@
                         <h3><a href="blog/finops-suite-story.html">Building the Financial Operations Suite I Wished I Had</a></h3>
                         <p class="blog-meta">October 2025 • Financial Operations · Automation</p>
                         <p class="blog-excerpt">
-                            After managing $80M+ in payroll and spending hours on manual transformations, I built the automated suite that turns hours into minutes.
+                            After spending years managing high-volume payroll and manual transformations, I built the automated suite that turns hours into minutes.
                         </p>
                     </article>
 
@@ -969,7 +894,7 @@
     </footer>
 
     <!-- JavaScript -->
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <script>
         (function() {
             'use strict';
 
